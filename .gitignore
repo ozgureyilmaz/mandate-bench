@@ -1,0 +1,91 @@
+# Strict by design: this repo is PUBLIC. Ignore anything that could leak or isn't needed.
+# results/ and transcripts/ ARE committed (required in the submission); runs/ is scratch.
+
+# --- secrets and credentials ---
+.env
+.env.*
+!.env.example
+.envrc
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.der
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.secret
+*.secrets
+secrets/
+secret/
+.secrets/
+credentials*.json
+service-account*.json
+.netrc
+.npmrc
+.pypirc
+
+# --- Rust / Cargo ---
+target/
+**/*.rs.bk
+*.pdb
+# Cargo.lock is committed on purpose (pinned dependencies).
+
+# --- eval scratch (debug, smoke and partial runs) ---
+runs/
+results/_scratch/
+transcripts/_scratch/
+
+# --- logs ---
+*.log
+logs/
+*.trace
+*.profraw
+*.profdata
+
+# --- packaging and media (videos and zips must never be committed) ---
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.avi
+*.m4a
+*.wav
+
+# --- other languages' junk (nothing here needs them) ---
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- local databases and caches ---
+*.sqlite
+*.sqlite3
+*.db
+.cache/
+tmp/
+*.tmp
+
+# --- OS and editor junk ---
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+.direnv/
