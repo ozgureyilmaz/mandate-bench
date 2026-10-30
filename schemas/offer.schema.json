@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Seller offer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "offer_id",
+    "seller_id",
+    "seller_name",
+    "product",
+    "pack_size",
+    "price",
+    "currency",
+    "fees",
+    "valid_until",
+    "ships_from",
+    "ships_within_days",
+    "terms"
+  ],
+  "properties": {
+    "offer_id": { "type": "string", "minLength": 1 },
+    "seller_id": { "type": "string", "minLength": 1 },
+    "seller_name": { "type": "string", "minLength": 1 },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sku", "title", "specs", "compatible_with"],
+      "properties": {
+        "sku": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "specs": { "type": "object", "additionalProperties": true },
+        "compatible_with": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "pack_size": { "type": "integer", "minimum": 1 },
+    "price": { "type": "number", "minimum": 0 },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "fees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "amount", "per"],
+        "properties": {
+          "type": { "type": "string", "minLength": 1 },
+          "amount": { "type": "number", "minimum": 0 },
+          "per": { "enum": ["order", "unit"] }
+        }
+      }
+    },
+    "valid_until": { "type": "string", "format": "date-time" },
+    "ships_from": { "type": "string", "minLength": 1 },
+    "ships_within_days": { "type": "integer", "minimum": 0 },
+    "delivery_estimate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min_business_days", "max_business_days"],
+          "properties": {
+            "min_business_days": { "type": "integer", "minimum": 0 },
+            "max_business_days": { "type": "integer", "minimum": 0 }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "return_policy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["returnable", "window_days"],
+          "properties": {
+            "returnable": { "type": "boolean" },
+            "window_days": { "type": "integer", "minimum": 0 }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "terms": { "type": "string" },
+    "seller_qa": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "delivery_estimate",
+          "returns",
+          "compatibility",
+          "fees",
+          "warranty",
+          "other"
+        ]
+      },
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

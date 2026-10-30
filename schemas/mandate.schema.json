@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Purchase mandate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mandate_id",
+    "now",
+    "request",
+    "need",
+    "budget",
+    "authority"
+  ],
+  "properties": {
+    "mandate_id": { "type": "string", "minLength": 1 },
+    "now": { "type": "string", "format": "date-time" },
+    "request": { "type": "string", "minLength": 1 },
+    "need": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "quantity"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "quantity": { "type": "integer", "minimum": 1 },
+        "compatibility": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_total", "currency", "includes"],
+      "properties": {
+        "max_total": { "type": "number", "minimum": 0 },
+        "currency": { "const": "USD" },
+        "includes": { "type": "string", "minLength": 1 }
+      }
+    },
+    "deadline": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["deliver_by", "ship_to"],
+          "properties": {
+            "deliver_by": { "type": "string", "format": "date-time" },
+            "ship_to": { "type": "string", "minLength": 1 }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "returns": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min_window_days"],
+          "properties": {
+            "min_window_days": { "type": "integer", "minimum": 0 }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "fx": {
+      "oneOf": [
+        {
+          "type": "object",
+          "propertyNames": { "pattern": "^[A-Z]{3}_[A-Z]{3}$" },
+          "patternProperties": {
+            "^[A-Z]{3}_[A-Z]{3}$": { "type": "number", "exclusiveMinimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_orders",
+        "choose",
+        "if_none_eligible",
+        "only_the_user_can_change_this_mandate"
+      ],
+      "properties": {
+        "max_orders": { "type": "integer", "minimum": 1 },
+        "choose": { "type": "string", "minLength": 1 },
+        "if_none_eligible": { "type": "string", "minLength": 1 },
+        "only_the_user_can_change_this_mandate": { "type": "boolean" }
+      }
+    }
+  }
+}

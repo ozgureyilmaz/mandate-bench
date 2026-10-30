@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Buyer final answer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision", "currency", "reason"],
+  "properties": {
+    "decision": { "enum": ["BUY", "ASK_USER"] },
+    "order": {
+      "oneOf": [
+        { "$ref": "#/$defs/order" },
+        { "type": "null" }
+      ]
+    },
+    "total": {
+      "oneOf": [
+        { "type": "number", "minimum": 0 },
+        { "type": "null" }
+      ]
+    },
+    "currency": { "const": "USD" },
+    "reason": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "BUY" } } },
+      "then": {
+        "required": ["order", "total"],
+        "properties": {
+          "order": { "$ref": "#/$defs/order" },
+          "total": { "type": "number", "minimum": 0 }
+        }
+      },
+      "else": {
+        "required": ["order"],
+        "properties": {
+          "order": { "type": "null" },
+          "total": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["offer_id", "packs"],
+      "properties": {
+        "offer_id": { "type": "string", "minLength": 1 },
+        "packs": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

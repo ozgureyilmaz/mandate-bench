@@ -5,8 +5,8 @@ The hackathon allows AI tools, and the author stays responsible for correctness.
 ## Tools used
 | Tool | Used for | Not used for |
 |---|---|---|
-| Codex | Main implementation (Rust): env, tools, LLM client, agent loop, grader, tests | TODO |
-| Cursor cloud agents | Bounded code tasks (individual task files, grader tests, fixes) | TODO |
+| AI coding assistant | M1 Rust workspace, shared arithmetic, offline replay/CLI, scripted env, schemas, two task/reference fixtures, grader and tests. Native workers were requested as `gpt-6-luna` at `xhigh`, as authorized by ozgur; the primary integrated and reviewed their work. | No evaluation API runs, provider transport or submission in M1; human sign-off remains pending |
+| Cursor cloud agents | Planned for later bounded tasks; not used in M1 | No M1 implementation |
 | Grok Bot | Research on related work and link verification; drafting docs; status tracking; run monitoring | Writing eval logic; choosing expected answers |
 | Models under test | Only as subjects of the eval | Grading (no LLM judge) |
 
@@ -19,11 +19,11 @@ The hackathon allows AI tools, and the author stays responsible for correctness.
 - [ ] Wrote the hot take.
 
 ## How AI output was reviewed
-- Code: every merged change reviewed by ozgur; grader correctness enforced by the oracle/mutant tests (`cargo test --workspace`).
+- Code: the primary implementation agent reviewed worker changes and runs formatting, Clippy, oracle/mutant/schema/isolation tests. Owner review and merge approval remain pending; automated checks do not substitute for them.
 - Docs: TODO (for example, "every factual claim checked against LINKS.md sources; numbers only from `results/`").
 - Tasks: TODO.
 
 ## What AI did *not* do
 - Fabricate or edit any result: all numbers come from files in `results/`.
 - Generate task answers that weren't independently verified.
-- Submit anything: ozgur uploaded the submission personally.
+- Submit anything: no submission has been made by an agent; the final upload is reserved for ozgur.

@@ -48,7 +48,7 @@ Append-only. Format: date (Istanbul) · decision · reasons · alternatives cons
 
 ## 2026-10-30 · Harness in Rust · ozgur
 **Decision:** Rust (a Cargo workspace; toolchain pinned in `rust-toolchain.toml`; `Cargo.lock` committed). Commands: `cargo run --release -- …`, `cargo test --workspace`. Crates: reqwest, tokio, serde, serde_json, clap, dotenvy, plus rust_decimal for exact money. Tasks stay JSON. `requirements.txt` is removed; the hackathon's "requirements file or equivalent" is met by `Cargo.toml` + `Cargo.lock`.
-**Reasons:** ozgur prefers Rust "if it causes no problems". For this project it doesn't: it's an HTTP + JSON + exact-arithmetic harness with no ML libraries; Codex writes the code; one static binary makes the clean-room rerun simple; and `rust_decimal` avoids float errors in the ±0.01 total check.
+**Reasons:** ozgur prefers Rust "if it causes no problems". For this project it doesn't: it's an HTTP + JSON + exact-arithmetic harness with no ML libraries; AI coding assistants write the code; one static binary makes the clean-room rerun simple; and `rust_decimal` avoids float errors in the ±0.01 total check.
 **Costs, accepted:** a first build takes a few minutes; judges need rustup (one command in the README).
 **Alternatives:** Python (the earlier draft; the most common for evals); TypeScript (no real advantage here).
 
@@ -57,3 +57,24 @@ Append-only. Format: date (Istanbul) · decision · reasons · alternatives cons
 
 ## 2026-10-30 · Public repo, strict `.gitignore` · ozgur
 **Decision:** the repo is public (github.com/ozgureyilmaz/mandate-bench), so pushing means publishing. `.gitignore` is strict: `.env*` except `.env.example`, keys/certs/secrets, `target/`, `runs/` (scratch), logs, archives and videos, other-language junk, OS/editor files. `results/` and `transcripts/` stay committed because the submission needs them. A secret scan of both the tree and the git history runs before every push (AGENTS.md). ozgur (typos fixed): "herhangi bir açık istemiyorum ve gereksiz paylaşım".
+
+## 2026-10-30 · M1 offline boundary and concrete data contract · implementation agent
+**Decision:** implement only the Cargo skeleton, t00/t01, scripted environment, grader and offline oracle in this session. `mb-agent` drives offline replays; `mb-llm` remains an explicit placeholder. Provider transports, configs, key loading and paid/smoke/model runs are deferred to M2. `oracle` writes nothing by default; optional scratch artifacts explicitly identify their source as offline reference replay. No model-result claims are made.
+**Reasons:** this is the kickoff's M1 scope and enables grader validation before API spending. Adding nonfunctional provider commands or making model calls now would exceed that scope.
+**Data contract:** tasks contain `task_id`, `task_version`, `mandate`, `sellers` and `offers`; references contain `expected`, `rationale`, `distractor_labels` and `oracle_calls`. Five strict, self-contained Draft 2020-12 schemas validate these records without remote references. The hidden Reference type and loader live in `mb-grader`, outside the environment/episode driver. Future optional fields remain nullable/omittable as specified.
+**Alternatives:** implementing the full provider loop immediately; remote schema references; allowing unknown record fields. All deferred or rejected to keep the offline contract explicit and reproducible. Owner hand-review and publication remain separate.
+
+## 2026-10-30 · Hidden-reference isolation wording clarified · ozgur, implemented by the implementation agent
+**Decision:** test that hidden reference files/fields, full expected explanations, rationales, labels and oracle-call canaries do not enter initial prompts or tool responses. Legitimate task facts such as offer IDs and prices remain visible. ozgur explicitly confirmed this interpretation in the implementation chat.
+**Reason:** a literal prohibition on every expected value would forbid displaying the winning offer ID or its price, making a solvable task impossible. Isolation is enforced by crate/API boundaries and tests; `get_offer` also strips the scripted `seller_qa` map, which is accessible only through `ask_seller`.
+**Alternative:** substring bans on every reference scalar; rejected because they confuse hidden answers with shared task facts.
+
+## 2026-10-30 · Money, time and terminal-call edge cases · implementation agent
+**Decision:** preserve money as exact JSON numbers using rust_decimal with both `serde-float` and `serde-arbitrary-precision`; this combination serializes through an exact `serde_json::Number`, without an f64 conversion. A regression test checks this representation. Round half-up once after the shared fee/FX calculation. Numeric JSON totals retain sub-cent precision for the inclusive USD 0.01 tolerance; formatted USD/en-US strings are normalized before final schema validation, while ambiguous strings, duplicate keys and reserved serializer objects are rejected.
+**Time/quantity:** `valid_until` is inclusive. Calendar shipping days precede Mon–Fri transit days, retaining the frozen offset/time and assuming no holidays. Use the minimum pack count covering the requested quantity. These conventions are stated in the buyer prompt.
+**Ledger:** every order attempt consumes authority, including rejected attempts. `ask_user` must succeed to count as escalation; later tool calls are recorded, blocked and fail the protocol. The twentieth tool call marks the episode exhausted and fails even if a caller supplies a final-looking payload afterward. The environment checks order existence, argument validity and expiry; the hidden-reference grader checks the authorized outcome without exposing the correct charge to the buyer.
+**Alternatives:** float money, implicit current time, forgiving rejected exploratory orders or treating any `ask_user` attempt as success; rejected because they introduce rounding errors or false passes.
+
+## 2026-10-30 · Neutral repository wording and feature branch · ozgur
+**Decision:** publish M1 from `feat/m1-offline-harness` with neutral implementation-role wording in repository docs and pull-request metadata. The AI-assisted implementation and review workflow remains disclosed in AI_USE.md. Existing published history is retained; unpublished M1 work is consolidated into one reviewable commit.
+**Reason:** ozgur requested an unbranded branch and repository presentation before opening the M1 pull request. This changes names and attribution wording, not evaluation behavior or task data.
