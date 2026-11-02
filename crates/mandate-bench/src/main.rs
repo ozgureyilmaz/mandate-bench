@@ -9,11 +9,10 @@ use mb_agent::replay;
 use mb_core::load_task;
 use mb_grader::{grade, load_reference, validate_reference};
 
+mod runner;
+
 #[derive(Parser)]
-#[command(
-    version,
-    about = "Deterministic mandate-adherence evaluation (offline M1)"
-)]
+#[command(version, about = "Deterministic mandate-adherence evaluation")]
 struct Cli {
     /// Repository root containing tasks/ and reference/.
     #[arg(long, default_value = ".", global = true)]
@@ -33,12 +32,71 @@ enum Command {
         #[arg(long)]
         out: Option<PathBuf>,
     },
+    /// One forced tool-calling request per selected model; not an evaluation trial.
+    Smoke {
+        #[arg(long, default_value = "configs/smoke.toml")]
+        config: PathBuf,
+        #[arg(long)]
+        model: Option<String>,
+        /// Output parent directory; a new, exclusive run directory is created inside it.
+        #[arg(long)]
+        out: Option<PathBuf>,
+        /// Validate configuration and key presence without sending requests.
+        #[arg(long)]
+        dry_run: bool,
+    },
+    /// Run the selected configured tasks, using a fresh environment for every trial.
+    Run {
+        #[arg(long)]
+        config: PathBuf,
+        #[arg(long)]
+        model: Option<String>,
+        #[arg(long)]
+        task: Option<String>,
+        #[arg(long)]
+        out: Option<PathBuf>,
+        #[arg(long)]
+        dry_run: bool,
+    },
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.command {
         Command::Oracle { task, out } => oracle(&cli.root, task.as_deref(), out.as_deref()),
+        Command::Smoke {
+            config,
+            model,
+            out,
+            dry_run,
+        } => {
+            runner::smoke(
+                &cli.root,
+                &config,
+                model.as_deref(),
+                out.as_deref(),
+                dry_run,
+            )
+            .await
+        }
+        Command::Run {
+            config,
+            model,
+            task,
+            out,
+            dry_run,
+        } => {
+            runner::run(
+                &cli.root,
+                &config,
+                model.as_deref(),
+                task.as_deref(),
+                out.as_deref(),
+                dry_run,
+            )
+            .await
+        }
     }
 }
 

@@ -8,7 +8,7 @@
 
 All tasks are synthetic, priced in **USD**, with fictional sellers and addresses.
 
-**Implemented locally (Milestone 1):** two tasks (`t00_control`, `t01_hidden_fees`), an offline scripted environment, exact-decimal totals, a deterministic grader and reference replay. The remaining seven tasks and the provider-driven buyer loop are planned. No evaluation models have been run; oracle scores are software checks, not model results.
+**Implementation status:** two tasks (`t00_control`, `t01_hidden_fees`), the scripted environment, exact-decimal totals, deterministic grader and oracle are implemented. M2 adds the API client, buyer loop, smoke/run commands and saved transcripts. Transport and loop tests use local mock servers; live provider compatibility remains unverified because no API keys were configured. The remaining seven tasks and reported model results are pending. Oracle scores are software checks, not model results.
 
 ## Short description
 TODO (3–4 sentences: domain, gap, number of tasks, models tested, headline finding). Paste the same text into the HackerRank description field.
@@ -38,9 +38,9 @@ The headline score is binary: the final answer must pass the JSON schema, choose
 The shared total function uses exact decimals and rounds half-up once after fees and any FX conversion. Per-component booleans are diagnostic only. Tests accept the references and reject deliberately wrong outcomes, including extra orders, wrong totals, malformed answers and inappropriate escalation. Tests also check numeric normalization and hidden-reference isolation. TODO: extend the tests to the remaining seven task fixtures.
 
 ## Setup and run
-Milestone 1 runs offline and needs no API keys:
+Build and offline verification need no API keys:
 
-Requirements: Rust via [rustup](https://rustup.rs). The toolchain version is pinned in `rust-toolchain.toml` and installs automatically on the first `cargo` command. Dependencies are pinned by `Cargo.toml` + the committed `Cargo.lock` (this repo's equivalent of a requirements file). No Python or Docker needed.
+Requirements: Rust via [rustup](https://rustup.rs) and a C/C++ compiler for the TLS dependency ([AWS-LC build requirements](https://aws.github.io/aws-lc-rs/requirements/index.html)). The toolchain version is pinned in `rust-toolchain.toml` and installs automatically on the first `cargo` command. Dependencies are pinned by `Cargo.toml` + the committed `Cargo.lock` (this repo's equivalent of a requirements file). No Python or Docker needed.
 
 ```bash
 cargo build --release --locked
@@ -51,7 +51,24 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 ```
 To inspect an offline replay, use `cargo run --release --locked -- oracle --task t01_hidden_fees --out runs/m1-oracle`. It refuses to overwrite existing replay files. Use a new output directory for another replay. `--root /path/to/repo` supports invoking the binary from another directory.
 
-`run`, `smoke`, `report`, provider configs and `.env` loading are deferred to later milestones. For future model runs, copy `.env.example` to `.env` and fill keys locally; never commit `.env`.
+For a live tool-calling check, copy `.env.example` to `.env` and fill the required key locally. The included smoke config selects only `gpt-6-luna` and needs `OPENAI_API_KEY`. The preflight command reports missing key names and sends no requests:
+
+```bash
+cp .env.example .env
+# Set OPENAI_API_KEY in .env locally, then:
+cargo run --release --locked -- smoke --config configs/smoke.toml --dry-run
+cargo run --release --locked -- smoke --config configs/smoke.toml
+```
+
+Smoke sends one logical request per selected model, with the configured retries applying to that request. It checks tool support and saves diagnostic artifacts; it does not produce benchmark scores. To run a bounded task check explicitly:
+
+```bash
+cargo run --release --locked -- run --config configs/smoke.toml --task t00_control
+```
+
+`.env` is loaded only for `smoke`/`run`. Keys are never part of saved config or request headers in artifacts. Provider configuration details are in AGENTS.md and docs/PLAN.md §8. Official pilot/full configs and `report` remain deferred.
+
+By default, smoke/run create a new directory under ignored `runs/`, containing `run_meta.json`, immutable provider payloads in `outputs/`, transcripts, and `scores.jsonl`. A run records every trial, including failures and API errors; it never silently reruns a failed trial. HTTP-loopback checks are marked `local_mock`. Using `--out results` writes under `results/<run_id>/` with logs under `transcripts/<run_id>/`; publish only runs selected for reporting. Model payloads are retained after mandatory credential redaction before their first write. No request headers or HTTP error bodies are saved.
 
 The offline commands above were verified from a fresh local clone of the M1 source snapshot on Rust 1.99.1. That check used an installed toolchain and cached dependencies; the later fresh-machine live-model rerun is still pending.
 

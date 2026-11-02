@@ -5,7 +5,7 @@ The hackathon allows AI tools, and the author stays responsible for correctness.
 ## Tools used
 | Tool | Used for | Not used for |
 |---|---|---|
-| AI coding assistant | M1 Rust workspace, shared arithmetic, offline replay/CLI, scripted env, schemas, two task/reference fixtures, grader and tests. Native workers were requested as `gpt-6-luna` at `xhigh`, as authorized by ozgur; the primary integrated and reviewed their work. | No evaluation API runs, provider transport or submission in M1; human sign-off remains pending |
+| AI coding assistant | M1 workspace/env/grader/two fixtures; M2 config, transport, wire codecs, buyer loop, smoke/run CLI, artifacts and mock tests. Native workers were requested as `gpt-6-luna` at `xhigh`, as authorized by ozgur; the primary integrated and reviewed their work. | No live evaluation provider runs or submission through M2; human sign-off remains pending |
 | Cursor cloud agents | Planned for later bounded tasks; not used in M1 | No M1 implementation |
 | Grok Bot | Research on related work and link verification; drafting docs; status tracking; run monitoring | Writing eval logic; choosing expected answers |
 | Models under test | Only as subjects of the eval | Grading (no LLM judge) |

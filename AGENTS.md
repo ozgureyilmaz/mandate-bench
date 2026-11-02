@@ -50,6 +50,8 @@ docs/                    # HACKATHON, PLAN, ROADMAP, PRIOR_WORK, LINKS, STATUS, 
 Crate names are a suggestion; keep the split between core types, env, LLM client, agent loop, grader and CLI. The oracle is **data**: `reference/<task>.json` → `oracle_calls` is the scripted list of correct tool calls, replayed by `mandate-bench oracle`.
 
 ## Commands (planned; keep in sync with the code)
+Implemented through M2: `oracle`, `smoke`, and `run`. The bounded M2 config is `configs/smoke.toml` (one cheap model, the two current tasks, one trial). `smoke --dry-run` and `run --dry-run` validate config/key presence without requests. Pilot/full configs and `report` remain planned; no live model support has been claimed from local tests.
+
 ```bash
 cp .env.example .env                                   # fill keys locally; never commit
 cargo build --release

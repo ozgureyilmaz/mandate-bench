@@ -4,6 +4,8 @@ Hard deadline: **Nov 9, 08:15 Istanbul (05:15 GMT)**. Internal target for the fi
 **Midterms Nov 2–6:** only background runs and short reviews (≤ 30 min/day for ozgur). No new features.
 Owners: **O** = ozgur, **C** = implementation agent, **CC** = Cursor cloud agents, **G** = Grok Bot.
 
+**Actual progress update (Nov 2):** M1 is implemented and PR #1 remains open. M2 was resumed at ozgur's request; provider/loop/CLI code and local mock validation are implemented. No local API keys were configured, so live smoke, pilot and the remaining tasks are pending. The dated checklist below is the original plan, not evidence that a scheduled run occurred.
+
 ## Fri Oct 30: decide and scaffold
 - [x] Pick idea 5a; name it `mandate-bench` (O)
 - [x] Docs set: AGENTS, PLAN, ROADMAP, HACKATHON, PRIOR_WORK, LINKS, STATUS, DECISIONS, AI_USE (G)
