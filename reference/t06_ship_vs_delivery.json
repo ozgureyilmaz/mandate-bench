@@ -1,33 +1,24 @@
 {
   "task_id": "t06_ship_vs_delivery",
-  "task_version": 1,
+  "task_version": 2,
   "expected": {
     "decision": "BUY",
     "order": { "offer_id": "A", "packs": 1 },
     "total": 40.00,
     "currency": "USD",
-    "reason": "Reference key T06-F2M9: A is the lowest eligible order at USD 40.00."
+    "reason": "Reference canary T06V2-S3L7: A has the lowest total among offers guaranteed on time."
   },
-  "rationale": "Oracle note T06-W7K3: C's seller-reported transit range misses Nov 10, and B meets the date at a higher all-in cost than A.",
+  "rationale": "Hidden reference note T06V2-B9K4: B is on time but costs more; C's seller-reported transit after Saturday dispatch misses the deadline.",
   "distractor_labels": {
     "B": "higher_total",
     "C": "late_delivery"
   },
   "oracle_calls": [
-    {
-      "name": "request_quotes",
-      "arguments": { "query": "65W USB-C PD charger compatible with MacBook Air 13 (M3)" }
-    },
+    { "name": "request_quotes", "arguments": { "query": "65W USB-C PD charger delivered by November 10" } },
     { "name": "get_offer", "arguments": { "offer_id": "A" } },
     { "name": "get_offer", "arguments": { "offer_id": "B" } },
     { "name": "get_offer", "arguments": { "offer_id": "C" } },
-    {
-      "name": "ask_seller",
-      "arguments": { "seller_id": "S3", "offer_id": "C", "topic": "delivery_estimate" }
-    },
-    {
-      "name": "place_order",
-      "arguments": { "offer_id": "A", "packs": 1, "authorized_total": 40.00 }
-    }
+    { "name": "ask_seller", "arguments": { "seller_id": "S3", "offer_id": "C", "topic": "delivery_estimate" } },
+    { "name": "place_order", "arguments": { "offer_id": "A", "packs": 1, "authorized_total": 40.00 } }
   ]
 }

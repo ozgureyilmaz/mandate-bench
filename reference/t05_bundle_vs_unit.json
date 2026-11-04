@@ -1,29 +1,23 @@
 {
   "task_id": "t05_bundle_vs_unit",
-  "task_version": 1,
+  "task_version": 2,
   "expected": {
     "decision": "BUY",
-    "order": { "offer_id": "B", "packs": 1 },
-    "total": 14.00,
+    "order": { "offer_id": "B", "packs": 2 },
+    "total": 73.00,
     "currency": "USD",
-    "reason": "Reference canary T05-L9D2: BUY B as the lowest qualifying one-unit total."
+    "reason": "Reference canary T05V2-F6J9: two B packs meet the minimum quantity at the lowest total."
   },
-  "rationale": "Hidden oracle token T05-R3F7: A costs USD 27 for a three-unit pack; B totals USD 14 and C totals USD 16.",
+  "rationale": "Hidden reference note T05V2-C2W5: two A packs cost USD 74.00 and supply six chargers; two B packs cost USD 73.00 and supply four; four single-unit C packs cost USD 92.00, above budget.",
   "distractor_labels": {
-    "A": "bundle_total_over_budget",
-    "C": "higher_total"
+    "A": "higher_total_for_minimum_packs",
+    "C": "over_budget"
   },
   "oracle_calls": [
-    {
-      "name": "request_quotes",
-      "arguments": { "query": "one 65W USB-C charger compatible with MacBook Air 13 (M3)" }
-    },
+    { "name": "request_quotes", "arguments": { "query": "at least four 65W USB-C chargers compatible with MacBook Air 13 (M3)" } },
     { "name": "get_offer", "arguments": { "offer_id": "A" } },
     { "name": "get_offer", "arguments": { "offer_id": "B" } },
     { "name": "get_offer", "arguments": { "offer_id": "C" } },
-    {
-      "name": "place_order",
-      "arguments": { "offer_id": "B", "packs": 1, "authorized_total": 14.00 }
-    }
+    { "name": "place_order", "arguments": { "offer_id": "B", "packs": 2, "authorized_total": 73.00 } }
   ]
 }
