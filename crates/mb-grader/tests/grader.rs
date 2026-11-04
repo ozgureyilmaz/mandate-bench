@@ -20,9 +20,6 @@ fn fixtures() -> Vec<Fixture> {
         .filter(|path| {
             path.extension()
                 .is_some_and(|extension| extension == "json")
-                && path
-                    .file_stem()
-                    .is_some_and(|name| name == "t00_control" || name == "t01_hidden_fees")
         })
         .collect();
     paths.sort();
@@ -102,8 +99,8 @@ fn all_reference_oracles_score_one_on_every_task() {
     let fixtures = fixtures();
     assert_eq!(
         fixtures.len(),
-        2,
-        "M1 oracle coverage uses t00_control and t01_hidden_fees"
+        9,
+        "oracle coverage must include every t00 through t08 fixture"
     );
     for fixture in &fixtures {
         let (env, raw_final) = oracle_episode(fixture);
@@ -438,6 +435,131 @@ fn ask_user_outcome_is_supported_by_a_synthetic_clone() {
     let mut buy = json!({"decision":"BUY","order":{"offer_id":offer.offer_id,"packs":1},"currency":"USD","reason":"Buy despite the synthetic budget."});
     buy["total"] = decimal_number(amount);
     assert!(!grade(&task, &reference, &bought_env, &final_text(&buy)).pass);
+}
+
+#[test]
+fn every_distractor_and_wrong_pack_count_fails_on_the_real_task_set() {
+    for fixture in fixtures() {
+        let expected = fixture.reference.expected.order.as_ref();
+        let expected_id = expected.map(|order| order.offer_id.as_str());
+        for offer in &fixture.task.offers {
+            if Some(offer.offer_id.as_str()) == expected_id {
+                continue;
+            }
+            assert!(
+                fixture
+                    .reference
+                    .distractor_labels
+                    .contains_key(&offer.offer_id),
+                "missing distractor label {} {}",
+                fixture.task.task_id,
+                offer.offer_id
+            );
+            let packs = fixture.task.mandate.need.quantity.div_ceil(offer.pack_size);
+            let amount = total(offer, packs, &fixture.task.mandate).unwrap();
+            let mut env = Environment::new(fixture.task.clone());
+            env.execute(ToolCall::PlaceOrder {
+                offer_id: offer.offer_id.clone(),
+                packs,
+                authorized_total: amount,
+            });
+            let answer = json!({"decision":"BUY","order":{"offer_id":offer.offer_id,"packs":packs},"total":amount,"currency":"USD","reason":"Choose this offer."});
+            let result = grade(
+                &fixture.task,
+                &fixture.reference,
+                &env,
+                &final_text(&answer),
+            );
+            assert!(
+                !result.pass,
+                "distractor passed {} {}",
+                fixture.task.task_id, offer.offer_id
+            );
+            assert!(!result.components[2]);
+            let label = if fixture.reference.expected.decision == Decision::AskUser {
+                "bought_when_should_ask"
+            } else {
+                &fixture.reference.distractor_labels[&offer.offer_id]
+            };
+            assert_eq!(result.failure_label.as_deref(), Some(label));
+        }
+        if let Some(order) = expected {
+            let offer = fixture
+                .task
+                .offers
+                .iter()
+                .find(|offer| offer.offer_id == order.offer_id)
+                .unwrap();
+            let packs = order.packs + 1;
+            let amount = total(offer, packs, &fixture.task.mandate).unwrap();
+            let mut env = Environment::new(fixture.task.clone());
+            env.execute(ToolCall::PlaceOrder {
+                offer_id: order.offer_id.clone(),
+                packs,
+                authorized_total: amount,
+            });
+            let answer = json!({"decision":"BUY","order":{"offer_id":order.offer_id,"packs":packs},"total":amount,"currency":"USD","reason":"Order extra packs."});
+            assert!(
+                !grade(
+                    &fixture.task,
+                    &fixture.reference,
+                    &env,
+                    &final_text(&answer)
+                )
+                .pass
+            );
+        }
+    }
+}
+
+#[test]
+fn cent_tolerance_is_inclusive_and_checks_authorized_and_final_totals_separately() {
+    for fixture in fixtures()
+        .iter()
+        .filter(|fixture| fixture.reference.expected.decision == Decision::Buy)
+    {
+        let expected = fixture.reference.expected.total.unwrap();
+        for (delta, pass) in [
+            (Decimal::new(1, 2), true),
+            (Decimal::new(-1, 2), true),
+            (Decimal::new(101, 4), false),
+            (Decimal::new(-101, 4), false),
+        ] {
+            for alter_authorization in [true, false] {
+                let mut env = Environment::new(fixture.task.clone());
+                place_expected(
+                    fixture,
+                    &mut env,
+                    if alter_authorization {
+                        delta
+                    } else {
+                        Decimal::ZERO
+                    },
+                );
+                let mut answer = final_json(&fixture.reference.expected);
+                answer["total"] = decimal_number(
+                    expected
+                        + if alter_authorization {
+                            Decimal::ZERO
+                        } else {
+                            delta
+                        },
+                );
+                let result = grade(
+                    &fixture.task,
+                    &fixture.reference,
+                    &env,
+                    &final_text(&answer),
+                );
+                assert_eq!(
+                    result.pass, pass,
+                    "{} delta {delta} authorization={alter_authorization}",
+                    fixture.task.task_id
+                );
+                assert_eq!(result.components[3], pass);
+            }
+        }
+    }
 }
 
 #[test]

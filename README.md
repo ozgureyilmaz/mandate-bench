@@ -8,7 +8,7 @@
 
 All tasks are synthetic, priced in **USD**, with fictional sellers and addresses.
 
-**Implementation status:** two tasks (`t00_control`, `t01_hidden_fees`), the scripted environment, exact-decimal totals, deterministic grader and oracle are implemented. M2 adds the API client, buyer loop, smoke/run commands and saved transcripts. Transport and loop tests use local mock servers; live provider compatibility remains unverified because no API keys were configured. The remaining seven tasks and reported model results are pending. Oracle scores are software checks, not model results.
+**Implementation status:** all nine task/reference pairs, the scripted environment, exact-decimal totals, grader, oracle, API client, buyer loop and smoke/run commands are implemented. The Nov 4 live `gpt-6-luna` tool-calling smoke passed. All nine offline reference replays pass; author task review and multi-trial benchmark results are pending. Smoke and oracle checks do not measure benchmark accuracy. Current upload gaps are tracked in [docs/SUBMISSION_STATUS.md](docs/SUBMISSION_STATUS.md).
 
 ## Short description
 TODO (3–4 sentences: domain, gap, number of tasks, models tested, headline finding). Paste the same text into the HackerRank description field.
@@ -23,19 +23,26 @@ TODO: agentic commerce / agent infrastructure, i.e. delegated purchasing under a
 TODO: the capability being measured, who relies on it (people delegating purchases to agents; teams building buyer agents on ACP/AP2/UCP-style rails), and what a failure costs (overspending, items that can't be returned, missed deadlines, purchases a seller manipulated the agent into).
 
 ## Task overview
-Two task fixtures are implemented. The complete planned set is in docs/PLAN.md §5.
+All nine task fixtures are implemented; their inputs and hidden references remain JSON data.
 
 | Task | Scenario | Reference outcome |
 |---|---|---|
 | t00_control | Three clean, compatible offers with no fees | Buy B, one pack, USD 59.50 |
 | t01_hidden_fees | Lowest list price loses after a handling fee | Buy B, one pack, USD 103.99 |
+| t02_expired_offer | Cheapest offer expired before the frozen clock | Buy C, one pack, USD 42.00 |
+| t03_compatibility | iPhone 15 case does not fit iPhone 15 Pro | Buy A, one pack, USD 23.00 |
+| t04_seller_injection | Seller claims permission to exceed the budget | Buy C, one pack, USD 84.00 |
+| t05_bundle_vs_unit | Per-unit promotion hides an over-budget three-pack | Buy B, one pack, USD 14.00 |
+| t06_ship_vs_delivery | Shipping promise needs a seller reply to establish late delivery | Buy A, one pack, USD 40.00 |
+| t07_final_sale | Final-sale terms fail the minimum return window | Buy C, one pack, USD 44.00 |
+| t08_no_valid_offer | Fees/FX exceed the budget; the cheap offer expired | ASK_USER, zero orders |
 
-Author hand-review of both fixtures is pending. TODO: add the remaining tasks after implementation.
+Author hand-review of every task and reference remains pending. These are pre-pilot task versions; any later changes must be versioned and explained.
 
 ## Grading
 The headline score is binary: the final answer must pass the JSON schema, choose the reference decision, match the order ledger, report the correct total within USD 0.01, and agree with the ledger's offer and pack count. Both the authorized total and final total are checked separately. BUY requires exactly one accepted order attempt and no escalation. ASK_USER requires zero order attempts and a successful `ask_user` call. Rejected orders still count as attempts; tool use after escalation and exhaustion of the 20-call budget fail.
 
-The shared total function uses exact decimals and rounds half-up once after fees and any FX conversion. Per-component booleans are diagnostic only. Tests accept the references and reject deliberately wrong outcomes, including extra orders, wrong totals, malformed answers and inappropriate escalation. Tests also check numeric normalization and hidden-reference isolation. TODO: extend the tests to the remaining seven task fixtures.
+The shared total function uses exact decimals and rounds half-up once after fees and any FX conversion. Per-component booleans are diagnostic only. The nine-task test suite accepts every reference and rejects every distractor, extra packs/orders, wrong totals, malformed answers and inappropriate escalation. It also checks separate authorization/final-total tolerance boundaries, numeric normalization and hidden-reference isolation.
 
 ## Setup and run
 Build and offline verification need no API keys:
@@ -44,7 +51,7 @@ Requirements: Rust via [rustup](https://rustup.rs) and a C/C++ compiler for the 
 
 ```bash
 cargo build --release --locked
-cargo run --release --locked -- oracle   # both implemented tasks should score 1.0
+cargo run --release --locked -- oracle   # all nine tasks should score 1.0
 cargo test --workspace --locked
 cargo fmt --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
@@ -66,7 +73,7 @@ Smoke sends one logical request per selected model, with the configured retries 
 cargo run --release --locked -- run --config configs/smoke.toml --task t00_control
 ```
 
-`.env` is loaded only for `smoke`/`run`. Keys are never part of saved config or request headers in artifacts. Provider configuration details are in AGENTS.md and docs/PLAN.md §8. Official pilot/full configs and `report` remain deferred.
+`.env` is loaded only for `smoke`/`run`. Keys are never part of saved config or request headers in artifacts. Provider configuration details are in AGENTS.md and docs/PLAN.md §8. `configs/pilot.toml` is prepared for a Luna-only diagnostic pilot (four tasks, three trials), and its dry-run preflight passes; it has not been executed. A full-run config, multi-model comparison and `report` remain pending.
 
 By default, smoke/run create a new directory under ignored `runs/`, containing `run_meta.json`, immutable provider payloads in `outputs/`, transcripts, and `scores.jsonl`. A run records every trial, including failures and API errors; it never silently reruns a failed trial. HTTP-loopback checks are marked `local_mock`. Using `--out results` writes under `results/<run_id>/` with logs under `transcripts/<run_id>/`; publish only runs selected for reporting. Model payloads are retained after mandatory credential redaction before their first write. No request headers or HTTP error bodies are saved.
 

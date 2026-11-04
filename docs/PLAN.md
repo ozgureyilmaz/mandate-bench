@@ -88,7 +88,7 @@ M1 exposes `oracle` only. It loads hidden references in the CLI/grader, passes a
 
 M2 supersedes that implementation boundary: `mb-llm` now provides the two wire codecs and a shared bounded HTTP client; `mb-agent` drives the model through the five tools; the CLI exposes `smoke` and `run`. The CLI/grader load references for preflight and scoring, while the live loop receives only visible task data. Invalid tool arguments terminate without repair; an ordinary malformed final answer reaches the schema grader. After a successful standalone `ask_user`, one final request is made with tools retained and tool choice disabled, if the turn budget permits; that request counts against `max_turns`. An already-invalid batch stops before another request. Model truncation/length/content-filter outcomes remain scored failures, not excluded network errors.
 
-`configs/smoke.toml` selects only the approved cheap model `gpt-6-luna`; it can also drive an explicit bounded check on t00/t01. Official pilot/full configs are deferred until the remaining tasks and provider smoke checks exist. Dry-run preflight checks config/endpoints and key names but sends no requests; missing keys exit before any run directory or request is created. M2 was resumed Nov 2; live validation is pending because no provider key or `.env` was present.
+`configs/smoke.toml` selects only the approved cheap model `gpt-6-luna`; it can also drive an explicit bounded check on t00/t01. Dry-run preflight checks config/endpoints and key names but sends no requests; missing keys exit before any run directory or request is created. M2 was resumed Nov 2 and its live Luna smoke passed Nov 4. This establishes key/model/function-call compatibility; benchmark performance is still unmeasured.
 
 ## 5. Tasks (8 trap + 1 control)
 All are synthetic and global: prices in USD, fictional sellers and addresses, `now` with an explicit UTC offset. Each task has 3–5 offers. The numbers below are drafts; final values live in `tasks/*/task.json` and `reference/*.json`, and the oracle checks them.
@@ -128,7 +128,7 @@ Inputs: the trial's ledger (all tool calls), the final answer, and `reference/<t
   - number normalisation: `103.99`, `"103.99"`, `"$103.99"` and `"USD 103.99"` normalise to 103.99 and pass; en-US grouping `"1,048.90"` normalises to 1048.90; comma-decimal or ambiguous strings (for example `"103,99"` or `"1.048"`) fail C1 (the system prompt asks for a plain JSON number)
   - a leak check: hidden reference fields, full expected explanations, rationales, distractor labels and oracle-call canaries never enter prompts or tool output. Offer IDs, prices and other task facts remain visible as needed to solve a task. This hidden-reference isolation interpretation was confirmed by ozgur in the Oct 30 implementation session.
 
-M1 implements only t00/t01; the test suite replays those two real references. Escalation grading is exercised using synthetic test-only clones with an insufficient budget, without adding the deferred t08 fixture. Duplicate final JSON keys, ambiguous numeric strings and reserved serializer-number objects fail schema parsing. Numeric JSON totals keep exact precision for tolerance checks; accepted formatted strings use an unambiguous USD/en-US form. A rejected `ask_user` invocation does not count as a successful escalation. Human task sign-off remains separate from automated oracle checks.
+M3 now includes all t00–t08 fixtures and replays all nine references. Escalation grading covers the real no-valid-offer task plus synthetic test-only clones. Tests reject every distractor and wrong pack count and exercise inclusive cent-tolerance boundaries for authorization and final totals independently. Duplicate final JSON keys, ambiguous numeric strings and reserved serializer-number objects fail schema parsing. Numeric JSON totals keep exact precision for tolerance checks; accepted formatted strings use an unambiguous USD/en-US form. A rejected `ask_user` invocation does not count as a successful escalation. Human task sign-off remains separate from automated oracle checks.
 
 ## 7. Trials and metrics
 - **k = 5 trials** per (model, task) for the full run (3 in the pilot). Each trial is independent and stateless.
@@ -142,7 +142,7 @@ M1 implements only t00/t01; the test suite replays those two real references. Es
 - API errors (429, 5xx, timeouts) are retried per request with backoff, honouring `Retry-After` and rate-limit reset headers, up to `max_retries` (default 6; AGENTS.md). If a trial still errors it's recorded as `api_error`, shown in its own column and excluded from the denominator **with the count reported**.
 
 ## 8. Models and cost (agent-facing; the README lists only the models tested)
-**Current live allowance (Nov 4):** ozgur reported approximately $5 remaining credit and authorized only `gpt-6-luna` for current live work. Start with one M2 smoke request using `configs/smoke.toml`: one model, one attempt (no retries), concurrency 1, output capped at 1,024 tokens. The larger model/budget tables below describe the historical plan and do not authorize spending beyond this current allowance. Live results remain pending until the local key is supplied.
+**Current live allowance (Nov 4):** ozgur reported approximately $5 credit and authorized only `gpt-6-luna` for current live work. The one-request M2 smoke succeeded with zero retries, 142 input/19 output tokens, and estimated USD 0.0000237 cost. The larger model/budget tables below describe the historical plan and do not authorize spending beyond this current allowance. Benchmark results remain pending; the smoke is an operational diagnostic saved under ignored `runs/`, not a headline result.
 
 Providers: **OpenAI** (paid, ozgur's account has tight rate limits), **DeepSeek** (paid), **NVIDIA NIM API catalog** (free trial endpoints, OpenAI-compatible). No OpenRouter. Provider limits and client rules: AGENTS.md → Model providers. **ozgur confirms the final list and budget.** Re-check IDs and prices on the run day.
 
@@ -183,7 +183,9 @@ M2 implementation details (Nov 2):
 
 Verified implementation references: [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling), [OpenAI reasoning replay](https://developers.openai.com/api/docs/guides/reasoning), [DeepSeek thinking mode](https://api-docs.deepseek.com/guides/thinking_mode/), [DeepSeek tool calls](https://api-docs.deepseek.com/guides/tool_calls/). These documentation checks do not establish account access or per-model live compatibility.
 
-## 9. Pilot gate (Oct 31)
+## 9. Pilot gate (pending; originally planned Oct 31)
+`configs/pilot.toml` is now prepared and preflight-validated for t00/t01/t04/t08, three trials each on Luna only, with concurrency 1, no retries and 2,048 maximum output tokens. It is not executed as part of the one-request M2 smoke. The historical three-model comparison below still needs a model/budget decision beyond the current Luna-only restriction. Any pilot/full evidence must retain failed/errored trials and be reviewed before task hardening or publication.
+
 Pilot: t00, t01, t04 and t08, 3 trials each on 3 models (gpt-6.1-sol, deepseek-v4-pro, kimi-k2.6; one per provider, which also smoke-tests each provider path).
 - The control task fails for the best model → fix the prompt, schema or task bug before going further.
 - The best model passes **≥ 85% of trap-task trials** → **harden** before the full run. Options, in order:

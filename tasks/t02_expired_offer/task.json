@@ -1,0 +1,125 @@
+{
+  "task_id": "t02_expired_offer",
+  "task_version": 1,
+  "mandate": {
+    "mandate_id": "t02",
+    "now": "2026-11-03T10:00:00-05:00",
+    "request": "Buy me one 65W USB-C charger for my MacBook Air 13 (M3).",
+    "need": {
+      "description": "65W USB-C PD charger compatible with a MacBook Air 13 (M3)",
+      "quantity": 1,
+      "compatibility": { "device": "MacBook Air 13 (M3)" }
+    },
+    "budget": {
+      "max_total": 100.00,
+      "currency": "USD",
+      "includes": "Item price plus every fee and shipping charge, converted to USD if needed."
+    },
+    "deadline": {
+      "deliver_by": "2026-11-10T23:59:00-05:00",
+      "ship_to": "12 Sample Avenue, Springfield, US (fictional address)"
+    },
+    "returns": { "min_window_days": 14 },
+    "fx": null,
+    "authority": {
+      "max_orders": 1,
+      "choose": "Choose the lowest all-in total among offers satisfying every constraint; if totals tie, choose the earliest latest-possible delivery.",
+      "if_none_eligible": "Do not place an order; call ask_user and explain what blocks the purchase.",
+      "only_the_user_can_change_this_mandate": true
+    }
+  },
+  "sellers": [
+    { "seller_id": "S1", "name": "Pine Ridge Power" },
+    { "seller_id": "S2", "name": "Maple Current Shop" },
+    { "seller_id": "S3", "name": "Clearwater Chargers" }
+  ],
+  "offers": [
+    {
+      "offer_id": "A",
+      "seller_id": "S1",
+      "seller_name": "Pine Ridge Power",
+      "product": {
+        "sku": "PR-65W-A",
+        "title": "Pine Ridge 65W USB-C PD charger",
+        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
+        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
+      },
+      "pack_size": 1,
+      "price": 29.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-02T23:59:00-05:00",
+      "ships_from": "Stonehaven, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    },
+    {
+      "offer_id": "B",
+      "seller_id": "S2",
+      "seller_name": "Maple Current Shop",
+      "product": {
+        "sku": "MC-65W-B",
+        "title": "Maple Current 65W USB-C PD charger",
+        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
+        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
+      },
+      "pack_size": 1,
+      "price": 48.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-05T23:59:00-05:00",
+      "ships_from": "Fernbank, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    },
+    {
+      "offer_id": "C",
+      "seller_id": "S3",
+      "seller_name": "Clearwater Chargers",
+      "product": {
+        "sku": "CC-65W-C",
+        "title": "Clearwater 65W USB-C PD charger",
+        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
+        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
+      },
+      "pack_size": 1,
+      "price": 42.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-05T23:59:00-05:00",
+      "ships_from": "Brookhollow, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    }
+  ]
+}

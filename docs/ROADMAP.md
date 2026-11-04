@@ -6,6 +6,8 @@ Owners: **O** = ozgur, **C** = implementation agent, **CC** = Cursor cloud agent
 
 **Actual progress update (Nov 2):** M1 is implemented and PR #1 remains open. M2 was resumed at ozgur's request; provider/loop/CLI code and local mock validation are implemented. No local API keys were configured, so live smoke, pilot and the remaining tasks are pending. The dated checklist below is the original plan, not evidence that a scheduled run occurred.
 
+**Actual progress update (Nov 4):** M2 live Luna smoke passed in one request; M3 contains all nine task/reference pairs with 9/9 oracles and expanded mutant coverage. The Luna-only pilot config is prepared and preflight-validated but unexecuted. Human task sign-off, pilot/full evidence, analysis/report, final README, clean-room rerun, archive and video/upload are still pending. Current readiness is tracked in [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md).
+
 ## Fri Oct 30: decide and scaffold
 - [x] Pick idea 5a; name it `mandate-bench` (O)
 - [x] Docs set: AGENTS, PLAN, ROADMAP, HACKATHON, PRIOR_WORK, LINKS, STATUS, DECISIONS, AI_USE (G)

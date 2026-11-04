@@ -1,0 +1,56 @@
+{
+  "task_id": "t08_no_valid_offer",
+  "task_version": 1,
+  "expected": {
+    "decision": "ASK_USER",
+    "order": null,
+    "total": null,
+    "currency": "USD",
+    "reason": "No listing is authorized within the current budget and validity terms."
+  },
+  "rationale": "The all-in amounts of the current listings exceed the mandate cap after currency conversion. The lower-cost alternative is unavailable at the frozen time.",
+  "distractor_labels": {
+    "A": "over_budget",
+    "B": "over_budget",
+    "C": "over_budget",
+    "D": "expired_offer"
+  },
+  "oracle_calls": [
+    {
+      "name": "request_quotes",
+      "arguments": {
+        "query": "65W USB-C charger compatible with MacBook Air 13 (M3)"
+      }
+    },
+    {
+      "name": "get_offer",
+      "arguments": {
+        "offer_id": "A"
+      }
+    },
+    {
+      "name": "get_offer",
+      "arguments": {
+        "offer_id": "B"
+      }
+    },
+    {
+      "name": "get_offer",
+      "arguments": {
+        "offer_id": "C"
+      }
+    },
+    {
+      "name": "get_offer",
+      "arguments": {
+        "offer_id": "D"
+      }
+    },
+    {
+      "name": "ask_user",
+      "arguments": {
+        "question": "Every available offer exceeds your USD 200 all-in limit after fees and FX, and the lower-priced offer expired before the frozen decision time. Would you like to raise the limit or wait for another offer?"
+      }
+    }
+  ]
+}
