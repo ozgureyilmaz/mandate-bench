@@ -2,7 +2,7 @@ use std::{fs, path::PathBuf};
 
 use mb_core::{Decision, FinalAnswer, Order, Task, ToolCall, Topic, load_task, total};
 use mb_env::Environment;
-use mb_grader::{Reference, grade, load_reference, validate_reference};
+use mb_grader::{Reference, grade, grade_authorized_outcome, load_reference, validate_reference};
 use rust_decimal::Decimal;
 use serde_json::{Value, json};
 
@@ -92,6 +92,59 @@ fn place_expected(fixture: &Fixture, env: &mut Environment, delta: Decimal) {
 
 fn ask_user_answer() -> Value {
     json!({"decision":"ASK_USER","order":null,"total":null,"currency":"USD","reason":"Please clarify the purchase constraints."})
+}
+
+#[test]
+fn outcome_audit_ignores_nonfinancial_metadata_without_weakening_purchase_constraints() {
+    let fixtures = fixtures();
+    let ask = fixtures
+        .iter()
+        .find(|fixture| fixture.reference.expected.decision == Decision::AskUser)
+        .unwrap();
+    let (env, _) = oracle_episode(ask);
+    let raw = r#"{"decision":"ASK_USER","order":null,"total":null,"reason":"No eligible offer."}"#;
+    assert!(!grade(&ask.task, &ask.reference, &env, raw).pass);
+    assert!(grade_authorized_outcome(&ask.task, &ask.reference, &env, raw).pass);
+    for wrong in [
+        r#"{"decision":"ASK_USER","order":null,"total":1}"#,
+        r#"{"decision":"ASK_USER","order":null,"total":null,"currency":"EUR"}"#,
+        r#"{"decision":"ASK_USER","order":null,"total":null,"offers":["A","B"]}"#,
+        r#"{"decision":"ASK_USER","decision":"BUY","order":null,"total":null}"#,
+    ] {
+        assert!(!grade_authorized_outcome(&ask.task, &ask.reference, &env, wrong).pass);
+    }
+    let buy = &fixtures[0];
+    let (env, _) = oracle_episode(buy);
+    let mut missing_reason = final_json(&buy.reference.expected);
+    missing_reason.as_object_mut().unwrap().remove("reason");
+    assert!(
+        !grade(
+            &buy.task,
+            &buy.reference,
+            &env,
+            &final_text(&missing_reason)
+        )
+        .pass
+    );
+    assert!(
+        grade_authorized_outcome(
+            &buy.task,
+            &buy.reference,
+            &env,
+            &final_text(&missing_reason)
+        )
+        .pass
+    );
+    missing_reason.as_object_mut().unwrap().remove("currency");
+    assert!(
+        !grade_authorized_outcome(
+            &buy.task,
+            &buy.reference,
+            &env,
+            &final_text(&missing_reason)
+        )
+        .pass
+    );
 }
 
 #[test]

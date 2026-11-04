@@ -79,6 +79,8 @@ cargo run --release --locked -- run --config configs/smoke.toml --task t00_contr
 
 `report results/<run_id>` validates a selected completed run and writes derived `summary.csv` and `report.json`. For explicit diagnostic previews only, use `report runs/<run_id> --allow-scratch`; both outputs are marked diagnostic. API errors remain a separate count; undefined rates, insufficient-trial pass^k values and unknown costs stay null rather than being fabricated. Reporting never modifies scores, provider outputs, transcripts or run metadata. Smoke, local-mock and incomplete runs cannot be reported as benchmark results.
 
+`audit-outcomes <run_dir> [--allow-scratch]` compares the original strict score with a proposed authorized-outcome policy offline. The audit ignores explanatory metadata and permits omitted currency for a USD ASK_USER with no order or amount; financial/ledger/decision constraints remain enforced. It requires the recorded clean Git snapshot and matching task/reference data, reproduces the original strict grade, and writes an immutable `outcome-audit-v2.json` sidecar. This does not replace strict grading or add new model trials. Final metric alignment remains subject to review.
+
 By default, smoke/run create a new directory under ignored `runs/`, containing `run_meta.json`, immutable provider payloads in `outputs/`, transcripts, and `scores.jsonl`. A run records every trial, including failures and API errors; it never silently reruns a failed trial. HTTP-loopback checks are marked `local_mock`. Using `--out results` writes under `results/<run_id>/` with logs under `transcripts/<run_id>/`; publish only runs selected for reporting. Model payloads are retained after mandatory credential redaction before their first write. No request headers or HTTP error bodies are saved.
 
 Active trials are bounded by the provider's configured concurrency. A provider API error halts new trials for that provider; already-active work is retained, unstarted trials are counted, and the run is marked incomplete when selected coverage remains. Such a partial run must be resolved explicitly rather than silently reported as a smaller successful evaluation.
@@ -88,12 +90,12 @@ The offline commands above were verified from a fresh local clone of the M1 sour
 Offline replay makes no evaluation API calls and has zero evaluation API cost. First-build runtime depends on the machine and dependency cache. TODO: record model-run runtime and actual cost when those runs exist.
 
 ## Models tested and results
-No reportable benchmark accuracy exists yet. A Luna-only diagnostic pilot attempted 12 trials; all ended in HTTP 429 API errors after partial tool use, leaving zero graded trials. The original artifacts and error counts are retained rather than converted into model failures or a zero-percent score. The successful M2 smoke establishes only live tool-calling compatibility.
+No finalized benchmark run has been selected for submission yet. The original Luna pilot's 12 API errors are retained. A fresh slower diagnostic pilot completed all 12 trials without API errors; the three strict failures all omit final `currency` after otherwise correct no-order escalation. These are format failures, not evidence of an unauthorized purchase. Original strict scores and any proposed outcome audit must be shown distinctly; see [docs/PILOT_REVIEW.md](docs/PILOT_REVIEW.md).
 
 TODO after a valid pilot/full run: exact API-returned model IDs, run dates, requested/effective settings where available, trials per task, pass rate/pass^k, spread, runtime, cost and transcript links. Headline numbers must come from selected runs under `results/`.
 
 ## Failure analysis
-The diagnostic pilot is currently an infrastructure incident, not evidence of a model's purchasing mistake. HTTP 429 alone does not identify whether the account hit a request/token rate, credit or spend constraint; the original error code/type was not retained. Resolve that condition before making model-performance claims.
+The initial pilot encountered HTTP 429; its original error code/type was not retained, so the cause is unknown. A subsequent slower pilot completed without API errors. The only observed strict failures in that completed pilot were missing currency metadata on ASK_USER answers: each model correctly called `ask_user`, placed zero orders and explained the disqualifying totals/expiry. Do not present that as an authorization failure. The final grading policy, task difficulty and an actual domain-limitation claim still need review.
 
 TODO after completed trials: per-task failure/near-miss analysis, representative transcript quotes or an explicit statement that no failures occurred, human confirmation of labels and a supported takeaway.
 

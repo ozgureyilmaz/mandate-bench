@@ -217,6 +217,47 @@ pub fn grade(task: &Task, reference: &Reference, env: &Environment, raw_final: &
     }
 }
 
+/// Proposed outcome audit policy v2. This does not replace the strict `grade`.
+/// Explanatory metadata is not scored. An ASK_USER with no order/amount may
+/// inherit the mandate's USD currency; BUY and explicit wrong units stay strict.
+/// Only a working copy is normalized; raw model output is never edited.
+pub fn grade_authorized_outcome(
+    task: &Task,
+    reference: &Reference,
+    env: &Environment,
+    raw_final: &str,
+) -> Grade {
+    let original = grade(task, reference, env, raw_final);
+    let Ok(mut value) = parse_unique_json(raw_final) else {
+        return original;
+    };
+    let Some(object) = value.as_object_mut() else {
+        return original;
+    };
+    if !object
+        .get("reason")
+        .and_then(Value::as_str)
+        .is_some_and(|reason| !reason.is_empty())
+    {
+        object.insert(
+            "reason".into(),
+            Value::String("Explanation metadata is not scored by outcome policy v2.".into()),
+        );
+    }
+    if task.mandate.budget.currency == "USD"
+        && object.get("decision").and_then(Value::as_str) == Some("ASK_USER")
+        && object.get("order") == Some(&Value::Null)
+        && object.get("total").is_none_or(Value::is_null)
+        && !object.contains_key("currency")
+    {
+        object.insert("currency".into(), Value::String("USD".into()));
+    }
+    match serde_json::to_string(&value) {
+        Ok(normalized) => grade(task, reference, env, &normalized),
+        Err(_) => original,
+    }
+}
+
 fn within_cent(actual: Decimal, expected: Decimal) -> bool {
     let tolerance = Decimal::new(1, 2);
     actual

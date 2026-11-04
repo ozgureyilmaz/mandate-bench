@@ -9,6 +9,7 @@ use mb_agent::replay;
 use mb_core::load_task;
 use mb_grader::{grade, load_reference, validate_reference};
 
+mod audit;
 mod report;
 mod runner;
 
@@ -67,6 +68,12 @@ enum Command {
         #[arg(long)]
         allow_scratch: bool,
     },
+    /// Compare a proposed outcome policy against unchanged strict scores, offline.
+    AuditOutcomes {
+        run_dir: PathBuf,
+        #[arg(long)]
+        allow_scratch: bool,
+    },
 }
 
 #[tokio::main]
@@ -110,6 +117,10 @@ async fn main() -> Result<()> {
             run_dir,
             allow_scratch,
         } => report::generate(&cli.root, &run_dir, allow_scratch),
+        Command::AuditOutcomes {
+            run_dir,
+            allow_scratch,
+        } => audit::generate(&cli.root, &run_dir, allow_scratch),
     }
 }
 

@@ -133,6 +133,14 @@ pub fn generate(root: &Path, run_arg: &Path, allow_scratch: bool) -> Result<()> 
     Ok(())
 }
 
+pub(crate) fn validate_audit_source(
+    root: &Path,
+    run_arg: &Path,
+    allow_scratch: bool,
+) -> Result<PathBuf> {
+    Ok(load_run(root, run_arg, allow_scratch)?.run_dir)
+}
+
 fn load_run(root_arg: &Path, run_arg: &Path, allow_scratch: bool) -> Result<RunInput> {
     let root = fs::canonicalize(root_arg).context("repository root does not exist")?;
     ensure!(root.is_dir(), "repository root must be a directory");

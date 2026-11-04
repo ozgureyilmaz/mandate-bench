@@ -188,6 +188,8 @@ The Luna-only t00/t01/t04/t08 × 3 diagnostic pilot was attempted after M2 smoke
 
 After owner balance confirmation (USD 4.97), one fresh t00 control at 6 RPM/1,024 output tokens passed all grading components with six requests, no API errors and estimated USD 0.00044962. This does not establish an account rate limit or validate the larger pilot. Run dispatch now limits active episodes by provider concurrency and halts new provider trials on an API error, retaining incomplete coverage explicitly. Offline reporting supports final selected results and separately labeled scratch previews; it does not run models, promote scratch data or turn API errors into model failures.
 
+The fresh serial pilot then completed 12/12 trials without API errors (estimated USD 0.00490785). Strict scores are 9/12 overall and 6/9 traps; every t08 failure is an omitted final currency despite a correct zero-order escalation. Read [PILOT_REVIEW.md](PILOT_REVIEW.md) before interpreting a model limitation. The strict ≥85% gate is not triggered, but outcome-only inspection is a ceiling warning. Proposed `audit-outcomes` compares a clearly versioned outcome policy offline; default strict scoring and original artifacts remain unchanged pending final metric review. [HARDENING_PROPOSAL.md](HARDENING_PROPOSAL.md) is an unadopted candidate, not a change to scored task data.
+
 Pilot: t00, t01, t04 and t08, 3 trials each on 3 models (gpt-6.1-sol, deepseek-v4-pro, kimi-k2.6; one per provider, which also smoke-tests each provider path).
 - The control task fails for the best model → fix the prompt, schema or task bug before going further.
 - The best model passes **≥ 85% of trap-task trials** → **harden** before the full run. Options, in order:
