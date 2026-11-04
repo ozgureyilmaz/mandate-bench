@@ -50,7 +50,7 @@ docs/                    # HACKATHON, PLAN, ROADMAP, PRIOR_WORK, LINKS, STATUS, 
 Crate names are a suggestion; keep the split between core types, env, LLM client, agent loop, grader and CLI. The oracle is **data**: `reference/<task>.json` → `oracle_calls` is the scripted list of correct tool calls, replayed by `mandate-bench oracle`.
 
 ## Commands (planned; keep in sync with the code)
-Implemented through M3: all nine task/reference pairs plus `oracle`, `smoke`, and `run`. The bounded M2 config is `configs/smoke.toml`; `configs/pilot.toml` is a prepared Luna-only four-task/three-trial diagnostic pilot under the current model restriction. `smoke --dry-run` and `run --dry-run` validate config/key presence without requests. Full-run config and `report` remain planned. The Nov 4 Luna smoke is live transport evidence, not benchmark accuracy.
+Implemented: all nine task/reference pairs plus `oracle`, `smoke`, `run`, and offline `report`. `configs/control.toml` is one Luna control trial; `configs/pilot.toml` is a Luna-only four-task/three-trial diagnostic pilot under the current restriction. A first pilot retained 12 API errors; the slower single control passed. Run dispatch is bounded by provider concurrency and halts new provider trials on an API error. `report results/<run_id>` generates metrics; `--allow-scratch` labels diagnostic previews and never promotes data. Full-run config remains planned.
 
 ```bash
 cp .env.example .env                                   # fill keys locally; never commit

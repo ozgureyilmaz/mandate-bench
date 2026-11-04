@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::{BTreeMap, BTreeSet, VecDeque},
     fs::{self, OpenOptions},
     io::Write,
     path::{Path, PathBuf},
@@ -9,9 +9,9 @@ use std::{
 
 use anyhow::{Context, Result, bail, ensure};
 use chrono::{DateTime, FixedOffset, Utc};
-use mb_agent::{EpisodeOutcome, run_episode};
+use mb_agent::{EpisodeOutcome, LiveEpisode, run_episode};
 use mb_core::{MAX_TOOL_CALLS, Task, load_task};
-use mb_grader::{grade, load_reference, validate_reference};
+use mb_grader::{Reference, grade, load_reference, validate_reference};
 use mb_llm::{
     Client, CompletionBackend, ModelConfig, RequestRecord, RunConfig, TokenUsage, ToolChoice,
     ToolDefinition, estimate_cost, load_config,
@@ -406,6 +406,26 @@ pub async fn smoke(
     Ok(())
 }
 
+struct TrialJob {
+    model_index: usize,
+    model: ModelConfig,
+    task: Task,
+    reference: Reference,
+    trial: u32,
+}
+
+fn start_trial(
+    jobs: &mut JoinSet<(TrialJob, LiveEpisode)>,
+    job: TrialJob,
+    client: Arc<Client>,
+    max_turns: usize,
+) {
+    jobs.spawn(async move {
+        let episode = run_episode(client.as_ref(), &job.model, job.task.clone(), max_turns).await;
+        (job, episode)
+    });
+}
+
 pub async fn run(
     root: &Path,
     path: &Path,
@@ -448,22 +468,33 @@ pub async fn run(
         .collect::<Vec<_>>();
     let mut artifacts = Artifacts::create(root, out, "run", &config, &models, &visible_tasks)?;
     let mut jobs = JoinSet::new();
+    let mut pending: BTreeMap<String, VecDeque<TrialJob>> = BTreeMap::new();
     for (model_index, model) in models.iter().enumerate() {
         for (task, reference) in &tasks {
             for trial in 1..=config.trials {
-                let (model, task, reference) = (model.clone(), task.clone(), reference.clone());
-                let client = clients[&model.provider].clone();
-                let max_turns = config.max_turns;
-                jobs.spawn(async move {
-                    let episode =
-                        run_episode(client.as_ref(), &model, task.clone(), max_turns).await;
-                    (model_index, model, task, reference, trial, episode)
-                });
+                pending
+                    .entry(model.provider.clone())
+                    .or_default()
+                    .push_back(TrialJob {
+                        model_index,
+                        model: model.clone(),
+                        task: task.clone(),
+                        reference: reference.clone(),
+                        trial,
+                    });
             }
         }
     }
+    for (provider, queue) in &mut pending {
+        for _ in 0..config.providers[provider].max_concurrency {
+            if let Some(job) = queue.pop_front() {
+                start_trial(&mut jobs, job, clients[provider].clone(), config.max_turns);
+            }
+        }
+    }
+    let mut halted_providers = BTreeSet::new();
     while let Some(result) = jobs.join_next().await {
-        let (model_index, model, task, reference, trial, episode) = match result {
+        let (job, episode) = match result {
             Ok(result) => result,
             Err(_) => {
                 jobs.abort_all();
@@ -473,6 +504,13 @@ pub async fn run(
                 );
             }
         };
+        let TrialJob {
+            model_index,
+            model,
+            task,
+            reference,
+            trial,
+        } = job;
         let id = format!("model-{model_index}-{}-trial-{trial}", task.task_id);
         let mut records = episode
             .transcript
@@ -552,12 +590,37 @@ pub async fn run(
             cost,
         )?;
         println!("{} {} trial {trial}: {status}", model.id, task.task_id);
+        if status == "api_error" {
+            halted_providers.insert(model.provider.clone());
+        }
+        if !halted_providers.contains(&model.provider)
+            && let Some(job) = pending
+                .get_mut(&model.provider)
+                .and_then(VecDeque::pop_front)
+        {
+            start_trial(
+                &mut jobs,
+                job,
+                clients[&model.provider].clone(),
+                config.max_turns,
+            );
+        }
     }
     let errors = artifacts
         .scores
         .iter()
         .filter(|row| row["status"] == "api_error")
         .count();
+    let unstarted = pending.values().map(VecDeque::len).sum::<usize>();
+    artifacts.metadata["unstarted_trials"] = json!(unstarted);
+    artifacts.metadata["halted_providers"] = json!(halted_providers);
+    if unstarted > 0 {
+        artifacts.flush("incomplete")?;
+        println!("partial run artifacts: {}", artifacts.run_dir.display());
+        bail!(
+            "provider API error stopped dispatch; {unstarted} trials were not started, prior outputs retained"
+        );
+    }
     artifacts.flush(if errors == 0 {
         "completed"
     } else {

@@ -296,6 +296,25 @@ fn api_errors_are_saved_once_without_grades_or_secret_error_bodies() {
 }
 
 #[test]
+fn provider_api_error_stops_queued_trials_without_fabricating_attempts() {
+    let (url, handle, requests) =
+        server(vec![(429, json!({"error":{"code":"rate_limit_exceeded"}}))]);
+    let root = TempRoot::new(&url);
+    let config = fs::read_to_string(root.0.join("config.toml"))
+        .unwrap()
+        .replacen("trials = 1", "trials = 2", 1);
+    fs::write(root.0.join("config.toml"), config).unwrap();
+    assert!(!root.command("run", true).status.success());
+    handle.join().unwrap();
+    assert_eq!(requests.lock().unwrap().len(), 1);
+    let (meta, scores, _) = root.artifacts();
+    assert_eq!(scores.len(), 1);
+    assert_eq!(meta["state"], "incomplete");
+    assert_eq!(meta["unstarted_trials"], 1);
+    assert_eq!(meta["halted_providers"], json!(["openai"]));
+}
+
+#[test]
 fn error_after_a_successful_request_retains_known_cost_and_safe_error_codes() {
     let (url, handle, _) = server(vec![
         (200, order_reply()),

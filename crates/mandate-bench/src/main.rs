@@ -9,6 +9,7 @@ use mb_agent::replay;
 use mb_core::load_task;
 use mb_grader::{grade, load_reference, validate_reference};
 
+mod report;
 mod runner;
 
 #[derive(Parser)]
@@ -58,6 +59,14 @@ enum Command {
         #[arg(long)]
         dry_run: bool,
     },
+    /// Summarize complete provider-backed benchmark artifacts without API calls.
+    Report {
+        /// Run directory under root/results, or root/runs with --allow-scratch.
+        run_dir: PathBuf,
+        /// Allow a completed provider_api diagnostic run from runs/; output is marked scratch.
+        #[arg(long)]
+        allow_scratch: bool,
+    },
 }
 
 #[tokio::main]
@@ -97,6 +106,10 @@ async fn main() -> Result<()> {
             )
             .await
         }
+        Command::Report {
+            run_dir,
+            allow_scratch,
+        } => report::generate(&cli.root, &run_dir, allow_scratch),
     }
 }
 

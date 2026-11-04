@@ -6,11 +6,11 @@
 |---|---|---|
 | Task set | 9 synthetic task/reference pairs; 8 traps + 1 control | Owner hand-solution and approval of every scenario, answer and rule |
 | Grader | 9/9 offline oracles; all-task mutant/isolation coverage passes | Owner review of grading rules and final validation after any task changes |
-| Live integration | One real Luna Responses tool-call smoke passed; estimated USD 0.0000237 | This smoke does not measure task-solving accuracy |
+| Live integration | Smoke passed; a fresh one-trial control also passed the full buyer loop/grader at 6 RPM, estimated USD 0.00044962 | Repeated trap-task performance still unmeasured |
 | Pilot | Attempted 12 Luna trials: all ended in HTTP 429 API errors after 20 successful requests; zero graded outcomes | Identify rate/quota/spend cause, use confirmed limits, obtain a valid pilot, then evaluate the ≥85% trap ceiling gate |
 | Final model results | Diagnostic pilot artifacts retained; no reportable benchmark accuracy | Multiple completed independent trials per task; preserve the errored run and report API errors separately with raw outputs/transcripts, versions/settings/usage/cost |
 | Model comparison | Only Luna is currently approved under the approximately USD 5 credit restriction | Resolve the internal frontier-evidence goal/model plan before adding any other model; do not infer permission from the historical model table |
-| Analysis/report | Grader assigns failure labels | Report command and tables, pass rate/pass^k, failure transcripts/quotes, human confirmation, substantive takeaway |
+| Analysis/report | Offline report command implemented/tested; API errors and null metrics remain explicit | Valid data for final tables; failure transcripts/quotes, human confirmation and substantive takeaway |
 | README | Setup and task/grading descriptions exist | Finish required short description, domain/expertise, model-results/settings/runtime/cost, failure analysis, sources/prior work, reviewed AI-use disclosure and final video link |
 | Reproducibility | Rust pin/Cargo.lock; earlier M1 fresh-clone check | Reproduce the final version from only the submitted README, including a bounded model check |
 | Release | M1 PR #1 open; M2/M3 local | Owner-selected source revision/repository release; review changes before any public push or merge |
