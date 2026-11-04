@@ -5,7 +5,7 @@ The hackathon rules require disclosing anything that existed before the hackatho
 ## Our own prior work (pre-hackathon)
 | Work | Link | Relation |
 |---|---|---|
-| harnessrouter (Slush'D × OpenAI Hackathon) | https://github.com/ozgureyilmaz/harnessrouter | ozgur's agent router ("one agent. many harnesses."): delegates bounded coding tasks to Codex, Claude Code, OpenCode or Pi over MCP, each run in an isolated git snapshot. It's experience in agent orchestration and failure modes, and the same multi-agent workflow builds this repo. **No code reused** (planned); if any is, disclose it here and in the README. |
+| harnessrouter (Slush'D × OpenAI Hackathon) | https://github.com/ozgureyilmaz/harnessrouter | ozgur's agent router ("one agent. many harnesses."): delegates bounded coding tasks to multiple coding agents over MCP, each run in an isolated git snapshot. It's experience in agent orchestration and failure modes, and the same multi-agent workflow builds this repo. **No code reused** (planned); if any is, disclose it here and in the README. |
 
 ## Author and domain (draft for the README "Domain and expertise" section; ozgur edits)
 - Author: Özgür Eryılmaz (ozgur), an MIS undergraduate who works on agentic-AI infrastructure, competing solo. GitHub: https://github.com/ozgureyilmaz.

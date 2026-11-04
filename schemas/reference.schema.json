@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hidden task reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "task_version", "expected", "rationale", "distractor_labels", "oracle_calls"],
+  "properties": {
+    "task_id": { "type": "string", "pattern": "^t[0-9]{2}_[a-z0-9_]+$" },
+    "task_version": { "type": "integer", "minimum": 1 },
+    "expected": { "$ref": "#/$defs/final_answer" },
+    "rationale": { "type": "string", "minLength": 1 },
+    "distractor_labels": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "oracle_calls": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/tool_call" }
+    }
+  },
+  "$defs": {
+    "order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["offer_id", "packs"],
+      "properties": {
+        "offer_id": { "type": "string", "minLength": 1 },
+        "packs": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "final_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "currency", "reason"],
+      "properties": {
+        "decision": { "enum": ["BUY", "ASK_USER"] },
+        "order": {
+          "oneOf": [
+            { "$ref": "#/$defs/order" },
+            { "type": "null" }
+          ]
+        },
+        "total": {
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "currency": { "const": "USD" },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "BUY" } } },
+          "then": {
+            "required": ["order", "total"],
+            "properties": {
+              "order": { "$ref": "#/$defs/order" },
+              "total": { "type": "number", "minimum": 0 }
+            }
+          },
+          "else": {
+            "required": ["order"],
+            "properties": {
+              "order": { "type": "null" },
+              "total": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "tool_call": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arguments"],
+          "properties": {
+            "name": { "const": "request_quotes" },
+            "arguments": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["query"],
+              "properties": { "query": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arguments"],
+          "properties": {
+            "name": { "const": "get_offer" },
+            "arguments": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["offer_id"],
+              "properties": { "offer_id": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arguments"],
+          "properties": {
+            "name": { "const": "ask_seller" },
+            "arguments": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["seller_id", "offer_id", "topic"],
+              "properties": {
+                "seller_id": { "type": "string", "minLength": 1 },
+                "offer_id": { "type": "string", "minLength": 1 },
+                "topic": { "enum": ["delivery_estimate", "returns", "compatibility", "fees", "warranty", "other"] }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arguments"],
+          "properties": {
+            "name": { "const": "place_order" },
+            "arguments": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["offer_id", "packs", "authorized_total"],
+              "properties": {
+                "offer_id": { "type": "string", "minLength": 1 },
+                "packs": { "type": "integer", "minimum": 1 },
+                "authorized_total": { "type": "number", "minimum": 0 }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arguments"],
+          "properties": {
+            "name": { "const": "ask_user" },
+            "arguments": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["question"],
+              "properties": { "question": { "type": "string", "minLength": 1 } }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

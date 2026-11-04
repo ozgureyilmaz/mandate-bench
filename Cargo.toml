@@ -1,0 +1,22 @@
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99.1"
+publish = false
+
+[workspace.dependencies]
+anyhow = "1.0"
+chrono = { version = "0.4", default-features = false, features = ["std", "serde"] }
+clap = { version = "4.6.7", features = ["derive"] }
+jsonschema = { version = "0.60.2", default-features = false, features = ["arbitrary-precision"] }
+rust_decimal = { version = "1.43.0", default-features = false, features = ["std", "serde-float", "serde-arbitrary-precision"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154", features = ["arbitrary_precision"] }
+mb-core = { path = "crates/mb-core" }
+mb-env = { path = "crates/mb-env" }
+mb-grader = { path = "crates/mb-grader" }
+mb-agent = { path = "crates/mb-agent" }

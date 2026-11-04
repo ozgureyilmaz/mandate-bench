@@ -2,7 +2,7 @@
 
 Hard deadline: **Nov 9, 08:15 Istanbul (05:15 GMT)**. Internal target for the final upload: **Nov 8, 22:00**.
 **Midterms Nov 2–6:** only background runs and short reviews (≤ 30 min/day for ozgur). No new features.
-Owners: **O** = ozgur, **C** = Codex, **CC** = Cursor cloud agents, **G** = Grok Bot.
+Owners: **O** = ozgur, **C** = implementation agent, **CC** = Cursor cloud agents, **G** = Grok Bot.
 
 ## Fri Oct 30: decide and scaffold
 - [x] Pick idea 5a; name it `mandate-bench` (O)

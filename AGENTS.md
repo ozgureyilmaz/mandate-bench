@@ -1,4 +1,4 @@
-# AGENTS.md: instructions for coding agents (Codex, Cursor, Grok Bot, others)
+# AGENTS.md: instructions for coding agents
 
 This file is the single source of truth for any agent working in this repo. Read it, plus `docs/PLAN.md` and `docs/STATUS.md`, before changing anything.
 
@@ -7,7 +7,7 @@ Ship **mandate-bench**, a small code-graded eval for the micro1 Eval Hackathon (
 
 ## Roles
 - **ozgur** (owner) decides everything that is visible from outside: submission, video, model list, budget, and what is written about prior work.
-- **Codex** does main development (the Rust workspace: env, runner, agent loop, grader, tasks).
+- **Implementation agent** does main development (the Rust workspace: env, runner, agent loop, grader, tasks).
 - **Cursor cloud agents** take bounded code tasks (one task folder, one grader test, one fix) on their own branches.
 - **Grok Bot** tracks status and keeps `docs/` in sync with the code. It does not write eval logic unless asked.
 - Every agent updates `docs/STATUS.md` when it finishes a unit of work, and `docs/DECISIONS.md` when it makes a design choice.
@@ -104,7 +104,7 @@ rpm = 30            # below the ~40 RPM free-tier default, shared by every NVIDI
 max_retries = 6
 ```
 
-Open checks for Codex before the pilot (record the outcome in DECISIONS.md): DeepSeek thinking mode is the default; check its "Thinking Mode" doc for how reasoning content must be passed back in multi-turn tool calls. Check that each NVIDIA model in the list actually returns `tool_calls` (the `smoke` command); drop any that don't, with a reason.
+Open implementation checks before the pilot (record the outcome in DECISIONS.md): DeepSeek thinking mode is the default; check its "Thinking Mode" doc for how reasoning content must be passed back in multi-turn tool calls. Check that each NVIDIA model in the list actually returns `tool_calls` (the `smoke` command); drop any that don't, with a reason.
 
 ## Conventions
 - Run everything with fixed inputs: sellers are **scripted JSON**, not LLMs, and each task has a fixed `now` clock (ISO 8601 with an explicit offset). The model under test is the only stochastic part.
