@@ -10,7 +10,8 @@ Last updated: **Nov 4, 2026 (Istanbul)**, by the implementation agent.
 - Native workers were requested as Luna/xhigh. Work is local on `feat/m4-luna-pilot`; [M1 PR #1](https://github.com/ozgureyilmaz/mandate-bench/pull/1) remains open/unmerged (checked Nov 4). M2/M3/M4 changes and diagnostic data have not been pushed; nothing has been uploaded to the hackathon.
 
 ## Budget and preserved evidence
-- Only `gpt-6-luna` is authorized for live work. Owner last confirmed dashboard credit of **USD 4.97** before the slower control/fresh pilot; current balance is not inferred from estimates.
+- Current approved live-evaluation spending ceiling: **USD 1 total, `gpt-6-luna` only** (owner update Nov 4). This supersedes older USD 5/25–35 allowances. The earlier dashboard balance of USD 4.97 is historical account information, not permission to spend that amount.
+- The existing runner records estimated cost but does not enforce a cumulative dollar ceiling. Budget enforcement/bounded-call reconciliation must be resolved before another paid batch; the current worker reviews make no evaluation API calls.
 - Live phases: smoke USD 0.0000237 estimate; initial 12-error pilot full cost unknown (known successful-request subtotal USD 0.00133736); slower control USD 0.00044962; completed fresh pilot USD 0.00490785. Known successful-request token-price estimates total about **USD 0.00672**; the original errors did not report usage/full billing.
 - Raw outputs, full logs, original score rows, metadata and derived diagnostic reports/audit are byte-preserved and committed in `results/diagnostics/`; original ignored `runs/` copies remain intact. No final benchmark run has been selected/promoted directly under `results/<run_id>`.
 - The first pilot's 12 HTTP 429 errors are not removed or counted as model failures. The slower control and serial pilot completed at 6 RPM. The earlier 429's precise rate/quota/spend cause remains unknown because its machine code/type was not retained; future errors now retain safe code/type fields.
@@ -18,6 +19,8 @@ Last updated: **Nov 4, 2026 (Istanbul)**, by the implementation agent.
 
 ## Main review checkpoint
 The pilot found no substantive mandate breach in its four tested tasks. The three strict failures are format-only. The strict trap gate is 6/9 and does not trigger its ≥85% threshold, but the proposed outcome audit is a ceiling warning. Recommendation: outcome headline with strict format diagnostic; freeze and disclose the final policy before final evaluation. [HARDENING_PROPOSAL.md](HARDENING_PROPOSAL.md) is an unadopted candidate, not a change to scored inputs. The other five tasks still lack live pilot evidence.
+
+Three requested Luna/xhigh workers completed read-only grading, task and readiness reviews. Findings/recommended next slice are in [M4_WORKER_REVIEW.md](M4_WORKER_REVIEW.md). Primary changes in this review are documentation only: record the USD 1 cap and review findings. No new model call, metric adoption, task edit, public action or human sign-off occurred.
 
 ## Missing for submission
 See [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md).

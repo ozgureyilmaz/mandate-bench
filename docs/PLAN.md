@@ -142,7 +142,9 @@ M3 now includes all t00–t08 fixtures and replays all nine references. Escalati
 - API errors (429, 5xx, timeouts) are retried per request with backoff, honouring `Retry-After` and rate-limit reset headers, up to `max_retries` (default 6; AGENTS.md). If a trial still errors it's recorded as `api_error`, shown in its own column and excluded from the denominator **with the count reported**.
 
 ## 8. Models and cost (agent-facing; the README lists only the models tested)
-**Current live allowance (Nov 4):** ozgur reported approximately $5 credit and authorized only `gpt-6-luna` for current live work. The one-request M2 smoke succeeded with zero retries, 142 input/19 output tokens, and estimated USD 0.0000237 cost. The larger model/budget tables below describe the historical plan and do not authorize spending beyond this current allowance. Benchmark results remain pending; the smoke is an operational diagnostic saved under ignored `runs/`, not a headline result.
+**Current live ceiling (latest Nov 4 instruction): USD 1 total, `gpt-6-luna` only.** The earlier approximately USD 5 credit / USD 4.97 dashboard balance is historical information; neither it nor the pasted USD 35 multi-model brief authorizes that spending. Current runner token/turn/rate/concurrency limits and after-request cost estimates are not an enforced cumulative dollar guard. Resolve the budget guard or a conservatively bounded execution/reconciliation plan before another paid batch. Current worker reviews are offline only. Historical model tables below remain planning context, not an active model/spend list.
+
+The original one-request M2 smoke succeeded with zero retries, 142 input/19 output tokens, and estimated USD 0.0000237 cost. Subsequent diagnostic evidence is recorded in PILOT_REVIEW.md; it does not retroactively change the current allowance.
 
 Providers: **OpenAI** (paid, ozgur's account has tight rate limits), **DeepSeek** (paid), **NVIDIA NIM API catalog** (free trial endpoints, OpenAI-compatible). No OpenRouter. Provider limits and client rules: AGENTS.md → Model providers. **ozgur confirms the final list and budget.** Re-check IDs and prices on the run day.
 
