@@ -54,3 +54,8 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 - The earlier M1 source passed a fresh local clone check. The final-version clean-room rerun remains pending.
 - `.env` stays ignored and owner-only; no credentials are printed/committed. Blank optional URL overrides retain the configured defaults.
 - Participant Agreement was accepted personally by ozgur (confirmed Oct 30). Optional profile URLs are not submission blockers and should be omitted until confirmed.
+
+## Active owner-approved Nov 4 slice
+- Step 1 complete: M1 PR #1 merged, all prior local commits published on [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2), branch `feat/m4-hardening`. Secret/tree/history and neutral-wording scans passed before publication.
+- Step 2 complete: prospective policy 2 (outcome, strict outcome+raw format, independent raw format) frozen in DECISIONS.md before new provider requests. Original v1 9/12 and raw data remain unchanged; pilot motivation disclosed.
+- Next: cumulative paid-budget enforcement, free-model tool smokes, up to four versioned fixture changes and owner SIGNOFF. No new paid run has been made in this slice.
