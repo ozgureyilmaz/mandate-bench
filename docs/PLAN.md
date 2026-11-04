@@ -142,6 +142,8 @@ M1 implements only t00/t01; the test suite replays those two real references. Es
 - API errors (429, 5xx, timeouts) are retried per request with backoff, honouring `Retry-After` and rate-limit reset headers, up to `max_retries` (default 6; AGENTS.md). If a trial still errors it's recorded as `api_error`, shown in its own column and excluded from the denominator **with the count reported**.
 
 ## 8. Models and cost (agent-facing; the README lists only the models tested)
+**Current live allowance (Nov 4):** ozgur reported approximately $5 remaining credit and authorized only `gpt-6-luna` for current live work. Start with one M2 smoke request using `configs/smoke.toml`: one model, one attempt (no retries), concurrency 1, output capped at 1,024 tokens. The larger model/budget tables below describe the historical plan and do not authorize spending beyond this current allowance. Live results remain pending until the local key is supplied.
+
 Providers: **OpenAI** (paid, ozgur's account has tight rate limits), **DeepSeek** (paid), **NVIDIA NIM API catalog** (free trial endpoints, OpenAI-compatible). No OpenRouter. Provider limits and client rules: AGENTS.md → Model providers. **ozgur confirms the final list and budget.** Re-check IDs and prices on the run day.
 
 ✅ = model ID and price read on the provider's own page on Oct 30, 2026. ⚠️ = listed but not yet confirmed to work for this eval (needs a key and the `smoke` command).

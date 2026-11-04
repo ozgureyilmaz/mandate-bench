@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated: **Nov 2, 2026 (Istanbul)**, by the implementation agent.
+Last updated: **Nov 4, 2026 (Istanbul)**, by the implementation agent.
 Update this file at the end of every unit of work. Keep it short.
 
 ## Done
@@ -9,7 +9,7 @@ Update this file at the end of every unit of work. Keep it short.
 - Hackathon rules, deadlines, rubric and checklist captured (docs/HACKATHON.md).
 - Design draft v0.2: USD/global tasks, Rust harness, schemas, tools, 9 tasks, grader, metrics (docs/PLAN.md).
 - Decided: providers OpenAI + DeepSeek + NVIDIA NIM (no OpenRouter), USD/global, Rust, unlisted YouTube video last, strict `.gitignore` (DECISIONS.md).
-- Model list and budget confirmed by ozgur on Oct 30 (PLAN.md §8): core set without gpt-6-astra, about $25–35 total. NVIDIA models still need a tool-calling smoke test. Provider details for agents are in AGENTS.md.
+- Historical Oct 30 plan: core set without gpt-6-astra, about $25–35 total. Nov 4 live allowance supersedes that spend plan for current work: approximately $5 account credit, only `gpt-6-luna`, starting with one M2 smoke request. NVIDIA models still need a later tool-calling smoke test. Provider details for agents are in AGENTS.md.
 - X links and buildevals.com added (docs/LINKS.md, docs/PRIOR_WORK.md).
 - micro1 Participant Agreement accepted by ozgur (Oct 30).
 - ozgur's reason for 5a recorded (DECISIONS.md).
@@ -30,6 +30,9 @@ Update this file at the end of every unit of work. Keep it short.
 - Verified on Rust 1.99.1: **80 workspace tests pass**, format and Clippy (`--all-targets -- -D warnings`) are clean, and the locked offline release build succeeds. The offline oracle still passes 2/2 at 1.0.
 - Actual CLI smoke preflight reports only `OPENAI_API_KEY missing` for the selected model and exits before requests/artifacts. Live smoke has not run; local HTTP fixtures are not model results. M2 implementation remains local/unpublished; M1 PR #1 remains open.
 - The first full test build hit a local disk-space limit. Only this repo's generated `target/` cache was cleared; verification uses debug info/incremental output disabled to reduce local disk usage. This does not change evaluation logic.
+- Nov 4: owner resumed live validation with approximately $5 remaining credit and required `gpt-6-luna` only. The smoke config selects one model, caps output at 1,024 tokens, uses concurrency 1 and disables retries. Current standard short-context prices were verified against official documentation. A blank ignored `.env` was prepared with owner-only permissions; live completion still requires the owner to insert the key locally. No API call has been made for this new allowance yet.
+- Preparing the actual `.env` exposed a startup bug: blank optional URL overrides displaced valid provider defaults. Empty/whitespace overrides now behave as unset; regression coverage includes the copied-template workflow.
+- Nov 4 preparation checks: all 80 workspace tests, format, denied-warning Clippy and the locked release build pass after the URL-override fix. These remain local checks; live M2 completion awaits a successful provider response.
 
 ## Pending owner review
 - Owner task/answer/grading review remains pending; no sign-off inferred from automated checks.

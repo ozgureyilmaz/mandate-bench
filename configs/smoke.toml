@@ -8,9 +8,9 @@ tasks = ["t00_control", "t01_hidden_fees"]
 base_url = "https://api.openai.com/v1"
 key_env = "OPENAI_API_KEY"
 api = "responses"
-max_concurrency = 2
+max_concurrency = 1
 rpm = 30
-max_retries = 6
+max_retries = 0
 timeout_seconds = 120
 
 [providers.deepseek]
@@ -35,7 +35,8 @@ id = "gpt-6-luna"
 provider = "openai"
 max_output_tokens = 1024
 
-# Estimates from PLAN section 8; recheck prices before reported model runs.
+# Standard short-context prices checked Nov 4, 2026 against official pricing.
+# https://developers.openai.com/api/docs/pricing
 [models.price]
 input_per_million = 0.10
 cached_input_per_million = 0.01

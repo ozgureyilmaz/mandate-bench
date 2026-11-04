@@ -153,7 +153,7 @@ impl ProviderConfig {
         );
         validate_base_url(&self.base_url)?;
         let mut resolved = self.clone();
-        if let Some(override_url) = override_url {
+        if let Some(override_url) = override_url.filter(|value| !value.trim().is_empty()) {
             resolved.base_url = override_url.to_owned();
         }
         ensure!(
@@ -510,6 +510,15 @@ mod tests {
             .unwrap();
         assert_eq!(resolved.base_url, "http://127.0.0.1:9090/v1");
         assert_eq!(config.base_url, "https://api.example.test/v1");
+        for blank in ["", "   "] {
+            assert_eq!(
+                config
+                    .resolved_with_override("openai", Some(blank))
+                    .unwrap()
+                    .base_url,
+                config.base_url
+            );
+        }
         assert_eq!(base_url_override("deepseek").unwrap(), "DEEPSEEK_BASE_URL");
         assert_eq!(base_url_override("nvidia").unwrap(), "NVIDIA_BASE_URL");
         assert!(

@@ -59,6 +59,12 @@ output_per_million = 2.0
             ),
         )
         .unwrap();
+        // The supplied key template leaves optional URL overrides blank.
+        fs::write(
+            path.join(".env"),
+            "OPENAI_BASE_URL=\nDEEPSEEK_BASE_URL=\nNVIDIA_BASE_URL=\n",
+        )
+        .unwrap();
         Self(path)
     }
 
