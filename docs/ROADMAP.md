@@ -8,6 +8,8 @@ Owners: **O** = ozgur, **C** = implementation agent, **CC** = Cursor cloud agent
 
 **Actual progress update (Nov 4):** M2 live Luna smoke passed in one request; M3 contains all nine task/reference pairs with 9/9 oracles and expanded mutant coverage. The Luna-only pilot config is prepared and preflight-validated but unexecuted. Human task sign-off, pilot/full evidence, analysis/report, final README, clean-room rerun, archive and video/upload are still pending. Current readiness is tracked in [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md).
 
+**Later Nov 4 evidence:** the first pilot retained 12 API errors; a slower control and fresh serial pilot subsequently completed. The fresh pilot has 9 strict passes / 3 format-only failures, with all intended purchase/escalation behavior correct. Report generation, a proposed-policy offline outcome audit and gated packaging utility are implemented. Original/derived diagnostics are archived for review. Metric/task-difficulty review, five-trial all-nine-task final evidence, human sign-off and final README/video/clean-room/archive/upload remain pending. See [PILOT_REVIEW.md](PILOT_REVIEW.md); do not treat the historical schedule or the outcome audit as an adopted final score.
+
 ## Fri Oct 30: decide and scaffold
 - [x] Pick idea 5a; name it `mandate-bench` (O)
 - [x] Docs set: AGENTS, PLAN, ROADMAP, HACKATHON, PRIOR_WORK, LINKS, STATUS, DECISIONS, AI_USE (G)

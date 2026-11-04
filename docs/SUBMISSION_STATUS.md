@@ -5,16 +5,16 @@
 | Item | Current evidence | Still needed |
 |---|---|---|
 | Task set | 9 synthetic task/reference pairs; 8 traps + 1 control | Owner hand-solution and approval of every scenario, answer and rule |
-| Grader | 9/9 offline oracles; all-task mutant/isolation coverage passes | Owner review of grading rules and final validation after any task changes |
+| Grader | 9/9 offline oracles; 90 Rust tests plus packaging shell checks pass | Owner review/freeze of strict versus proposed outcome metric and final validation after any task changes |
 | Live integration | Smoke passed; a fresh one-trial control also passed the full buyer loop/grader at 6 RPM, estimated USD 0.00044962 | Repeated trap-task performance still unmeasured |
-| Pilot | Attempted 12 Luna trials: all ended in HTTP 429 API errors after 20 successful requests; zero graded outcomes | Identify rate/quota/spend cause, use confirmed limits, obtain a valid pilot, then evaluate the ≥85% trap ceiling gate |
-| Final model results | Diagnostic pilot artifacts retained; no reportable benchmark accuracy | Multiple completed independent trials per task; preserve the errored run and report API errors separately with raw outputs/transcripts, versions/settings/usage/cost |
+| Pilot | Original 12 API errors preserved; fresh slower 12-trial pilot completed without API errors | Review 3 strict format-only failures: correct ASK_USER but missing currency; strict 9/12 versus proposed outcome audit 12/12. Decide metric/task difficulty before final run |
+| Final model results | Diagnostic phases committed under results/diagnostics; no final selected benchmark dataset | Reviewed five-trial evidence for all nine tasks; preserve errored/failed runs and distinguish original strict scores from audits/regrades |
 | Model comparison | Only Luna is currently approved under the approximately USD 5 credit restriction | Resolve the internal frontier-evidence goal/model plan before adding any other model; do not infer permission from the historical model table |
-| Analysis/report | Offline report command implemented/tested; API errors and null metrics remain explicit | Valid data for final tables; failure transcripts/quotes, human confirmation and substantive takeaway |
+| Analysis/report | Offline report + versioned outcome audit implemented; pilot review and hardening candidate drafted | Human confirmation, final metric selection and a supported domain takeaway; current observed failures are not unauthorized purchases |
 | README | Setup and task/grading descriptions exist | Finish required short description, domain/expertise, model-results/settings/runtime/cost, failure analysis, sources/prior work, reviewed AI-use disclosure and final video link |
 | Reproducibility | Rust pin/Cargo.lock; earlier M1 fresh-clone check | Reproduce the final version from only the submitted README, including a bounded model check |
 | Release | M1 PR #1 open; M2/M3 local | Owner-selected source revision/repository release; review changes before any public push or merge |
-| ZIP | Not built | ≤50 MB, README at root, code/data/dependencies/results included, no build cache/video/keys/private data; scan tree and history; inspect archive |
+| ZIP | Gated packaging utility and synthetic archive tests pass; real preflight correctly refuses current project | Reviewed data/README/video/sign-offs first, then explicit --out ZIP (<50 MB), tree/history scan and actual archive inspection |
 | Video | Not recorded | ≤5 minutes, final results walkthrough with audio, unlisted link accessible without login; same link in README/upload field |
 | Human/final upload | Agreement already accepted by owner | Task/grader/failure review, self-score against rubric, final ZIP + video link + description uploaded by owner |
 

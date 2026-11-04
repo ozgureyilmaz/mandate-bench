@@ -83,6 +83,8 @@ cargo run --release --locked -- run --config configs/smoke.toml --task t00_contr
 
 By default, smoke/run create a new directory under ignored `runs/`, containing `run_meta.json`, immutable provider payloads in `outputs/`, transcripts, and `scores.jsonl`. A run records every trial, including failures and API errors; it never silently reruns a failed trial. HTTP-loopback checks are marked `local_mock`. Using `--out results` writes under `results/<run_id>/` with logs under `transcripts/<run_id>/`; publish only runs selected for reporting. Model payloads are retained after mandatory credential redaction before their first write. No request headers or HTTP error bodies are saved.
 
+The live smoke and diagnostic runs are archived byte-for-byte under `results/diagnostics/` for provenance, with their original nested transcript layout. This is distinct from a selected final run directly under `results/<run_id>`; the archive includes the initial API errors and unchanged strict scores.
+
 Active trials are bounded by the provider's configured concurrency. A provider API error halts new trials for that provider; already-active work is retained, unstarted trials are counted, and the run is marked incomplete when selected coverage remains. Such a partial run must be resolved explicitly rather than silently reported as a smaller successful evaluation.
 
 The offline commands above were verified from a fresh local clone of the M1 source snapshot on Rust 1.99.1. That check used an installed toolchain and cached dependencies; the later fresh-machine live-model rerun is still pending.
@@ -109,3 +111,5 @@ AI coding assistants implemented the Rust harness, task/reference drafts and tes
 
 ## Repository layout
 A Cargo workspace (`crates/`), task data (`tasks/`, `reference/`), JSON schemas (`schemas/`), run configs (`configs/`), and committed results (`results/`, `transcripts/`). Details in AGENTS.md.
+
+Maintainer packaging uses `scripts/package.sh --check` (Git, rg and jq required). It refuses unfinished README/video/review/result gates and creates no archive by default. After those gates pass, `scripts/package.sh --out /absolute/path/submission.zip` explicitly builds a Git archive with README at root, checks credential-shaped content in the tracked tree/history and enforces the size limit. The helper does not upload anything or verify video playback/audio.

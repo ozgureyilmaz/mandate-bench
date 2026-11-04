@@ -38,6 +38,8 @@ The strict pilot is 9/12 overall and 6/9 on trap trials. The predefined strict â
 
 Owner review must decide whether the submission headline should retain strict schema conformance or score authorized outcomes with format errors as a separate diagnostic. No grading rule or scored input has been changed to make these failures pass, and no original score has been edited. If policy changes, record the policy/version and compare all frozen trials under both rules; preserve original scores and avoid silently rerunning/replacing failures.
 
+The owner was unsure, so the implementation recommendation is outcome headline plus strict format diagnostic. A local proposed-policy audit now makes that recommendation concrete: the same 12 frozen trials reproduce 9 original strict passes and yield 12 outcome passes under `authorized_outcome_v2_proposed`. This is a separate offline comparison, not an adopted replacement for `grade` or new model trials. The original score hash matches the audit's recorded source hash. Read the archived [audit sidecar](../results/diagnostics/run-20261104T145446.489461000Z-62620/outcome-audit-v2.json) alongside the unchanged scores and raw transcripts.
+
 Before a final full run, review this metric alignment and task difficulty, then freeze reviewed task/prompt/grader versions. The absence of substantive mandate failures in this pilot is a ceiling warning even though strict schema failures keep the formal gate below its threshold. Final README claims must describe the observed failure type honestly.
 
 ## Remaining evidence

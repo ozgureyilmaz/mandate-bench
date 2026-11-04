@@ -1,0 +1,220 @@
+{
+  "api_error_count": 0,
+  "completed_items": 1,
+  "cost_estimate_usd": 0.00044962,
+  "cost_is_estimate": true,
+  "cost_note": "Configured prices; cached input is within input and reasoning within output. Missing usage/price keeps cost unknown. Failed attempts may have unreported billable usage.",
+  "ended_at_istanbul": "2026-11-04T17:39:54.512851+03:00",
+  "ended_at_utc": "2026-11-04T14:39:54.512851+00:00",
+  "git_commit": "474f0740f88dc7fed3310c897b95bf54221bba93",
+  "git_dirty": false,
+  "http_attempts": 6,
+  "kind": "run",
+  "known_cost_estimate_usd": 0.00044962,
+  "max_tool_calls": 20,
+  "max_turns": 20,
+  "models": [
+    {
+      "id": "gpt-6-luna",
+      "max_output_tokens": 1024,
+      "price": {
+        "cached_input_per_million": 0.01,
+        "input_per_million": 0.1,
+        "output_per_million": 0.5
+      },
+      "provider": "openai",
+      "reasoning_effort": null,
+      "seed": null,
+      "temperature": null,
+      "thinking": null
+    }
+  ],
+  "pass_count": 1,
+  "providers": {
+    "openai": {
+      "api": "responses",
+      "base_url": "https://api.openai.com/v1",
+      "key_env": "OPENAI_API_KEY",
+      "max_concurrency": 1,
+      "max_retries": 0,
+      "rpm": 6,
+      "timeout_seconds": 120,
+      "tpm": null
+    }
+  },
+  "raw_output_policy": "Provider payloads are retained after credential redaction before first write. Request headers and HTTP error bodies are not recorded.",
+  "requests": [
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:06.029Z",
+          "http_status": 200,
+          "request_id": "req_153217ded8e540f8858ddff42848db2b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:02.140Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:06.030Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:02.139Z",
+      "usage": {
+        "cached_input": 0,
+        "input": 1192,
+        "output": 38,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:13.123Z",
+          "http_status": 200,
+          "request_id": "req_db4f3f0d3bcd472e9c58b0631b701390",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:12.141Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:13.123Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:06.031Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1360,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:23.772Z",
+          "http_status": 200,
+          "request_id": "req_8b8e9b593aad479faf3e00737412232e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:22.141Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:23.773Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:13.124Z",
+      "usage": {
+        "cached_input": 1357,
+        "input": 1575,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:35.640Z",
+          "http_status": 200,
+          "request_id": "req_7365d73802744ac48a8b32dd3608e851",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:32.140Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:35.640Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:23.773Z",
+      "usage": {
+        "cached_input": 1572,
+        "input": 1792,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:44.786Z",
+          "http_status": 200,
+          "request_id": "req_2014bc6f565b4c02854bb3abd5c71242",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:42.141Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:44.787Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:35.641Z",
+      "usage": {
+        "cached_input": 1789,
+        "input": 2008,
+        "output": 146,
+        "reasoning": 114
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:39:54.287Z",
+          "http_status": 200,
+          "request_id": "req_d4e4023a8e8c47e5afcd1466ac00a6b9",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:39:52.141Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:39:54.288Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:39:44.788Z",
+      "usage": {
+        "cached_input": 2005,
+        "input": 2180,
+        "output": 61,
+        "reasoning": 0
+      }
+    }
+  ],
+  "retries": 0,
+  "run_id": "run-20261104T143901.927556000Z-57636",
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "settings_note": "Requested settings; omitted settings use provider defaults. Effective settings are not inferred.",
+  "source": "provider_api",
+  "started_at_istanbul": "2026-11-04T17:39:01.927556+03:00",
+  "started_at_utc": "2026-11-04T14:39:01.927556+00:00",
+  "state": "completed",
+  "tasks": [
+    {
+      "task_id": "t00_control",
+      "task_version": 1
+    }
+  ],
+  "token_usage": {
+    "cached_input": 7912,
+    "input": 10107,
+    "output": 302,
+    "reasoning": 114
+  },
+  "trials_per_task": 1
+}
