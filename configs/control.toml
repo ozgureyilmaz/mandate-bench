@@ -1,0 +1,23 @@
+# One fresh end-to-end diagnostic after the HTTP 429 pilot; not a full rerun.
+trials = 1
+max_turns = 20
+tasks = ["t00_control"]
+
+[providers.openai]
+base_url = "https://api.openai.com/v1"
+key_env = "OPENAI_API_KEY"
+api = "responses"
+max_concurrency = 1
+rpm = 6
+max_retries = 0
+timeout_seconds = 120
+
+[[models]]
+id = "gpt-6-luna"
+provider = "openai"
+max_output_tokens = 1024
+
+[models.price]
+input_per_million = 0.10
+cached_input_per_million = 0.01
+output_per_million = 0.50

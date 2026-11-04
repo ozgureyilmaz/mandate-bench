@@ -7,7 +7,7 @@ Last updated: **Nov 4, 2026 (Istanbul)**, by the implementation agent.
 - M2 provider client/buyer loop/smoke/run implementation is complete. The live Luna smoke passed Nov 4: one Responses request, HTTP 200, returned ID `gpt-6-luna`, correct tool call, zero retries. Operational usage: 142 input / 19 output / 0 reasoning tokens; estimated cost **USD 0.0000237**. Proof: ignored `runs/smoke-20261104T140330.529129000Z-49678/`. This is transport evidence, not benchmark accuracy.
 - M3 adds all remaining task/reference pairs, committed as `0b80d45`. All nine oracles score **1.0**; the M3 suite passed 82 tests. Additional pilot diagnostics/cost-accounting regression coverage now passes 83 tests; final report integration checks are pending.
 - Work is local on `feat/m4-luna-pilot`, based on local M2/M3. M2/M3 have not been pushed or merged; nothing has been uploaded to the hackathon.
-- Current account credit is owner-reported at approximately USD 5. Only `gpt-6-luna` is authorized for live work. The historical USD 25–35 / multi-model plan is superseded for current spending; actual account balance is not inferred from the estimate above.
+- Owner confirmed dashboard credit of USD 4.97 after the failed pilot. Only `gpt-6-luna` is authorized for live work. The historical USD 25–35 / multi-model plan is superseded for current spending; account balance is not inferred from token estimates.
 
 ## Pilot outcome and next step
 - Attempted the prepared Luna-only 4-task × 3-trial pilot after the owner's continuation request. Source `0b80d45` was clean at start. Run: ignored `runs/run-20261104T141828.777967000Z-53091/`.
@@ -15,6 +15,7 @@ Last updated: **Nov 4, 2026 (Istanbul)**, by the implementation agent.
 - Known successful-request usage: 25,766 input tokens (18,236 cached) and 804 output tokens, estimating USD 0.00133736 for those successful requests. Full run cost remains unknown because error usage is unreported; do not infer actual account balance. The old run metadata's zero known-cost subtotal is an accounting limitation, not proof of no spend; request records permit reconstruction.
 - Further paid calls stopped. HTTP 429 alone cannot distinguish rate, credit or spend limits; original code/type was not retained. New safe error-code/type capture and known-partial-cost accounting are tested without provider calls. The pilot config is reduced from 30 to 6 RPM as conservative preparation, not a verified account limit or a successful rerun.
 - Account credit/RPM/TPM confirmation, a fresh bounded diagnostic and a valid pilot are next. The task hardening gate is still unevaluated; human task review remains pending.
+- After the credit confirmation, `configs/control.toml` prepares one fresh t00 diagnostic at 6 RPM, zero retries and 1,024 output tokens. It preserves the original failed pilot; its own result will be recorded separately.
 
 ## Missing for submission
 See [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md) for the full checklist.
