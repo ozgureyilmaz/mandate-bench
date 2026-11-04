@@ -279,7 +279,13 @@ impl Client {
                         }
                     }
 
-                    drop(response);
+                    let diagnostics = response.json::<Value>().await.ok();
+                    let error_code = diagnostics
+                        .as_ref()
+                        .and_then(|value| safe_error_field(value, "code", &self.key));
+                    let error_type = diagnostics
+                        .as_ref()
+                        .and_then(|value| safe_error_field(value, "type", &self.key));
                     let mut attempt = AttemptRecord {
                         http_status: Some(status.as_u16()),
                         started_at: attempt_started,
@@ -300,11 +306,11 @@ impl Client {
                     record.attempts.push(attempt);
                     record.ended_at = timestamp();
                     drop(permit);
-                    return Err(api_error(
-                        "http_status",
-                        &format!("HTTP {}", status.as_u16()),
-                        record,
-                    ));
+                    let mut error =
+                        api_error("http_status", &format!("HTTP {}", status.as_u16()), record);
+                    error.error_code = error_code.map(String::into_boxed_str);
+                    error.error_type = error_type.map(String::into_boxed_str);
+                    return Err(error);
                 }
             }
         }
@@ -405,7 +411,20 @@ fn api_error(kind: &str, message: &str, record: RequestRecord) -> ApiError {
         message: message.to_owned(),
         record: Box::new(record),
         raw: None,
+        error_code: None,
+        error_type: None,
     }
+}
+
+fn safe_error_field(body: &Value, field: &str, key: &str) -> Option<String> {
+    let text = body.get("error")?.get(field)?.as_str()?;
+    let redacted = redact_string(text, key);
+    (!redacted.is_empty()
+        && redacted.len() <= 128
+        && redacted
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-' | b'.')))
+    .then_some(redacted)
 }
 
 fn timestamp() -> String {
@@ -484,7 +503,7 @@ fn record_response_metadata(record: &mut RequestRecord, api: WireApi, raw: &Valu
 mod tests {
     use serde_json::json;
 
-    use super::{endpoint_url, redact_value};
+    use super::{endpoint_url, redact_value, safe_error_field};
     use crate::types::WireApi;
 
     #[test]
@@ -509,5 +528,29 @@ mod tests {
         assert_eq!(redacted["nested"][0], "[REDACTED]");
         assert_eq!(redacted["nested"][1]["[REDACTED]"], "[REDACTED]");
         assert_eq!(redacted["number"], 7);
+        assert_eq!(
+            safe_error_field(
+                &json!({"error":{"code":"rate_limit_exceeded"}}),
+                "code",
+                "secret-value"
+            ),
+            Some("rate_limit_exceeded".into())
+        );
+        assert_eq!(
+            safe_error_field(
+                &json!({"error":{"code":"secret-value"}}),
+                "code",
+                "secret-value"
+            ),
+            None
+        );
+        assert_eq!(
+            safe_error_field(
+                &json!({"error":{"code":"arbitrary error message with spaces"}}),
+                "code",
+                "secret-value"
+            ),
+            None
+        );
     }
 }

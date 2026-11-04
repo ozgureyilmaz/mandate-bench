@@ -571,6 +571,8 @@ async fn api_errors_are_preserved_without_retry_and_invalid_provider_output_is_n
         message: "mock request timed out".into(),
         record: Box::new(record(api)),
         raw: None,
+        error_code: None,
+        error_type: None,
     };
     let backend = MockBackend::new(api, vec![Err(timeout)]);
     let episode = run_episode(&backend, &model(), task(), 4).await;
@@ -587,6 +589,8 @@ async fn api_errors_are_preserved_without_retry_and_invalid_provider_output_is_n
         message: "provider response did not match the selected API".into(),
         record: Box::new(record(api)),
         raw: None,
+        error_code: None,
+        error_type: None,
     };
     let backend = MockBackend::new(api, vec![Err(invalid_response)]);
     let episode = run_episode(&backend, &model(), task(), 4).await;

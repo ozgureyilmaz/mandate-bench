@@ -9,7 +9,9 @@ base_url = "https://api.openai.com/v1"
 key_env = "OPENAI_API_KEY"
 api = "responses"
 max_concurrency = 1
-rpm = 30
+# Conservative preparation after HTTP 429s; the account's actual RPM/TPM/quota
+# cause is not inferred from status alone. This revised config is not yet rerun.
+rpm = 6
 max_retries = 0
 timeout_seconds = 120
 

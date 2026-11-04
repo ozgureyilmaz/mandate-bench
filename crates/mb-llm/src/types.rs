@@ -147,6 +147,11 @@ pub struct ApiError {
     pub record: Box<RequestRecord>,
     /// Sanitized model output from malformed successful responses, if available.
     pub raw: Option<Value>,
+    /// Bounded machine-readable fields only; never retain the HTTP error body.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error_code: Option<Box<str>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error_type: Option<Box<str>>,
 }
 impl fmt::Display for ApiError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

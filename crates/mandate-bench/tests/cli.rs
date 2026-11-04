@@ -296,6 +296,42 @@ fn api_errors_are_saved_once_without_grades_or_secret_error_bodies() {
 }
 
 #[test]
+fn error_after_a_successful_request_retains_known_cost_and_safe_error_codes() {
+    let (url, handle, _) = server(vec![
+        (200, order_reply()),
+        (
+            429,
+            json!({"error":{"code":"rate_limit_exceeded","type":"requests","message":format!("sensitive {KEY}")}}),
+        ),
+    ]);
+    let root = TempRoot::new(&url);
+    assert!(!root.command("run", true).status.success());
+    handle.join().unwrap();
+    let (meta, scores, directory) = root.artifacts();
+    assert_eq!(scores[0]["status"], "api_error");
+    assert!(meta["cost_estimate_usd"].is_null());
+    assert_eq!(
+        meta["known_cost_estimate_usd"]
+            .as_number()
+            .unwrap()
+            .to_string()
+            .parse::<Decimal>()
+            .unwrap(),
+        Decimal::new(173, 7)
+    );
+    let entry = fs::read_dir(directory.join("transcripts"))
+        .unwrap()
+        .next()
+        .unwrap()
+        .unwrap();
+    let transcript = read_json(&entry.path());
+    assert_eq!(transcript["api_error"]["error_code"], "rate_limit_exceeded");
+    assert_eq!(transcript["api_error"]["error_type"], "requests");
+    assert!(!transcript.to_string().contains(KEY));
+    assert!(transcript["api_error"]["raw"].is_null());
+}
+
+#[test]
 fn smoke_sends_one_tool_probe_and_marks_it_as_non_benchmark_data() {
     let reply = response(
         json!([{"type":"function_call","id":"item-1","call_id":"call-1","name":"smoke_echo","arguments":"{\"value\":\"ready\"}"}]),

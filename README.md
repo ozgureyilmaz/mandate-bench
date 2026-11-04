@@ -11,16 +11,18 @@ All tasks are synthetic, priced in **USD**, with fictional sellers and addresses
 **Implementation status:** all nine task/reference pairs, the scripted environment, exact-decimal totals, grader, oracle, API client, buyer loop and smoke/run commands are implemented. The Nov 4 live `gpt-6-luna` tool-calling smoke passed. All nine offline reference replays pass; author task review and multi-trial benchmark results are pending. Smoke and oracle checks do not measure benchmark accuracy. Current upload gaps are tracked in [docs/SUBMISSION_STATUS.md](docs/SUBMISSION_STATUS.md).
 
 ## Short description
-TODO (3–4 sentences: domain, gap, number of tasks, models tested, headline finding). Paste the same text into the HackerRank description field.
+mandate-bench evaluates whether a buyer agent respects a user's purchase mandate when choosing among scripted seller offers. Nine synthetic tasks test all-in budgets, offer validity, compatibility, pack quantities, delivery deadlines, return terms and seller instructions that claim extra authority. A deterministic Rust grader checks the order ledger and final JSON, including the correct decision to buy nothing and ask the user when no offer qualifies.
+
+This description is a draft for the submission field; owner review and the final model-result summary remain pending.
 
 ## Video walkthrough
 TODO: unlisted YouTube link (≤5 min, must open without login and play with audio). Recorded last, after results are final. Use the same link as in the HackerRank Q2 field.
 
 ## Domain and expertise
-TODO: agentic commerce / agent infrastructure, i.e. delegated purchasing under a user mandate (compare AP2 Intent Mandates). Author: Özgür Eryılmaz, MIS undergraduate, who builds agent infrastructure (see docs/PRIOR_WORK.md and the prior work section).
+The domain is delegated purchasing under a user's mandate. Author Özgür Eryılmaz is an MIS undergraduate who builds agent infrastructure, including [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter). The project applies that experience to the boundary between a user's authorization and seller-supplied information. Author task/grader review is tracked separately in docs/STATUS.md and is still pending.
 
 ## What it tests and why it matters
-TODO: the capability being measured, who relies on it (people delegating purchases to agents; teams building buyer agents on ACP/AP2/UCP-style rails), and what a failure costs (overspending, items that can't be returned, missed deadlines, purchases a seller manipulated the agent into).
+The capability is selecting an authorized purchase under interacting constraints, or escalating when no purchase is authorized. People delegating shopping and teams building buyer agents need that boundary to hold even when the lowest list price hides fees, similar product names imply different compatibility, shipping promises miss delivery deadlines, or a seller claims the user approved a larger budget. The practical harms are overspending, buying an unusable or non-returnable item, and missing the user's deadline. These are the task-design motivations; measured model limitations remain to be established by completed trials.
 
 ## Task overview
 All nine task fixtures are implemented; their inputs and hidden references remain JSON data.
@@ -73,7 +75,7 @@ Smoke sends one logical request per selected model, with the configured retries 
 cargo run --release --locked -- run --config configs/smoke.toml --task t00_control
 ```
 
-`.env` is loaded only for `smoke`/`run`. Keys are never part of saved config or request headers in artifacts. Provider configuration details are in AGENTS.md and docs/PLAN.md §8. `configs/pilot.toml` is prepared for a Luna-only diagnostic pilot (four tasks, three trials), and its dry-run preflight passes; it has not been executed. A full-run config, multi-model comparison and `report` remain pending.
+`.env` is loaded only for `smoke`/`run`. Keys are never part of saved config or request headers in artifacts. Provider configuration details are in AGENTS.md and docs/PLAN.md §8. The first Luna-only diagnostic pilot (four tasks, three trials) ended in API errors for every trial after HTTP 429 responses, so it has no usable task pass rate. Its artifacts are retained; account constraints must be resolved before another run. `configs/pilot.toml` now uses a conservative 6 RPM, without claiming that this resolves the unknown 429 cause. A full-run config, multi-model comparison and `report` remain pending.
 
 By default, smoke/run create a new directory under ignored `runs/`, containing `run_meta.json`, immutable provider payloads in `outputs/`, transcripts, and `scores.jsonl`. A run records every trial, including failures and API errors; it never silently reruns a failed trial. HTTP-loopback checks are marked `local_mock`. Using `--out results` writes under `results/<run_id>/` with logs under `transcripts/<run_id>/`; publish only runs selected for reporting. Model payloads are retained after mandatory credential redaction before their first write. No request headers or HTTP error bodies are saved.
 
@@ -82,20 +84,22 @@ The offline commands above were verified from a fresh local clone of the M1 sour
 Offline replay makes no evaluation API calls and has zero evaluation API cost. First-build runtime depends on the machine and dependency cache. TODO: record model-run runtime and actual cost when those runs exist.
 
 ## Models tested and results
-TODO: exact model IDs as returned by the API, run date (Istanbul time and UTC), settings (temperature, reasoning effort, max turns, trials per task), and a table with pass rate, pass^k, spread and cost per run.
+No reportable benchmark accuracy exists yet. A Luna-only diagnostic pilot attempted 12 trials; all ended in HTTP 429 API errors after partial tool use, leaving zero graded trials. The original artifacts and error counts are retained rather than converted into model failures or a zero-percent score. The successful M2 smoke establishes only live tool-calling compatibility.
 
-| Model (ID, settings) | Trials/task | Pass rate | pass^k | Cost/full run |
-|---|---|---|---|---|
-| TODO | 5 | | | |
+TODO after a valid pilot/full run: exact API-returned model IDs, run dates, requested/effective settings where available, trials per task, pass rate/pass^k, spread, runtime, cost and transcript links. Headline numbers must come from selected runs under `results/`.
 
 ## Failure analysis
-TODO: per-task notes (which models failed, how, and a link to a transcript), at least one near-miss task, the main failure mode and the hot take.
+The diagnostic pilot is currently an infrastructure incident, not evidence of a model's purchasing mistake. HTTP 429 alone does not identify whether the account hit a request/token rate, credit or spend constraint; the original error code/type was not retained. Resolve that condition before making model-performance claims.
+
+TODO after completed trials: per-task failure/near-miss analysis, representative transcript quotes or an explicit statement that no failures occurred, human confirmation of labels and a supported takeaway.
 
 ## Prior work and sources
-TODO: finalize from docs/PRIOR_WORK.md. Must disclose: Magentic Marketplace (closest prior environment), τ-bench (end-state grading, pass^k), AgentDojo (indirect injection), AP2 (the mandate concept), ACP/UCP (offer schema inspiration), plus anything that existed before Oct 30, 2026. All data is synthetic.
+The author's pre-hackathon [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter) informed the agent-orchestration workflow; no code was copied from it. All task data is synthetic and was written for this project.
+
+The closest related environment is [Magentic Marketplace](https://arxiv.org/abs/2510.25779). Other design influences are [τ-bench](https://arxiv.org/abs/2406.12045) for end-state grading and pass^k, [AgentDojo](https://arxiv.org/abs/2406.13352) for seller-text injection, [AP2](https://ap2-protocol.org) for mandate terminology, and [ACP](https://www.agenticcommerce.dev/) / [UCP](https://ucp.dev/) for structured commerce data. This project does not implement those commerce protocols. The broader source/provenance inventory is in [docs/PRIOR_WORK.md](docs/PRIOR_WORK.md); owner review of the final disclosure remains pending.
 
 ## AI use
-TODO: fill in from docs/AI_USE.md.
+AI coding assistants implemented the Rust harness, task/reference drafts and tests. The primary implementation agent reviewed worker changes and ran deterministic oracle/mutant/schema/isolation checks. The author remains responsible for originality and correctness, and must personally approve tasks, answers and grading rules and read the failing transcripts before final claims. That human review is still pending. Details and the sign-off checklist are in [docs/AI_USE.md](docs/AI_USE.md).
 
 ## Repository layout
 A Cargo workspace (`crates/`), task data (`tasks/`, `reference/`), JSON schemas (`schemas/`), run configs (`configs/`), and committed results (`results/`, `transcripts/`). Details in AGENTS.md.

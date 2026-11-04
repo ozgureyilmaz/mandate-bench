@@ -5,10 +5,10 @@
 | Item | Current evidence | Still needed |
 |---|---|---|
 | Task set | 9 synthetic task/reference pairs; 8 traps + 1 control | Owner hand-solution and approval of every scenario, answer and rule |
-| Grader | 9/9 offline oracles; 82 workspace tests pass | Owner review of grading rules and final validation after any task changes |
+| Grader | 9/9 offline oracles; all-task mutant/isolation coverage passes | Owner review of grading rules and final validation after any task changes |
 | Live integration | One real Luna Responses tool-call smoke passed; estimated USD 0.0000237 | This smoke does not measure task-solving accuracy |
-| Pilot | Luna-only 4-task × 3-trial config prepared; dry-run passes | Execute, inspect failures, evaluate the ≥85% trap ceiling gate, document any hardening |
-| Final model results | No benchmark run has been performed or promoted | Multiple independent trials per task; raw outputs, scores, transcripts, exact returned model IDs, dates/settings, usage/cost and API-error counts |
+| Pilot | Attempted 12 Luna trials: all ended in HTTP 429 API errors after 20 successful requests; zero graded outcomes | Identify rate/quota/spend cause, use confirmed limits, obtain a valid pilot, then evaluate the ≥85% trap ceiling gate |
+| Final model results | Diagnostic pilot artifacts retained; no reportable benchmark accuracy | Multiple completed independent trials per task; preserve the errored run and report API errors separately with raw outputs/transcripts, versions/settings/usage/cost |
 | Model comparison | Only Luna is currently approved under the approximately USD 5 credit restriction | Resolve the internal frontier-evidence goal/model plan before adding any other model; do not infer permission from the historical model table |
 | Analysis/report | Grader assigns failure labels | Report command and tables, pass rate/pass^k, failure transcripts/quotes, human confirmation, substantive takeaway |
 | README | Setup and task/grading descriptions exist | Finish required short description, domain/expertise, model-results/settings/runtime/cost, failure analysis, sources/prior work, reviewed AI-use disclosure and final video link |

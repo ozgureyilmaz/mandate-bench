@@ -27,6 +27,7 @@ struct Artifacts {
     scores: Vec<Value>,
     records: Vec<RequestRecord>,
     costs: Vec<Option<Decimal>>,
+    models: Vec<ModelConfig>,
 }
 
 impl Artifacts {
@@ -101,6 +102,7 @@ impl Artifacts {
             scores: Vec::new(),
             records: Vec::new(),
             costs: Vec::new(),
+            models: models.to_vec(),
         };
         artifacts.flush("running")?;
         Ok(artifacts)
@@ -169,8 +171,19 @@ impl Artifacts {
                 .count()
         );
         metadata["cost_estimate_usd"] = json!(sum_costs(&self.costs));
-        metadata["known_cost_estimate_usd"] =
-            json!(self.costs.iter().flatten().copied().sum::<Decimal>());
+        metadata["known_cost_estimate_usd"] = json!(
+            self.records
+                .iter()
+                .filter_map(|record| {
+                    self.models
+                        .iter()
+                        .find(|model| {
+                            model.provider == record.provider && model.id == record.requested_model
+                        })
+                        .and_then(|model| request_cost(model, record))
+                })
+                .sum::<Decimal>()
+        );
         let temporary = self.run_dir.join("run_meta.tmp");
         fs::write(&temporary, serde_json::to_vec_pretty(&metadata)?)?;
         fs::rename(temporary, self.run_dir.join("run_meta.json"))?;
