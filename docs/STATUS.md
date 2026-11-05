@@ -15,7 +15,7 @@ Last updated Nov 5, 2026 (Istanbul).
 
 ## Verification on Nov 5
 
-All 139 workspace tests pass, including the local two-request Muse smoke, separate-ledger checks, policy 2 reporting, mutants and reference isolation. Formatting, denied-warning Clippy, the locked release build and packaging fixtures pass. The release oracle scored 1.0 on all nine tasks. The Muse live smoke passed with one echo tool call and a completed continuation. OpenAI key presence was confirmed by dry run.
+All 144 workspace tests pass, including the local two-request Muse smoke, separate-ledger checks, policy 2 reporting, mutants and reference isolation. Formatting, denied-warning Clippy, the locked release build and packaging fixtures pass. The release oracle scored 1.0 on all nine tasks. The Muse live smoke passed with one echo tool call and a completed continuation. OpenAI key presence was confirmed by dry run.
 
 ## Spend log
 
@@ -58,4 +58,4 @@ Owner hand-solves and checks the tasks, references and grader. Freeze the eligib
 
 ## Owner checkpoint
 
-The review packet is ready. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)
+The [nine-task answer sheet](SIGNOFF_ANSWERS.md) is ready for owner review. The Muse diagnostic gate checks both SIGNOFF boxes and all nine STATUS owner cells before dispatch. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)

@@ -447,16 +447,144 @@ fn require_tool_eligibility(root: &Path, config: &RunConfig, models: &[ModelConf
         if model.provider == "meta" {
             let signoff = fs::read_to_string(root.join("docs/SIGNOFF.md"))
                 .context("Muse scored runs require owner review in docs/SIGNOFF.md")?;
-            ensure!(
-                [
-                    "- [x] Task and reference sign-off",
-                    "- [x] Grader and metrics sign-off"
-                ]
-                .iter()
-                .all(|approval| signoff.lines().any(|line| line == *approval)),
-                "Muse scored runs require task and grader sign-off in docs/SIGNOFF.md"
-            );
+            let status = fs::read_to_string(root.join("docs/STATUS.md"))
+                .context("Muse scored runs require owner task sign-off in docs/STATUS.md")?;
+            check_muse_owner_signoff(&signoff, &status)?;
         }
+    }
+    Ok(())
+}
+
+const MUSE_OWNER_SIGNOFF_ITEMS: [&str; 2] =
+    ["Task and reference sign-off", "Grader and metrics sign-off"];
+
+const MUSE_OWNER_SIGNED_TASKS: [&str; 9] = [
+    "t00_control",
+    "t01_hidden_fees",
+    "t02_expired_offer",
+    "t03_compatibility",
+    "t04_seller_injection",
+    "t05_bundle_vs_unit",
+    "t06_ship_vs_delivery",
+    "t07_final_sale",
+    "t08_no_valid_offer",
+];
+
+fn normalized_whitespace(value: &str) -> String {
+    value.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+fn checked_box(value: &str) -> bool {
+    matches!(value.trim(), "☑" | "✅")
+}
+
+fn markdown_cells(line: &str) -> Option<Vec<String>> {
+    let line = line.trim();
+    line.contains('|').then(|| {
+        line.trim_matches('|')
+            .split('|')
+            .map(|cell| cell.trim().to_owned())
+            .collect()
+    })
+}
+
+fn check_muse_owner_signoff(signoff: &str, status: &str) -> Result<()> {
+    let mut approvals: BTreeMap<&str, Vec<bool>> = BTreeMap::new();
+    for line in signoff.lines() {
+        let Some(item) = line.trim().strip_prefix('-').map(str::trim) else {
+            continue;
+        };
+        let Some((mark, label)) = item.strip_prefix('[').and_then(|item| item.split_once(']'))
+        else {
+            continue;
+        };
+        let label = normalized_whitespace(label);
+        for required in MUSE_OWNER_SIGNOFF_ITEMS {
+            if label == required {
+                approvals
+                    .entry(required)
+                    .or_default()
+                    .push(mark.trim().eq_ignore_ascii_case("x"));
+            }
+        }
+    }
+    for required in MUSE_OWNER_SIGNOFF_ITEMS {
+        ensure!(
+            approvals
+                .get(required)
+                .is_some_and(|items| items.len() == 1 && items[0]),
+            "Muse scored runs require exactly one checked '{required}' box in docs/SIGNOFF.md"
+        );
+    }
+
+    const EXPECTED_HEADER: [&str; 5] = [
+        "Task",
+        "Built",
+        "Oracle 1.0",
+        "Mutants fail",
+        "ozgur sign-off",
+    ];
+    let lines = status.lines().collect::<Vec<_>>();
+    let headers = lines
+        .iter()
+        .enumerate()
+        .filter_map(|(index, line)| {
+            let cells = markdown_cells(line)?;
+            (cells.len() == EXPECTED_HEADER.len()
+                && cells
+                    .iter()
+                    .zip(EXPECTED_HEADER)
+                    .all(|(cell, expected)| cell.as_str() == expected))
+            .then_some(index)
+        })
+        .collect::<Vec<_>>();
+    ensure!(
+        headers.len() == 1,
+        "Muse scored runs require exactly one task sign-off table in docs/STATUS.md"
+    );
+
+    let header = headers[0];
+    let mut rows: BTreeMap<&str, Vec<bool>> = BTreeMap::new();
+    for line in &lines[header + 1..] {
+        if line.trim().is_empty() {
+            break;
+        }
+        let Some(cells) = markdown_cells(line) else {
+            break;
+        };
+        if cells.iter().all(|cell| {
+            !cell.is_empty() && cell.chars().all(|character| matches!(character, '-' | ':'))
+        }) {
+            continue;
+        }
+        let Some(task_cell) = cells.first().map(String::as_str) else {
+            continue;
+        };
+        let Some(task_id) = MUSE_OWNER_SIGNED_TASKS
+            .iter()
+            .copied()
+            .find(|task_id| *task_id == task_cell)
+        else {
+            continue;
+        };
+        ensure!(
+            cells.len() == EXPECTED_HEADER.len(),
+            "Muse task sign-off row for {task_id} has an unexpected number of columns in docs/STATUS.md"
+        );
+        rows.entry(task_id)
+            .or_default()
+            .push(checked_box(&cells[4]));
+    }
+
+    for task_id in MUSE_OWNER_SIGNED_TASKS {
+        ensure!(
+            rows.get(task_id).is_some_and(|cells| cells.len() == 1),
+            "Muse scored runs require exactly one '{task_id}' row in docs/STATUS.md"
+        );
+        ensure!(
+            rows[task_id][0],
+            "Muse scored runs require the '{task_id}' owner sign-off cell checked in docs/STATUS.md"
+        );
     }
     Ok(())
 }

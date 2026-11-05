@@ -2,11 +2,11 @@
 
 Replay fix revision `1b2d3ad` is published on `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2)
 
-The release oracle scores 1.0 on all nine tasks. All 139 workspace tests pass, including policy 2 metrics, hidden-reference isolation, hardening mutants, both ledgers and the local Muse tool round trip. Formatting, Clippy, release build and packaging fixtures pass. The original Luna v1 pilot remains 9/12 strict. [STATUS.md](STATUS.md) · [PILOT_REVIEW.md](PILOT_REVIEW.md)
+The release oracle scores 1.0 on all nine tasks. All 144 workspace tests pass, including policy 2 metrics, hidden-reference isolation, hardening mutants, both ledgers and the local Muse tool round trip. Formatting, Clippy, release build and packaging fixtures pass. The original Luna v1 pilot remains 9/12 strict. [STATUS.md](STATUS.md) · [PILOT_REVIEW.md](PILOT_REVIEW.md)
 
 ## Task and grader review
 
-Hand-solve each visible task before opening its reference. Check the authorized action, minimum pack count, total, delivery, compatibility and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Record the nine individual approvals in [STATUS.md](STATUS.md) and complete the two owner checkboxes below.
+Set aside about 20 minutes. Hand-solve each visible task, then compare with the [nine-task answer sheet](SIGNOFF_ANSWERS.md). Check the authorized action, minimum pack count, total, delivery, compatibility and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Mark the nine owner cells as ☑ or ✅ in [STATUS.md](STATUS.md) and check both boxes below. Reply once both files are signed.
 
 | Task | Version | Visible input | Hidden reference |
 |---|---:|---|---|
@@ -34,7 +34,7 @@ The corrected `muse-spark-1.1` live smoke passed. The initial call returned the 
 | OpenAI | USD 1 | Full historical hold. Reconcile billing before another paid Luna request. |
 | Muse | USD 15 | USD 0.00368615 estimated for the two successful requests. The original validation reservation was released by audit. Remaining conservative capacity is USD 14.99606525. |
 
-After both sign-offs and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
+After the two owner checkboxes, the nine STATUS cells and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
 
 ## Submission checkpoint
 

@@ -116,6 +116,63 @@ fn read_json(path: &Path) -> Value {
     serde_json::from_slice(&fs::read(path).unwrap()).unwrap()
 }
 
+fn muse_run_root(signoff: &str, status: &str) -> TempRoot {
+    let root = TempRoot::new("https://api.meta.ai/v1");
+    fs::write(
+        root.0.join("config.toml"),
+        include_str!("../../../configs/muse-diagnostic.toml"),
+    )
+    .unwrap();
+    fs::create_dir_all(root.0.join("docs")).unwrap();
+    fs::write(root.0.join("docs/SIGNOFF.md"), signoff).unwrap();
+    fs::write(root.0.join("docs/STATUS.md"), status).unwrap();
+    fs::create_dir_all(root.0.join("runs")).unwrap();
+    fs::write(
+        root.0.join("runs/muse-tool-eligibility.json"),
+        serde_json::to_vec(&json!({
+            "muse-spark-1.1": {
+                "status": "tool_call_supported",
+                "source": "provider_api",
+                "base_url": "https://api.meta.ai/v1",
+                "reasoning_effort": "medium"
+            }
+        }))
+        .unwrap(),
+    )
+    .unwrap();
+    root
+}
+
+const MUSE_TASK_IDS: [&str; 9] = [
+    "t00_control",
+    "t01_hidden_fees",
+    "t02_expired_offer",
+    "t03_compatibility",
+    "t04_seller_injection",
+    "t05_bundle_vs_unit",
+    "t06_ship_vs_delivery",
+    "t07_final_sale",
+    "t08_no_valid_offer",
+];
+
+fn muse_status_rows(task_ids: &[&str], unchecked: Option<&str>) -> String {
+    let mut status = String::from(
+        "  | Task | Built | Oracle 1.0 | Mutants fail | ozgur sign-off |  \n  | --- | --- | --- | --- | --- |  \n",
+    );
+    for task_id in task_ids {
+        let mark = if Some(*task_id) == unchecked {
+            "☐"
+        } else {
+            "✅"
+        };
+        status.push_str(&format!("  | {task_id} | ☑ | ☑ | ☑ |  {mark}  |  \n"));
+    }
+    status
+}
+
+const CHECKED_MUSE_SIGNOFF: &str =
+    "  - [x]   Task and reference sign-off  \n  - [x] Grader and metrics sign-off \n";
+
 fn server(replies: Vec<(u16, Value)>) -> (String, thread::JoinHandle<()>, Arc<Mutex<Vec<Value>>>) {
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
     let address = listener.local_addr().unwrap();
@@ -556,4 +613,65 @@ fn real_paid_config_requires_the_cumulative_guard_before_key_preflight() {
     assert!(!output.status.success());
     assert!(String::from_utf8_lossy(&output.stderr).contains("cumulative budget guard"));
     assert!(!root.0.join("runs").exists());
+}
+
+#[test]
+fn muse_run_accepts_whitespace_and_checked_marks_before_loading_tasks() {
+    let status = muse_status_rows(&MUSE_TASK_IDS, None);
+    let root = muse_run_root(CHECKED_MUSE_SIGNOFF, &status);
+
+    let output = root.command("run", true);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(!output.status.success());
+    assert!(
+        stderr.contains("tasks/t01_hidden_fees/task.json"),
+        "{stderr}"
+    );
+    assert!(!stderr.contains("owner sign-off"), "{stderr}");
+    assert_eq!(fs::read_dir(root.0.join("runs")).unwrap().count(), 1);
+}
+
+#[test]
+fn muse_run_rejects_missing_duplicate_or_unchecked_owner_signoffs_before_dispatch() {
+    let mut missing_task = MUSE_TASK_IDS.to_vec();
+    missing_task.pop();
+    let mut duplicate_task = MUSE_TASK_IDS.to_vec();
+    duplicate_task.push("t03_compatibility");
+    let cases = [
+        (
+            "unchecked SIGNOFF box",
+            "  - [ ] Task and reference sign-off\n  - [x] Grader and metrics sign-off\n".to_owned(),
+            muse_status_rows(&MUSE_TASK_IDS, None),
+            "Task and reference sign-off",
+        ),
+        (
+            "missing STATUS row",
+            CHECKED_MUSE_SIGNOFF.to_owned(),
+            muse_status_rows(&missing_task, None),
+            "t08_no_valid_offer",
+        ),
+        (
+            "duplicate STATUS row",
+            CHECKED_MUSE_SIGNOFF.to_owned(),
+            muse_status_rows(&duplicate_task, None),
+            "t03_compatibility",
+        ),
+        (
+            "unchecked STATUS cell",
+            CHECKED_MUSE_SIGNOFF.to_owned(),
+            muse_status_rows(&MUSE_TASK_IDS, Some("t06_ship_vs_delivery")),
+            "t06_ship_vs_delivery",
+        ),
+    ];
+
+    for (case, signoff, status, expected) in cases {
+        let root = muse_run_root(&signoff, &status);
+        let output = root.command("run", true);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        assert!(!output.status.success(), "{case} unexpectedly passed");
+        assert!(stderr.contains(expected), "{case}: {stderr}");
+        assert_eq!(fs::read_dir(root.0.join("runs")).unwrap().count(), 1);
+    }
 }
