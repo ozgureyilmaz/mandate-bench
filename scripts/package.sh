@@ -128,7 +128,7 @@ done
 
 # Credential patterns are boundary-anchored and length-bounded so docs mentioning only prefixes do not trip.
 # Matches are held only in shell variables; all diagnostics print file names and commit paths, never match text.
-secret_re="(^|[^[:alnum:]_-])([sS][kK]-[[:alnum:]][[:alnum:]_-]{15,}|[nN][vV][aA][pP][iI]-[[:alnum:]][[:alnum:]_-]{15,}|[gG][hH][pP]_[[:alnum:]]{20,}|[gG][hH][oO]_[[:alnum:]]{20,}|[aA][kK][iI][aA][[:upper:][:digit:]]{16}|[bB][eE][aA][rR][eE][rR][[:space:]]+[[:alnum:]._~+/=-]{16,}|([aA][pP][iI][_ -]?[kK][eE][yY]|[tT][oO][kK][eE][nN])[[:space:]]*[:=][[:space:]]*[\"']?[[:alnum:]._~+/=-]{16,})"
+secret_re="(^|[^[:alnum:]_-])([sS][kK]-[[:alnum:]][[:alnum:]_-]{15,}|[nN][vV][aA][pP][iI]-[[:alnum:]][[:alnum:]_-]{15,}|[gG][hH][pP]_[[:alnum:]]{20,}|[gG][hH][oO]_[[:alnum:]]{20,}|[aA][kK][iI][aA][[:upper:][:digit:]]{16}|[lL][lL][mM][_|][[:digit:]]{6,}[_|][[:alnum:]_~+/=-]{16,}|[bB][eE][aA][rR][eE][rR][[:space:]]+[[:alnum:]._~+/=-]{16,}|(([mM][oO][dD][eE][lL]_)?[aA][pP][iI][_ -]?[kK][eE][yY]|[tT][oO][kK][eE][nN])[[:space:]]*[:=][[:space:]]*[\"']?[[:alnum:]._~+/=-]{16,})"
 private_begin='-----BEGIN [A-Z ]*PRIVATE KEY-----'
 
 blob_has_secret() {
@@ -223,18 +223,26 @@ validate_run() {
 
   jq -s -e --argjson expected "$expected" --argjson trials "$trials" \
     --argjson task_ids "$tasks_json" --argjson model_ids "$model_ids" \
+    --argjson policy "$(jq '.metrics_policy_version // 1' "$meta")" \
     --arg state "$(jq -r '.state' "$meta")" '
       def key: "\(.requested_model)\u0000\(.task_id)\u0000\(.trial)";
       ([.[] | select(.status == "api_error")] | length) as $api_errors |
-      length == $expected and
+      length == $expected and $api_errors < $expected and
       (if $api_errors == 0 then $state == "completed" else $state == "completed_with_api_errors" end) and
       ([.[].trial_id] | unique | length) == $expected and
       ([.[].task_id] | unique | sort) == $task_ids and
       ([.[].requested_model] | unique | sort) == $model_ids and
       ([.[] | key] | unique | length) == $expected and
       all(.[]; (.trial_id | type == "string" and test("^[A-Za-z0-9._-]+$")) and
+        (if $policy == 2 then .metrics_policy_version == 2 else $policy == 1 and (.metrics_policy_version == null or .metrics_policy_version == 1) end) and
         (.status == "pass" or .status == "fail" or .status == "api_error") and
-        (if .status == "api_error" then .grade == null else .grade.pass == (.status == "pass") end) and
+        (if .metrics_policy_version == 2 then
+           (if .status == "api_error" then .grade == null and .outcome_pass == null and .strict_pass == null and .format_compliant == null
+            else (.outcome_pass | type == "boolean") and (.strict_pass | type == "boolean") and (.format_compliant | type == "boolean") and
+              .outcome_pass == (.status == "pass") and .strict_pass == (.outcome_pass and .format_compliant) end)
+         elif .metrics_policy_version == null then
+           (if .status == "api_error" then .grade == null else .grade.pass == (.status == "pass") end)
+         else false end) and
         (.trial | type == "number" and . >= 1 and . <= $trials))
     ' "$scores" >/dev/null 2>&1 || return 1
   [[ "$expected" -ge 45 ]] || return 1

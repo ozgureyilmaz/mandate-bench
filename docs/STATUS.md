@@ -60,3 +60,7 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 - Step 2 complete: prospective policy 2 (outcome, strict outcome+raw format, independent raw format) frozen in DECISIONS.md before new provider requests. Original v1 9/12 and raw data remain unchanged; pilot motivation disclosed.
 - Next: cumulative paid-budget enforcement, free-model tool smokes, up to four versioned fixture changes and owner SIGNOFF. No new paid run has been made in this slice.
 - Step 5 data unit complete: t01/t02/t05/t06 and references are version 2; schema cap is 8. Focused core/environment/grader checks pass, including all nine reference grades and the new hardening mutants/arithmetic/date/cap tests. The other five fixtures and all historical model data are unchanged. This is automated implementation review; owner checkboxes remain blank. Budget client integration and the full workspace checks are still in progress.
+
+## Nov 5 addendum
+- PR #2 remains the publication path. OpenAI retains its USD 1 ceiling. Muse Spark 1.1 is approved with its own USD 15 ceiling and a medium-reasoning tool round trip after local key setup.
+- Official model, pricing and Responses documentation checked. Provider wiring and offline verification are in progress. Muse and all three NIM live checks remain pending. No new provider requests or paid charges in this checkpoint.

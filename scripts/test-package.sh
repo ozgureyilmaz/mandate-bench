@@ -171,6 +171,29 @@ if output=$(cd "$valid" && ./scripts/package.sh --out "$existing" 2>&1); then
 fi
 [[ "$(cat "$existing")" == 'preserve me' ]] || { printf 'existing output was modified\n' >&2; exit 1; }
 
+# A prospective outcome pass may retain a legacy format failure.
+prospective="$tmp/prospective"
+make_valid_repo "$prospective"
+jq '.metrics_policy_version=2' "$prospective/results/fixture-run/run_meta.json" > "$tmp/prospective-meta"
+cp "$tmp/prospective-meta" "$prospective/results/fixture-run/run_meta.json"
+jq -c '. + {metrics_policy_version:2,outcome_pass:true,strict_pass:false,format_compliant:false,grade:{pass:false}}' \
+  "$prospective/results/fixture-run/scores.jsonl" > "$tmp/prospective-scores"
+cp "$tmp/prospective-scores" "$prospective/results/fixture-run/scores.jsonl"
+commit_all "$prospective" 'record prospective metric fixture'
+(cd "$prospective" && ./scripts/package.sh --check >/dev/null)
+
+# Complete coverage consisting only of provider errors is not benchmark evidence.
+all_errors="$tmp/all-errors"
+make_valid_repo "$all_errors"
+jq -c '.status="api_error" | .grade=null' "$all_errors/results/fixture-run/scores.jsonl" > "$tmp/error-scores"
+cp "$tmp/error-scores" "$all_errors/results/fixture-run/scores.jsonl"
+jq '.state="completed_with_api_errors"' "$all_errors/results/fixture-run/run_meta.json" > "$tmp/error-meta"
+cp "$tmp/error-meta" "$all_errors/results/fixture-run/run_meta.json"
+jq '.input_metadata.state="completed_with_api_errors"' "$all_errors/results/fixture-run/report.json" > "$tmp/error-report"
+cp "$tmp/error-report" "$all_errors/results/fixture-run/report.json"
+commit_all "$all_errors" 'record all-error coverage fixture'
+expect_refusal_without_archive "$all_errors" "$tmp/all-errors.zip"
+
 # Dirty and untracked source are refused before an archive is created.
 dirty_repo="$tmp/dirty"
 make_valid_repo "$dirty_repo"
@@ -254,6 +277,22 @@ for secret in "$sk_secret" "$nvapi_secret" "$ghp_secret" "$gho_secret" "$akia_se
   "$bearer_secret" "$api_key_secret" "$token_secret" "$private_body"; do
   [[ "$output" != *"$secret"* ]] || { printf 'credential value appeared in diagnostics\n' >&2; exit 1; }
 done
+
+# Both documented Meta key formats are detected without echoing the values.
+meta_repo="$tmp/meta-secret"
+make_valid_repo "$meta_repo"
+meta_underscore="LLM_123456_$pad"
+meta_pipe="LLM|123456|$pad"
+printf '%s\n' "$meta_underscore" > "$meta_repo/docs/meta-underscore.txt"
+printf '%s\n' "$meta_pipe" > "$meta_repo/docs/meta-pipe.txt"
+commit_all "$meta_repo" 'add synthetic Meta key markers'
+if output=$(cd "$meta_repo" && ./scripts/package.sh --check 2>&1); then
+  printf 'Meta credential fixtures were not blocked\n' >&2
+  exit 1
+fi
+[[ "$output" == *'credential-shaped value in tracked file: docs/meta-underscore.txt'* ]]
+[[ "$output" == *'credential-shaped value in tracked file: docs/meta-pipe.txt'* ]]
+[[ "$output" != *"$meta_underscore"* && "$output" != *"$meta_pipe"* ]]
 
 # A credential removed from the current tree still blocks through history scanning.
 history_secret_repo="$tmp/history-secret"
