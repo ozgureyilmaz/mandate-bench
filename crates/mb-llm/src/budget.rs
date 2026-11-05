@@ -98,13 +98,19 @@ fn validate_history_item_for_provider(item: &Value, provider: &str) -> Result<()
 }
 
 fn validate_meta_reasoning_item(object: &serde_json::Map<String, Value>) -> Result<()> {
-    const ALLOWED_FIELDS: &[&str] = &["type", "id", "encrypted_content", "summary"];
+    const ALLOWED_FIELDS: &[&str] = &["type", "id", "encrypted_content", "summary", "status"];
     ensure!(
         object
             .keys()
             .all(|key| ALLOWED_FIELDS.contains(&key.as_str())),
         "Meta reasoning item contains unsupported fields"
     );
+    if let Some(status) = object.get("status") {
+        ensure!(
+            status.as_str() == Some("completed"),
+            "Meta replay requires a completed reasoning item"
+        );
+    }
     ensure!(
         object
             .get("encrypted_content")
@@ -1395,11 +1401,15 @@ mod tests {
             "type": "reasoning",
             "id": "rs_123",
             "summary": [{"type": "summary_text", "text": "summary"}],
-            "encrypted_content": "opaque-ciphertext"
+            "encrypted_content": "opaque-ciphertext",
+            "status": "completed"
         });
         assert!(
             validate_budgeted_history_for_provider("meta", std::slice::from_ref(&valid)).is_ok()
         );
+        let mut in_progress = valid.clone();
+        in_progress["status"] = serde_json::json!("in_progress");
+        assert!(validate_budgeted_history_for_provider("meta", &[in_progress]).is_err());
         assert!(validate_budgeted_history_for_provider("openai", &[valid]).is_err());
         let missing_encrypted = serde_json::json!({
             "type": "reasoning",

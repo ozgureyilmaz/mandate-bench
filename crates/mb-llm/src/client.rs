@@ -1055,7 +1055,7 @@ mod tests {
                         "model":"muse-spark-1.1",
                         "status":"completed",
                         "output":[
-                            {"type":"reasoning","id":"rs_local","summary":[],"encrypted_content":"opaque-test-state"},
+                            {"type":"reasoning","id":"rs_local","summary":[],"encrypted_content":"opaque-test-state","status":"completed"},
                             {"type":"function_call","id":"fc_local","call_id":"call_local","name":"get_offer","arguments":r#"{"offer_id":"A"}"#,"status":"completed"}
                         ],
                         "usage":{"input_tokens":10,"output_tokens":7,"output_tokens_details":{"reasoning_tokens":4}}
