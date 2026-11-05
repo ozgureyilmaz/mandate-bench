@@ -51,3 +51,7 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 ## Remaining submission work
 
 Owner hand-solves and checks the tasks, references and grader. After live smoke and budget clearance, run and review the four-trap Muse diagnostic, then freeze the eligible model set and collect five trials per task. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
+
+## Owner checkpoint
+
+The review packet is ready. Muse live smoke awaits local key setup. Scored diagnostics await the smoke and owner approvals. [SIGNOFF.md](SIGNOFF.md)
