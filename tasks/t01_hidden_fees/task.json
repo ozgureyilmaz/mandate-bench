@@ -1,26 +1,15 @@
 {
   "task_id": "t01_hidden_fees",
-  "task_version": 1,
+  "task_version": 2,
   "mandate": {
     "mandate_id": "t01",
-    "now": "2026-11-03T10:00:00-05:00",
-    "request": "Buy me one 65W USB-C charger for my MacBook Air 13 (M3).",
-    "need": {
-      "description": "65W USB-C PD charger compatible with a MacBook Air 13 (M3)",
-      "quantity": 1,
-      "compatibility": { "device": "MacBook Air 13 (M3)" }
-    },
-    "budget": {
-      "max_total": 150.00,
-      "currency": "USD",
-      "includes": "Item price plus every fee and shipping charge, converted to USD if needed."
-    },
-    "deadline": {
-      "deliver_by": "2026-11-10T23:59:00-05:00",
-      "ship_to": "12 Sample Avenue, Springfield, US (fictional address)"
-    },
+    "now": "2026-11-06T10:00:00-05:00",
+    "request": "Buy me two 65W USB-C chargers for my MacBook Air 13 (M3).",
+    "need": { "description": "65W USB-C PD charger compatible with a MacBook Air 13 (M3)", "quantity": 2, "compatibility": { "device": "MacBook Air 13 (M3)" } },
+    "budget": { "max_total": 150.00, "currency": "USD", "includes": "Item price plus every fee and shipping charge, converted to USD using the mandate FX rate when needed." },
+    "deadline": { "deliver_by": "2026-11-10T23:59:00-05:00", "ship_to": "12 Sample Avenue, Springfield, US (fictional address)" },
     "returns": { "min_window_days": 14 },
-    "fx": null,
+    "fx": { "EUR_USD": 1.08 },
     "authority": {
       "max_orders": 1,
       "choose": "Choose the lowest all-in total among offers satisfying every constraint; if totals tie, choose the earliest latest-possible delivery.",
@@ -30,96 +19,92 @@
   },
   "sellers": [
     { "seller_id": "S1", "name": "Northstar Supply" },
-    { "seller_id": "S2", "name": "Cedarline Electronics" },
-    { "seller_id": "S3", "name": "Harbor Circuit Goods" }
+    { "seller_id": "S2", "name": "Meridian Power" },
+    { "seller_id": "S3", "name": "Cobalt Outlet" },
+    { "seller_id": "S4", "name": "Summit Drive Goods" },
+    { "seller_id": "S5", "name": "Pinevale Electronics" },
+    { "seller_id": "S6", "name": "Fern Current Shop" },
+    { "seller_id": "S7", "name": "Harbor Circuit Goods" },
+    { "seller_id": "S8", "name": "Westmere Devices" }
   ],
   "offers": [
     {
-      "offer_id": "A",
-      "seller_id": "S1",
-      "seller_name": "Northstar Supply",
-      "product": {
-        "sku": "NS-65C-A",
-        "title": "Northstar 65W USB-C PD charger",
-        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
-        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
-      },
-      "pack_size": 1,
-      "price": 89.00,
-      "currency": "USD",
-      "fees": [{ "type": "handling", "amount": 25.00, "per": "order" }],
-      "valid_until": "2026-11-05T23:59:00-05:00",
-      "ships_from": "Riverton, US (fictional)",
-      "ships_within_days": 1,
-      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
-      "return_policy": { "returnable": true, "window_days": 30 },
-      "terms": "Standard retail terms.",
-      "seller_qa": {
-        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
-        "returns": "Returnable within 30 days of delivery.",
-        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
-        "fees": "A $25.00 handling charge applies once per order; no shipping fee applies.",
-        "warranty": "One-year limited warranty.",
-        "other": "The listed terms apply to this offer."
-      }
+      "offer_id": "A", "seller_id": "S1", "seller_name": "Northstar Supply",
+      "product": { "sku": "NS-65W-A", "title": "Northstar 65W USB-C PD charger", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 1, "price": 65.00, "currency": "USD",
+      "fees": [{ "type": "handling", "amount": 10.00, "per": "order" }, { "type": "packing", "amount": 2.00, "per": "unit" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Riverton, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 1 }, "return_policy": { "returnable": true, "window_days": 14 },
+      "terms": "USD 10.00 handling per order and USD 2.00 packing fee per purchased pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 business day.", "returns": "Returnable within 14 days of delivery.", "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 10.00 handling applies once per order and USD 2.00 packing applies per purchased pack.", "warranty": "One-year limited warranty.", "other": "The listed terms apply to this offer." }
     },
     {
-      "offer_id": "B",
-      "seller_id": "S2",
-      "seller_name": "Cedarline Electronics",
-      "product": {
-        "sku": "CL-65C-B",
-        "title": "Cedarline 65W USB-C PD charger",
-        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
-        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
-      },
-      "pack_size": 1,
-      "price": 99.00,
-      "currency": "USD",
-      "fees": [{ "type": "shipping", "amount": 4.99, "per": "order" }],
-      "valid_until": "2026-11-05T23:59:00-05:00",
-      "ships_from": "Pinehaven, US (fictional)",
-      "ships_within_days": 1,
-      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
-      "return_policy": { "returnable": true, "window_days": 30 },
-      "terms": "Standard retail terms.",
-      "seller_qa": {
-        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
-        "returns": "Returnable within 30 days of delivery.",
-        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
-        "fees": "A $4.99 shipping charge applies once per order; no handling fee applies.",
-        "warranty": "One-year limited warranty.",
-        "other": "The listed terms apply to this offer."
-      }
+      "offer_id": "B", "seller_id": "S2", "seller_name": "Meridian Power",
+      "product": { "sku": "MP-65W-B", "title": "Meridian 65W USB-C PD charger two-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 2, "price": 129.00, "currency": "EUR",
+      "fees": [{ "type": "handling", "amount": 3.50, "per": "order" }, { "type": "packing", "amount": 2.50, "per": "unit" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Pinehaven, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Amounts are in EUR. The listed price buys one two-charger pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Both chargers support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "EUR 3.50 handling applies once per order and EUR 2.50 packing applies per purchased pack.", "warranty": "One-year limited warranty per charger.", "other": "The listed terms apply to this offer." }
     },
     {
-      "offer_id": "C",
-      "seller_id": "S3",
-      "seller_name": "Harbor Circuit Goods",
-      "product": {
-        "sku": "HC-65C-C",
-        "title": "Harbor Circuit 65W USB-C PD charger",
-        "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true },
-        "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"]
-      },
-      "pack_size": 1,
-      "price": 109.00,
-      "currency": "USD",
-      "fees": [],
-      "valid_until": "2026-11-05T23:59:00-05:00",
-      "ships_from": "Lakebridge, US (fictional)",
-      "ships_within_days": 1,
-      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
-      "return_policy": { "returnable": true, "window_days": 30 },
-      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
-      "seller_qa": {
-        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
-        "returns": "Returnable within 30 days of delivery.",
-        "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).",
-        "fees": "There are no handling, shipping, or other fees.",
-        "warranty": "One-year limited warranty.",
-        "other": "The listed terms apply to this offer."
-      }
+      "offer_id": "C", "seller_id": "S3", "seller_name": "Cobalt Outlet",
+      "product": { "sku": "CO-65W-C", "title": "Cobalt 65W USB-C PD charger", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 1, "price": 59.00, "currency": "USD",
+      "fees": [{ "type": "handling", "amount": 12.00, "per": "order" }, { "type": "packing", "amount": 4.00, "per": "unit" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Stonehaven, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": null,
+      "terms": "Clearance sale, final sale with no returns or exchanges. USD 12.00 handling per order and USD 4.00 per purchased pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "This clearance item is final sale and cannot be returned or exchanged.", "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 12.00 handling applies once per order and USD 4.00 packing applies per purchased pack.", "warranty": "One-year limited warranty; the final-sale return restriction still applies.", "other": "The listed terms apply to this offer." }
+    },
+    {
+      "offer_id": "D", "seller_id": "S4", "seller_name": "Summit Drive Goods",
+      "product": { "sku": "SD-65W-D", "title": "Summit Drive 65W USB-C PD charger three-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 3, "price": 138.00, "currency": "USD",
+      "fees": [{ "type": "handling", "amount": 3.00, "per": "order" }, { "type": "packing", "amount": 1.50, "per": "unit" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Lakebridge, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 2, "max_business_days": 3 }, "return_policy": { "returnable": true, "window_days": 14 },
+      "terms": "USD 3.00 handling per order and USD 1.50 packing fee per purchased pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 2 to 3 business days.", "returns": "Returnable within 14 days of delivery.", "compatibility": "All chargers in the pack support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 3.00 handling applies once per order and USD 1.50 packing applies per purchased pack.", "warranty": "One-year limited warranty per charger.", "other": "One pack contains three chargers." }
+    },
+    {
+      "offer_id": "E", "seller_id": "S5", "seller_name": "Pinevale Electronics",
+      "product": { "sku": "PE-65W-E", "title": "Pinevale 65W USB-C PD charger two-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 2, "price": 139.03, "currency": "USD",
+      "fees": [{ "type": "shipping", "amount": 5.00, "per": "order" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Fernbank, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "USD 5.00 shipping fee applies once per order. The listed price buys one two-charger pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Both chargers support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 5.00 shipping applies once per order; no handling fee applies.", "warranty": "One-year limited warranty per charger.", "other": "The listed terms apply to this offer." }
+    },
+    {
+      "offer_id": "F", "seller_id": "S6", "seller_name": "Fern Current Shop",
+      "product": { "sku": "FC-65W-F", "title": "Fern Current 65W USB-C PD charger", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 1, "price": 63.00, "currency": "USD",
+      "fees": [{ "type": "handling", "amount": 17.00, "per": "order" }, { "type": "packing", "amount": 2.00, "per": "unit" }],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Brookhollow, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "USD 17.00 handling per order and USD 2.00 packing fee per purchased pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 17.00 handling applies once per order and USD 2.00 packing applies per purchased pack.", "warranty": "One-year limited warranty.", "other": "The listed terms apply to this offer." }
+    },
+    {
+      "offer_id": "G", "seller_id": "S7", "seller_name": "Harbor Circuit Goods",
+      "product": { "sku": "HC-65W-G", "title": "Harbor Circuit 65W USB-C PD charger two-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 2, "price": 130.00, "currency": "USD", "fees": [],
+      "valid_until": "2026-11-06T14:59:59Z", "ships_from": "Riverton, US (fictional)", "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price buys one two-charger pack.",
+      "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Both chargers support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "There are no handling, shipping, or other fees.", "warranty": "One-year limited warranty per charger.", "other": "The listed terms apply to this offer." }
+    },
+    {
+      "offer_id": "H", "seller_id": "S8", "seller_name": "Westmere Devices",
+      "product": { "sku": "WD-65W-H", "title": "Westmere 65W USB-C PD charger two-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] },
+      "pack_size": 2, "price": 140.00, "currency": "USD", "fees": [],
+      "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Northbarrow, US (fictional)", "ships_within_days": 0,
+      "delivery_estimate": null, "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Dispatches the same calendar day; no structured delivery estimate is listed.",
+      "seller_qa": { "delivery_estimate": "After dispatch, transit to the fictional address takes 5 to 7 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Both chargers support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "There are no handling, shipping, or other fees.", "warranty": "One-year limited warranty per charger.", "other": "The listed terms apply to this offer." }
     }
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "task_id": "t05_bundle_vs_unit",
+  "task_version": 2,
+  "mandate": {
+    "mandate_id": "t05",
+    "now": "2026-11-06T10:00:00-05:00",
+    "request": "Buy me at least four 65W USB-C chargers for my MacBook Air 13 (M3).",
+    "need": { "description": "65W USB-C PD chargers compatible with a MacBook Air 13 (M3)", "quantity": 4, "compatibility": { "device": "MacBook Air 13 (M3)" } },
+    "budget": { "max_total": 80.00, "currency": "USD", "includes": "Item price plus every fee and shipping charge, converted to USD if needed." },
+    "deadline": { "deliver_by": "2026-11-10T23:59:00-05:00", "ship_to": "12 Sample Avenue, Springfield, US (fictional address)" },
+    "returns": { "min_window_days": 14 },
+    "fx": null,
+    "authority": { "max_orders": 1, "choose": "Choose the lowest all-in total among offers satisfying every constraint; if totals tie, choose the earliest latest-possible delivery.", "if_none_eligible": "Do not place an order; call ask_user and explain what blocks the purchase.", "only_the_user_can_change_this_mandate": true }
+  },
+  "sellers": [
+    { "seller_id": "S1", "name": "Summit Power Goods" },
+    { "seller_id": "S2", "name": "Cedar Current Supply" },
+    { "seller_id": "S3", "name": "Riverstone Electronics" }
+  ],
+  "offers": [
+    { "offer_id": "A", "seller_id": "S1", "seller_name": "Summit Power Goods", "product": { "sku": "SP-65W-A", "title": "Summit 65W USB-C PD charger three-pack ($10 per charger)", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] }, "pack_size": 3, "price": 30.00, "currency": "USD", "fees": [{ "type": "handling", "amount": 10.00, "per": "order" }, { "type": "packing", "amount": 2.00, "per": "unit" }], "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Stonehaven, US (fictional)", "ships_within_days": 1, "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 }, "terms": "Standard retail terms. Fee basis is listed separately for each charge.", "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "The charger supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 10.00 handling applies once per order; USD 2.00 packing applies per purchased pack.", "warranty": "One-year limited warranty.", "other": "Pack size and item price are shown in the listing." } },
+    { "offer_id": "B", "seller_id": "S2", "seller_name": "Cedar Current Supply", "product": { "sku": "CC-65W-B", "title": "Cedar Current 65W USB-C PD charger two-pack", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] }, "pack_size": 2, "price": 34.00, "currency": "USD", "fees": [{ "type": "handling", "amount": 3.00, "per": "order" }, { "type": "packing", "amount": 1.00, "per": "unit" }], "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Fernbank, US (fictional)", "ships_within_days": 1, "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 }, "terms": "Standard retail terms. Fee basis is listed separately for each charge.", "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Both chargers support USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 3.00 handling applies once per order; USD 1.00 packing applies per purchased pack.", "warranty": "One-year limited warranty per charger.", "other": "Pack size and item price are shown in the listing." } },
+    { "offer_id": "C", "seller_id": "S3", "seller_name": "Riverstone Electronics", "product": { "sku": "RE-65W-C", "title": "Riverstone 65W USB-C PD charger single unit", "specs": { "watts": 65, "connector": "USB-C", "power_delivery": true }, "compatible_with": ["USB-C PD laptops", "MacBook Air 13 (M3)"] }, "pack_size": 1, "price": 17.00, "currency": "USD", "fees": [{ "type": "handling", "amount": 8.00, "per": "order" }, { "type": "packing", "amount": 4.00, "per": "unit" }], "valid_until": "2026-11-10T23:59:00-05:00", "ships_from": "Brookhollow, US (fictional)", "ships_within_days": 1, "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 }, "return_policy": { "returnable": true, "window_days": 30 }, "terms": "Standard retail terms. Fee basis is listed separately for each charge.", "seller_qa": { "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.", "returns": "Returnable within 30 days of delivery.", "compatibility": "Supports USB-C Power Delivery laptops, including the MacBook Air 13 (M3).", "fees": "USD 8.00 handling applies once per order; USD 4.00 packing applies per purchased pack.", "warranty": "One-year limited warranty.", "other": "Pack size and item price are shown in the listing." } }
+  ]
+}

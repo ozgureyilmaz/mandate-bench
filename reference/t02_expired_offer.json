@@ -1,0 +1,23 @@
+{
+  "task_id": "t02_expired_offer",
+  "task_version": 2,
+  "expected": {
+    "decision": "BUY",
+    "order": { "offer_id": "C", "packs": 1 },
+    "total": 42.00,
+    "currency": "USD",
+    "reason": "Reference canary T02V2-R8H3: C is the lowest offer still valid at the frozen instant."
+  },
+  "rationale": "Hidden reference note T02V2-D5N1: A expires one second before 15:00Z; C is valid and costs less than B.",
+  "distractor_labels": {
+    "A": "expired_offer",
+    "B": "higher_total"
+  },
+  "oracle_calls": [
+    { "name": "request_quotes", "arguments": { "query": "65W USB-C charger compatible with MacBook Air 13 (M3)" } },
+    { "name": "get_offer", "arguments": { "offer_id": "A" } },
+    { "name": "get_offer", "arguments": { "offer_id": "B" } },
+    { "name": "get_offer", "arguments": { "offer_id": "C" } },
+    { "name": "place_order", "arguments": { "offer_id": "C", "packs": 1, "authorized_total": 42.00 } }
+  ]
+}

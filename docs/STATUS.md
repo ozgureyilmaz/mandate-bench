@@ -1,53 +1,62 @@
 # STATUS
 
-Last updated: **Oct 30, 2026 (Istanbul)**, by the implementation agent.
-Update this file at the end of every unit of work. Keep it short.
+Last updated Nov 5, 2026 (Istanbul).
 
-## Done
-- Idea 5a chosen (buyer agent + scripted sellers + mandate). Reasons in DECISIONS.md.
-- Repo name: `mandate-bench`. Public repo: https://github.com/ozgureyilmaz/mandate-bench. M1 is prepared for pull-request review; no hackathon submission has been made.
-- Hackathon rules, deadlines, rubric and checklist captured (docs/HACKATHON.md).
-- Design draft v0.2: USD/global tasks, Rust harness, schemas, tools, 9 tasks, grader, metrics (docs/PLAN.md).
-- Decided: providers OpenAI + DeepSeek + NVIDIA NIM (no OpenRouter), USD/global, Rust, unlisted YouTube video last, strict `.gitignore` (DECISIONS.md).
-- Model list and budget confirmed by ozgur on Oct 30 (PLAN.md §8): core set without gpt-6-astra, about $25–35 total. NVIDIA models still need a tool-calling smoke test. Provider details for agents are in AGENTS.md.
-- X links and buildevals.com added (docs/LINKS.md, docs/PRIOR_WORK.md).
-- micro1 Participant Agreement accepted by ozgur (Oct 30).
-- ozgur's reason for 5a recorded (DECISIONS.md).
-- M1: six-crate Cargo workspace, Rust 1.99.1 pin with rustfmt/Clippy, Cargo.lock, five strict offline schemas, shared exact-decimal total/delivery functions, fixed buyer prompt, scripted five-tool env, ledger and offline replay/CLI.
-- t00/t01 visible task JSON plus hidden references/oracle calls. Control reference: B × 1, USD 59.50; hidden-fee reference: B × 1, USD 103.99. These are oracle fixtures, not model results.
-- Hidden-reference isolation interpretation confirmed by ozgur; normal offer IDs/prices stay visible. Details in DECISIONS.md.
-- Native worker requests used `gpt-6-luna` / `xhigh` for schemas/fixtures, environment and grader. Shared-doc updates were consolidated by the primary to avoid overlapping writes.
-- Verified on Rust 1.99.1: `cargo build --release --locked`, `cargo test --workspace --locked` (27 tests), `cargo fmt --all --check`, and `cargo clippy --workspace --all-targets --locked -- -D warnings` all pass. Offline oracle: t00/t01 each 1.0 (2/2). Scratch replay is in ignored `runs/m1-verification-20261030/`; it is not a model run.
-- Fresh local clone of the M1 source snapshot verified with a new build directory: release build, oracle (2/2), all 27 tests, format and Clippy all pass with `--locked --offline` where applicable. Toolchain/registry were already installed on this machine; this is not the later fresh-machine live rerun. Tree/history marker scans found only documented placeholder strings and `ask-user` substring matches, no credential values.
-- M1 branch: `feat/m1-offline-harness`. M1 implementation is complete, with zero evaluation API cost. Owner authorized publishing this branch and opening a pull request; merge and submission remain pending.
-- Repository role wording is neutral, AI-use disclosure is retained, and M1 is consolidated into one commit for review.
+[M1 PR #1](https://github.com/ozgureyilmaz/mandate-bench/pull/1) merged at `3982bc4`. The current review branch is `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2).
 
-## Pending owner review
-- Owner task/answer/grading review remains pending; no sign-off inferred from automated checks.
+| Work | State |
+|---|---|
+| Metrics | Prospective policy 2 frozen Nov 4 before new scored trials. It records outcome, strict outcome plus raw format, and independent raw format. The v1 Luna pilot remains 9/12 strict. The separate outcome audit is a retrospective of those trials. |
+| Task hardening | t01/t02/t05/t06 and their references are v2. The task schema admits up to eight offers. Other task versions and historical run artifacts retain their original bytes. |
+| Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. OpenAI capacity remains fully held for unresolved historical exposure; make no further OpenAI requests. |
+| Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. Live tool round trip passed after the tool-choice and replay fixes. CLI preflight requires both SIGNOFF boxes and all nine owner cells below; the agent separately waits for the owner's explicit signed chat reply before diagnostic dispatch. |
+| NVIDIA NIM | Retired from active submission. The three candidates remain archived and untested; no live check or NVIDIA key is required. The Nov 5 missing-key dry run is preserved as historical evidence. [NIM_SMOKE.md](NIM_SMOKE.md) · [archived config](../configs/historical/nim-smoke.toml) |
+| Final benchmark | Outside the current work order. Only the Muse-only four-trap diagnostic may proceed after its gates. The Luna v1 pilot remains frozen at 9/12 strict; no further OpenAI calls are authorized. NIM is outside the active submission. |
 
-## Next
-1. ozgur hand-solves/reviews t00/t01 and reviews the M1 implementation.
-2. M2 (not started): provider client, limits/backoff, live buyer loop and smoke command. Check DeepSeek multi-turn reasoning requirements before the pilot; NVIDIA tool calling remains unverified.
-3. M3: remaining task fixtures, references and extended self-tests.
-4. Pilot gate as in PLAN.md; no evaluation APIs were called in M1.
+## Verification on Nov 5
 
-## Blockers / open questions for ozgur
-- [ ] LinkedIn URL (https://www.linkedin.com/in/ozgure?) and personal site: OK to list in the README? Please confirm the exact URLs.
+All 144 workspace tests pass, including the local two-request Muse smoke, separate-ledger checks, policy 2 reporting, mutants and reference isolation. Formatting, denied-warning Clippy, the locked release build and packaging fixtures pass. The release oracle scored 1.0 on all nine tasks. The Muse live smoke passed with one echo tool call and a completed continuation. The default offline smoke preflight selects Muse. The historical NIM config is rejected before key lookup. The Muse ledger is unchanged.
 
-## Task sign-off (ozgur hand-solves each task from task.json alone)
+## Spend log
+
+Token-price estimates are distinct from the conservative ledger balances. Add an entry after each live attempt with provider, run ID, known cost and unresolved exposure.
+
+| Date | Provider | Evidence | Known estimated USD | Unresolved usage or hold |
+|---|---|---|---:|---|
+| Nov 4 | OpenAI | Archived initial smoke | 0.00002370 | None reported |
+| Nov 4 | OpenAI | Initial pilot, known successful requests | 0.00133736 | Error usage unknown. The full USD 1 ceiling covers historical exposure. |
+| Nov 4 | OpenAI | Slower control | 0.00044962 | None reported |
+| Nov 4 | OpenAI | Fresh serial pilot, 12 trials | 0.00490785 | None reported |
+| Nov 5 | OpenAI | Offline implementation checks, no provider requests | 0 | Historical hold carried forward |
+| Nov 5 | Meta | Offline implementation checks, no provider requests | 0 | Live smoke pending |
+| Nov 5 | Meta | Live smoke `smoke-20261105T121126.314341000Z-49545`, one HTTP 400 | Unknown | USD 1.319424 held at worst case. Ledger halted. |
+| Nov 5 | Meta | Corrected smoke `smoke-20261105T122337.636593000Z-54711`. Initial call returned HTTP 200 and the expected tool call. Local validation blocked the continuation before HTTP. | 0.00209495 | Initial call settled. Historical hold retained. |
+| Nov 5 | Meta | Continuation `smoke-20261105T122821.305894000Z-57376`. One HTTP 200, exact echo result, zero extra calls. | 0.00159120 | Continuation settled. Historical USD 1.319424 hold retained. |
+| Nov 5 | Meta | Audit of reservation 1 for the initial 400 at 17:04:16.643Z | 0 under project policy | Released USD 1.319424. Available capacity increased from USD 13.67664125 to USD 14.99606525. |
+| Nov 5 | NVIDIA NIM | Historical live checks deferred by owner, no provider requests | 0 | All three candidates later retired from active submission |
+| Nov 5 | NVIDIA NIM | Historical dry run. Local key missing. | 0 | All three candidates remain untested and archived |
+
+Archived live evidence is under `results/diagnostics/`. The initial pilot retained 12 HTTP 429 errors. The slower pilot completed 12 trials and its three strict failures omitted final currency after correct no-order escalation. [PILOT_REVIEW.md](PILOT_REVIEW.md).
+
+## Task sign-off
+Owner must solve each task from `task.json` alone; automated checks are not human sign-off.
+
 | Task | Built | Oracle 1.0 | Mutants fail | ozgur sign-off |
 |---|---|---|---|---|
 | t00_control | ☑ | ☑ | ☑ | ☐ |
 | t01_hidden_fees | ☑ | ☑ | ☑ | ☐ |
-| t02_expired_offer | ☐ | ☐ | ☐ | ☐ |
-| t03_compatibility | ☐ | ☐ | ☐ | ☐ |
-| t04_seller_injection | ☐ | ☐ | ☐ | ☐ |
-| t05_bundle_vs_unit | ☐ | ☐ | ☐ | ☐ |
-| t06_ship_vs_delivery | ☐ | ☐ | ☐ | ☐ |
-| t07_final_sale | ☐ | ☐ | ☐ | ☐ |
-| t08_no_valid_offer | ☐ | ☐ | ☐ | ☐ |
+| t02_expired_offer | ☑ | ☑ | ☑ | ☐ |
+| t03_compatibility | ☑ | ☑ | ☑ | ☐ |
+| t04_seller_injection | ☑ | ☑ | ☑ | ☐ |
+| t05_bundle_vs_unit | ☑ | ☑ | ☑ | ☐ |
+| t06_ship_vs_delivery | ☑ | ☑ | ☑ | ☐ |
+| t07_final_sale | ☑ | ☑ | ☑ | ☐ |
+| t08_no_valid_offer | ☑ | ☑ | ☑ | ☐ |
 
-## Spend log
-| Date | Run | Models | Cost (USD) |
-|---|---|---|---|
-| — | — | — | 0 |
+## Remaining submission work
+
+Owner hand-solves and checks the tasks, references and grader. The Muse-only diagnostic config becomes active only after both SIGNOFF boxes, all nine owner cells, and the owner's explicit signed chat reply. Then review its coverage, outcome, format and spend before selecting any final evidence. NIM key setup and qualification are not required; no new OpenAI calls are authorized. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
+
+## Owner checkpoint
+
+The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine committed tasks, references and grader rules. The answers match and the packet is ready for owner review. CLI preflight checks both SIGNOFF boxes and all nine STATUS owner cells. The agent must separately receive the owner's explicit signed chat reply before diagnostic dispatch. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)

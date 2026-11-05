@@ -5,10 +5,10 @@ The hackathon allows AI tools, and the author stays responsible for correctness.
 ## Tools used
 | Tool | Used for | Not used for |
 |---|---|---|
-| AI coding assistant | M1 Rust workspace, shared arithmetic, offline replay/CLI, scripted env, schemas, two task/reference fixtures, grader and tests. Native workers were requested as `gpt-6-luna` at `xhigh`, as authorized by ozgur; the primary integrated and reviewed their work. | No evaluation API runs, provider transport or submission in M1; human sign-off remains pending |
+| AI coding assistant | M1 workspace/env/grader/two fixtures; M2 provider/loop/CLI and tests; M3 remaining seven fixtures and all-task test coverage. M4 versioned hardening, policy 2 metrics, provider ledgers and the Muse integration. Native workers were requested as `gpt-6-luna` at `xhigh`, as authorized by ozgur; the primary integrated and reviewed their work. | No fabricated benchmark results, human sign-off or submission; the single live M2 smoke is recorded separately from benchmark performance |
 | Cursor cloud agents | Planned for later bounded tasks; not used in M1 | No M1 implementation |
 | Grok Bot | Research on related work and link verification; drafting docs; status tracking; run monitoring | Writing eval logic; choosing expected answers |
-| Models under test | Only as subjects of the eval | Grading (no LLM judge) |
+| Models under test | Luna produced archived diagnostic trials. Meta Model API / Muse Spark 1.1 is configured as a candidate under test, with a passing live tool round trip after the first HTTP 400 and replay fixes. | Grading (no LLM judge) |
 
 ## What the author did personally
 - [ ] Chose the domain and the trap taxonomy (from TODO: own experience).

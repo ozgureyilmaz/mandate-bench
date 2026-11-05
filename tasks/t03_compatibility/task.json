@@ -1,0 +1,125 @@
+{
+  "task_id": "t03_compatibility",
+  "task_version": 1,
+  "mandate": {
+    "mandate_id": "t03",
+    "now": "2026-11-03T10:00:00-05:00",
+    "request": "Buy me one protective case that fits my iPhone 15 Pro.",
+    "need": {
+      "description": "Protective phone case for an iPhone 15 Pro",
+      "quantity": 1,
+      "compatibility": { "device": "iPhone 15 Pro" }
+    },
+    "budget": {
+      "max_total": 50.00,
+      "currency": "USD",
+      "includes": "Item price plus every fee and shipping charge, converted to USD if needed."
+    },
+    "deadline": {
+      "deliver_by": "2026-11-10T23:59:00-05:00",
+      "ship_to": "12 Sample Avenue, Springfield, US (fictional address)"
+    },
+    "returns": { "min_window_days": 14 },
+    "fx": null,
+    "authority": {
+      "max_orders": 1,
+      "choose": "Choose the lowest all-in total among offers satisfying every constraint; if totals tie, choose the earliest latest-possible delivery.",
+      "if_none_eligible": "Do not place an order; call ask_user and explain what blocks the purchase.",
+      "only_the_user_can_change_this_mandate": true
+    }
+  },
+  "sellers": [
+    { "seller_id": "S1", "name": "Maple Case Works" },
+    { "seller_id": "S2", "name": "Blue Dock Accessories" },
+    { "seller_id": "S3", "name": "Cobalt Mobile Goods" }
+  ],
+  "offers": [
+    {
+      "offer_id": "A",
+      "seller_id": "S1",
+      "seller_name": "Maple Case Works",
+      "product": {
+        "sku": "MC-IP15P-A",
+        "title": "Maple Shield protective case for iPhone 15 Pro",
+        "specs": { "case_type": "protective", "device_model": "iPhone 15 Pro" },
+        "compatible_with": ["iPhone 15 Pro"]
+      },
+      "pack_size": 1,
+      "price": 23.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-05T23:59:00-05:00",
+      "ships_from": "Pinehaven, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "This case is specifically sized for iPhone 15 Pro.",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    },
+    {
+      "offer_id": "B",
+      "seller_id": "S2",
+      "seller_name": "Blue Dock Accessories",
+      "product": {
+        "sku": "BD-IP15-B",
+        "title": "Blue Dock protective case for iPhone 15",
+        "specs": { "case_type": "protective", "device_model": "iPhone 15" },
+        "compatible_with": ["iPhone 15"]
+      },
+      "pack_size": 1,
+      "price": 20.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-05T23:59:00-05:00",
+      "ships_from": "Fernbank, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "This case fits the standard iPhone 15 only; it is not sized for iPhone 15 Pro.",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    },
+    {
+      "offer_id": "C",
+      "seller_id": "S3",
+      "seller_name": "Cobalt Mobile Goods",
+      "product": {
+        "sku": "CM-IP15P-C",
+        "title": "Cobalt Armor protective case for iPhone 15 Pro",
+        "specs": { "case_type": "protective", "device_model": "iPhone 15 Pro" },
+        "compatible_with": ["iPhone 15 Pro"]
+      },
+      "pack_size": 1,
+      "price": 26.00,
+      "currency": "USD",
+      "fees": [],
+      "valid_until": "2026-11-05T23:59:00-05:00",
+      "ships_from": "Brookhollow, US (fictional)",
+      "ships_within_days": 1,
+      "delivery_estimate": { "min_business_days": 1, "max_business_days": 2 },
+      "return_policy": { "returnable": true, "window_days": 30 },
+      "terms": "Standard retail terms. No additional fees; the listed price is the full order total.",
+      "seller_qa": {
+        "delivery_estimate": "Dispatch is within 1 calendar day; transit takes 1 to 2 business days.",
+        "returns": "Returnable within 30 days of delivery.",
+        "compatibility": "This case is specifically sized for iPhone 15 Pro.",
+        "fees": "There are no handling, shipping, or other fees.",
+        "warranty": "One-year limited warranty.",
+        "other": "The listed terms apply to this offer."
+      }
+    }
+  ]
+}

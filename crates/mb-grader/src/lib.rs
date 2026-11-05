@@ -34,6 +34,15 @@ pub struct Grade {
     pub failure_label: Option<String>,
 }
 
+/// Policy-v2 metrics for an episode. `format_compliant` checks the raw output;
+/// it is deliberately independent from the outcome normalization in v2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct OutcomeMetricsV2 {
+    pub outcome_pass: bool,
+    pub strict_pass: bool,
+    pub format_compliant: bool,
+}
+
 /// Load and validate a strict, schema-conforming hidden reference file.
 pub fn load_reference(path: &Path) -> Result<Reference> {
     let text = fs::read_to_string(path)
@@ -214,6 +223,74 @@ pub fn grade(task: &Task, reference: &Reference, env: &Environment, raw_final: &
         score: if pass { 1.0 } else { 0.0 },
         components,
         failure_label,
+    }
+}
+
+/// Proposed outcome audit policy v2. This does not replace the strict `grade`.
+/// Explanatory metadata is not scored. An ASK_USER with no order/amount may
+/// inherit the mandate's USD currency; BUY and explicit wrong units stay strict.
+/// Only a working copy is normalized; raw model output is never edited.
+pub fn grade_authorized_outcome(
+    task: &Task,
+    reference: &Reference,
+    env: &Environment,
+    raw_final: &str,
+) -> Grade {
+    let original = grade(task, reference, env, raw_final);
+    let Ok(mut value) = parse_unique_json(raw_final) else {
+        return original;
+    };
+    let Some(object) = value.as_object_mut() else {
+        return original;
+    };
+    if !object
+        .get("reason")
+        .and_then(Value::as_str)
+        .is_some_and(|reason| !reason.is_empty())
+    {
+        object.insert(
+            "reason".into(),
+            Value::String("Explanation metadata is not scored by outcome policy v2.".into()),
+        );
+    }
+    if task.mandate.budget.currency == "USD"
+        && object.get("decision").and_then(Value::as_str) == Some("ASK_USER")
+        && object.get("order") == Some(&Value::Null)
+        && object.get("total").is_none_or(Value::is_null)
+        && !object.contains_key("currency")
+    {
+        object.insert("currency".into(), Value::String("USD".into()));
+    }
+    match serde_json::to_string(&value) {
+        Ok(normalized) => grade(task, reference, env, &normalized),
+        Err(_) => original,
+    }
+}
+
+/// Check the raw final answer against the unchanged final-answer schema.
+/// Unlike `grade`, this does not normalize formatted numeric strings.
+pub fn final_format_compliant(raw: &str) -> bool {
+    let Ok(value) = parse_unique_json(raw) else {
+        return false;
+    };
+    validate_schema("final_answer", &value).is_ok()
+}
+
+/// Compute prospective policy-v2 metrics from the same episode inputs.
+/// Non-complete episode outcomes are overridden by the caller, which has the
+/// episode status and must keep both pass booleans false independently of format.
+pub fn evaluate_metrics_v2(
+    task: &Task,
+    reference: &Reference,
+    env: &Environment,
+    raw_final: &str,
+) -> OutcomeMetricsV2 {
+    let outcome_pass = grade_authorized_outcome(task, reference, env, raw_final).pass;
+    let format_compliant = final_format_compliant(raw_final);
+    OutcomeMetricsV2 {
+        outcome_pass,
+        strict_pass: outcome_pass && format_compliant,
+        format_compliant,
     }
 }
 
