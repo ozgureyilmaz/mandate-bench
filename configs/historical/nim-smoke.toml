@@ -1,4 +1,4 @@
-# Free NIM eligibility checks only; no benchmark claims before successful tools.
+# Historical NIM candidate settings. Live NIM is disabled for this submission.
 trials = 1
 max_turns = 20
 tasks = ["t00_control"]

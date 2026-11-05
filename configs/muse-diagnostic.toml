@@ -1,4 +1,5 @@
-# Requires passing live smoke and owner task/grader sign-off.
+# Requires passing live smoke, both SIGNOFF boxes, all nine STATUS owner cells,
+# and the owner's explicit signed confirmation before dispatch.
 trials = 3
 max_turns = 20
 tasks = ["t01_hidden_fees", "t02_expired_offer", "t05_bundle_vs_unit", "t06_ship_vs_delivery"]

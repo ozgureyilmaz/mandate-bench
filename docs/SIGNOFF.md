@@ -6,7 +6,7 @@ The release oracle scores 1.0 on all nine tasks. All 144 workspace tests pass, i
 
 ## Task and grader review
 
-Set aside about 20 minutes. Hand-solve each visible task, then compare with the [nine-task answer sheet](SIGNOFF_ANSWERS.md). Check the authorized action, minimum pack count, total, delivery, compatibility and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Mark the nine owner cells as ☑ or ✅ in [STATUS.md](STATUS.md) and check both boxes below. Reply once both files are signed.
+Set aside about 20 minutes. Solve each task from its `task.json` alone, then compare with the [nine-task answer sheet](SIGNOFF_ANSWERS.md). Check the authorized action, minimum pack count, total, delivery, compatibility and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Check both boxes below and mark all nine owner cells as ☑ or ✅ in [STATUS.md](STATUS.md). Reply **signed** after both files are complete.
 
 | Task | Version | Visible input | Hidden reference |
 |---|---:|---|---|
@@ -27,14 +27,14 @@ The task contract now permits eight offers. The four v2 fixtures retain the exis
 
 ## Muse live verification
 
-The corrected `muse-spark-1.1` live smoke passed. The initial call returned the exact tool invocation. The continuation returned `smoke-roundtrip-confirmed` with zero additional calls. The first reply was reused after the local replay fix, so only the pending continuation was sent. Both requests returned HTTP 200. Local evidence is in `runs/smoke-20261105T122337.636593000Z-54711/` and `runs/smoke-20261105T122821.305894000Z-57376/`. The NIM dry run found the local key missing. Live checks remain pending. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
+The corrected `muse-spark-1.1` live smoke passed. The initial call returned the exact tool invocation. The continuation returned `smoke-roundtrip-confirmed` with zero additional calls. The first reply was reused after the local replay fix, so only the pending continuation was sent. Both requests returned HTTP 200. Local evidence is in `runs/smoke-20261105T122337.636593000Z-54711/` and `runs/smoke-20261105T122821.305894000Z-57376/`. [Smoke config](../configs/muse-smoke.toml)
 
 | Spend ledger | Project ceiling | Current checkpoint |
 |---|---:|---|
-| OpenAI | USD 1 | Full historical hold. Reconcile billing before another paid Luna request. |
+| OpenAI | USD 1 | Full historical hold for the archived Luna evidence. |
 | Muse | USD 15 | USD 0.00368615 estimated for the two successful requests. The original validation reservation was released by audit. Remaining conservative capacity is USD 14.99606525. |
 
-After the two owner checkboxes, the nine STATUS cells and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
+After the two owner checkboxes, all nine STATUS cells, your **signed** reply and a passing Muse smoke, the Muse-only diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before deciding on the final run. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
 
 ## Submission checkpoint
 

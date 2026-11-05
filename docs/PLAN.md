@@ -2,12 +2,12 @@
 
 Status: **v0.4 (Nov 5, 2026)**. Current owner-approved M4 scope below supersedes historical model/budget and implementation-boundary notes later in this document. Decisions remain append-only in DECISIONS.md.
 
-## 0. Active bounded slice — Nov 4–5
+## 0. Active bounded slice — Nov 5
 - M1 is merged; M2–M4 work is published in PR #2 on `feat/m4-hardening`. Stop at owner review in SIGNOFF.md; never submit to HackerRank.
-- OpenAI uses gpt-6-luna with a separate USD 1 cumulative ceiling. The historical unknown-error hold occupies the full ceiling in `runs/paid-budget-ledger.json`. Its active configurations specify reasoning `none`.
-- Meta uses muse-spark-1.1 with a USD 15 cumulative ceiling in `runs/muse-spend-ledger.json`. Use Responses and medium reasoning. The corrected live tool round trip passed using automatic tool choice and completed reasoning replay. The original HTTP 400 validation hold was released by audit under the owner’s policy. See DECISIONS.md. The four-trap diagnostic awaits owner task/grader approval.
+- The active diagnostic model is Muse Spark 1.1 through Meta, with a USD 15 cumulative ceiling in `runs/muse-spend-ledger.json`. Use Responses and medium reasoning. The corrected live tool round trip passed using automatic tool choice and completed reasoning replay. The original HTTP 400 validation hold was released by audit under the owner’s policy. See DECISIONS.md. Activate `configs/muse-diagnostic.toml` only after CLI preflight accepts both boxes in SIGNOFF.md and all nine owner cells in STATUS.md, and the agent has separately received the owner's explicit signed chat reply. A final benchmark run is outside the current work order.
+- The Luna v1 pilot is frozen at 9/12 strict. The unresolved historical hold occupies the full OpenAI USD 1 ceiling in `runs/paid-budget-ledger.json`; make no further OpenAI requests.
 - Both ledgers persist reservations before HTTP, release unused capacity on reported usage, retain worst-case exposure when usage is unknown, and halt on the first provider error. Paid dispatch is serial with zero retries. Pre-batch estimates use pinned rates and remaining capacity. See DECISIONS.md for the reservation bounds.
-- Free NIM candidates are kimi-k2.6, nemotron-3-ultra and mistral-large-4. The Nov 5 dry run found the local key missing. Each model needs a passing live tool smoke for admission. DeepSeek remains outside the active scope.
+- NIM candidates kimi-k2.6, nemotron-3-ultra and mistral-large-4 are archived and untested. No live NIM smoke or NVIDIA key is required. DeepSeek and NIM are outside the active scope.
 - Prospective metrics policy 2 is frozen: authorized outcome primary, strict=outcome AND raw final schema, independent raw format compliance. API errors are separate/ungraded. Old unversioned reports retain v1 semantics and original 9/12 strict result; the change was motivated by that pilot and is disclosed.
 - Task-schema contract v2 raises the offer cap from 5 to **8**; five-tool, fee, time, return, money, minimum-coverage and final-answer contracts are unchanged. t01/t02/t05/t06 move to task/reference version 2; t00 and the other four fixtures retain v1. No task changes are justified by claiming a new observed model failure. Owner hand-solves and a fresh frozen evaluation remain pending.
 
@@ -73,7 +73,7 @@ M1 concrete data layout: a visible task document contains `task_id`, `task_versi
 - `seller_qa` is **never** returned by `get_offer`. It's only reachable through `ask_seller`. Sellers are scripted: the same input always gives the same output.
 
 ## 4. Buyer tool and I/O protocol
-The loop uses OpenAI-compatible function calling through one Rust client (`mb-llm`) with a per-provider `base_url`: the Responses API for OpenAI models, Chat Completions for DeepSeek and NVIDIA NIM (see AGENTS.md → Model providers). The tool definitions are identical across providers. Each trial uses a fresh env, a fresh ledger and a frozen `now`.
+The loop uses OpenAI-compatible function calling through one Rust client (`mb-llm`) with a per-provider `base_url`: the Responses API for Muse and the historical OpenAI profile, Chat Completions for historical DeepSeek and NIM profiles (see AGENTS.md → Provider implementation and historical profiles). The tool definitions are identical across providers. Each trial uses a fresh env, a fresh ledger and a frozen `now`.
 
 | Tool | Args | Returns |
 |---|---|---|
@@ -98,7 +98,7 @@ M1 exposes `oracle` only. It loads hidden references in the CLI/grader, passes a
 
 M2 supersedes that implementation boundary: `mb-llm` now provides the two wire codecs and a shared bounded HTTP client; `mb-agent` drives the model through the five tools; the CLI exposes `smoke` and `run`. The CLI/grader load references for preflight and scoring, while the live loop receives only visible task data. Invalid tool arguments terminate without repair; an ordinary malformed final answer reaches the schema grader. After a successful standalone `ask_user`, one final request is made with tools retained and tool choice disabled, if the turn budget permits; that request counts against `max_turns`. An already-invalid batch stops before another request. Model truncation/length/content-filter outcomes remain scored failures, not excluded network errors.
 
-`configs/smoke.toml` selects only the approved cheap model `gpt-6-luna`; it can also drive an explicit bounded check on t00/t01. Dry-run preflight checks config/endpoints and key names but sends no requests; missing keys exit before any run directory or request is created. M2 was resumed Nov 2 and its live Luna smoke passed Nov 4. This establishes key/model/function-call compatibility; benchmark performance is still unmeasured.
+Historical M2 note: `configs/smoke.toml` selected the then-approved cheap model `gpt-6-luna`; it could also drive an explicit bounded check on t00/t01. Its Nov 4 live smoke established Luna key/model/function-call compatibility, not benchmark performance. This config and its result are historical only; no further OpenAI requests are authorized.
 
 ## 5. Tasks (8 trap + 1 control)
 All are synthetic and global: prices in USD, fictional sellers and addresses, `now` with an explicit UTC offset. Each task has 3–5 offers. The numbers below are drafts; final values live in `tasks/*/task.json` and `reference/*.json`, and the oracle checks them.
@@ -152,11 +152,11 @@ M3 now includes all t00–t08 fixtures and replays all nine references. Escalati
 - API errors (429, 5xx, timeouts) are retried per request with backoff, honouring `Retry-After` and rate-limit reset headers, up to `max_retries` (default 6; AGENTS.md). If a trial still errors it's recorded as `api_error`, shown in its own column and excluded from the denominator **with the count reported**.
 
 ## 8. Models and cost (agent-facing; the README lists only the models tested)
-**Active model and spend scope is in §0.** Muse Spark Standard rates are USD 1.25 input, USD 0.15 cached input and USD 4.25 output per million tokens. The guard accounts for all input at the uncached rate and counts reasoning within output. The owner reported approximately USD 100 in Muse credit and authorized USD 15 for this project. Historical provider and cost examples below record the initial design. [Meta pricing](https://dev.meta.ai/docs/pricing-rate-limits).
+**Active model and spend scope is in §0.** The provider/model list and cost examples below preserve the initial design; they are not an active eligibility list or authorization to run additional models. Muse Spark Standard rates are USD 1.25 input, USD 0.15 cached input and USD 4.25 output per million tokens. The guard accounts for all input at the uncached rate and counts reasoning within output. The owner reported approximately USD 100 in Muse credit and authorized USD 15 for this project. [Meta pricing](https://dev.meta.ai/docs/pricing-rate-limits).
 
 The original one-request M2 smoke succeeded with zero retries, 142 input/19 output tokens, and estimated USD 0.0000237 cost. Subsequent diagnostic evidence is recorded in PILOT_REVIEW.md; it does not retroactively change the current allowance.
 
-Providers: **OpenAI** (paid, ozgur's account has tight rate limits), **DeepSeek** (paid), **NVIDIA NIM API catalog** (free trial endpoints, OpenAI-compatible). No OpenRouter. Provider limits and client rules: AGENTS.md → Model providers. **ozgur confirms the final list and budget.** Re-check IDs and prices on the run day.
+Historical provider profiles: **OpenAI** (paid; no further calls authorized), **DeepSeek** (outside active scope), and **NVIDIA NIM API catalog** (retired from active submission; candidates are untested and archived). No OpenRouter. Provider limits and client rules: AGENTS.md → Provider implementation and historical profiles. The only diagnostic authorized in the current work order is Muse Spark 1.1 after the §0 gates; a final benchmark run is outside scope.
 
 ✅ = model ID and price read on the provider's own page on Oct 30, 2026. ⚠️ = listed but not yet confirmed to work for this eval (needs a key and the `smoke` command).
 
@@ -167,16 +167,16 @@ Providers: **OpenAI** (paid, ozgur's account has tight rate limits), **DeepSeek*
 | Optional top tier (only if ozgur approves the cost) | OpenAI | `gpt-6-astra` | 10.00 / 50.00 | ✅ pricing page; ⚠️ model page not read |
 | Strong open-weight | DeepSeek | `deepseek-v4-pro` (DeepSeek-V4-Pro-0813) | peak 1.32 / 3.96; off-peak 0.66 / 1.98 (cache-miss input) | ✅ DeepSeek pricing page |
 | Cheap open-weight | DeepSeek | `deepseek-flash` (DeepSeek-V4.1-Flash-1017) | peak 0.30 / 1.20; off-peak 0.15 / 0.60 | ✅ DeepSeek pricing page |
-| Free open-weight | NVIDIA NIM | `moonshotai/kimi-k2.6` | free (rate-limited) | ✅ listed in `GET /v1/models`; ⚠️ tool calling and free availability unverified |
-| Free open-weight | NVIDIA NIM | `nvidia/nemotron-3-ultra-550b-a55b` | free (rate-limited) | ✅ listed; ⚠️ tool calling unverified |
-| Free open-weight | NVIDIA NIM | `mistralai/mistral-large-4-1t-a52b` | free (rate-limited) | ✅ listed; ⚠️ tool calling unverified |
+| Historical free candidate | NVIDIA NIM | `moonshotai/kimi-k2.6` | historical catalog listing | Archived, untested; no active key or smoke required |
+| Historical free candidate | NVIDIA NIM | `nvidia/nemotron-3-ultra-550b-a55b` | historical catalog listing | Archived, untested; no active key or smoke required |
+| Historical free candidate | NVIDIA NIM | `mistralai/mistral-large-4-1t-a52b` | historical catalog listing | Archived, untested; no active key or smoke required |
 
 Notes:
 - DeepSeek peak hours are 01:00–04:00 and 06:00–10:00 UTC, Mon–Fri (= 04:00–07:00 and 09:00–13:00 Istanbul). Off-peak is half price, so schedule DeepSeek runs for evenings or weekends. `deepseek-v4.1-flash` is also listed on NVIDIA NIM; use DeepSeek's own API for it to avoid a duplicate.
-- Other NVIDIA catalog models seen in `/v1/models` on Oct 30 that could replace a failed one: `z-ai/glm-5.3-flash`, `minimaxai/minimax-m3.1-flash`, `nvidia/nemotron-3-super-120b-a12b`, `google/gemma-4-31b-it`, `openai/gpt-oss-20b`, `stepfun-ai/step-5-preview`. All ⚠️ unverified for tool calling.
+- Other NVIDIA catalog models seen in `/v1/models` on Oct 30: `z-ai/glm-5.3-flash`, `minimaxai/minimax-m3.1-flash`, `nvidia/nemotron-3-super-120b-a12b`, `google/gemma-4-31b-it`, `openai/gpt-oss-20b`, `stepfun-ai/step-5-preview`. These historical candidates are not replacements for the active submission and are not authorized for smoke checks.
 - Reasoning effort stays at each model's default (gpt-6.1-sol and gpt-6-luna default `medium`); whatever is used is recorded in `run_meta.json`.
 
-**Estimate:** assume about 30k input tokens (the history re-sent over ~6 turns) and about 6k output tokens (including reasoning) per trial. Prompt caching would lower the input cost; it isn't counted here, so these are upper-end figures.
+**Historical estimate only:** assume about 30k input tokens (the history re-sent over ~6 turns) and about 6k output tokens (including reasoning) per trial. Prompt caching would lower the input cost; it isn't counted here, so these are upper-end figures. The estimates below do not authorize any run.
 - Per trial: gpt-6.1-sol ≈ $0.12; gpt-6-luna ≈ $0.006; gpt-6-astra ≈ $0.60; deepseek-v4-pro ≈ $0.063 at peak ($0.032 off-peak); deepseek-flash ≈ $0.016 at peak ($0.008 off-peak); NVIDIA models $0.
 - Full run (9 tasks × 5 trials = 45 trials per model), core list without astra: 5.40 + 0.27 + 2.85 + 0.73 + 0 ≈ **$9.25 at DeepSeek peak prices**, ≈ $7.5 off-peak. Adding gpt-6-astra adds ≈ **$27**.
 - Pilot (t00, t01, t04, t08 × 3 trials × gpt-6.1-sol, deepseek-v4-pro, kimi-k2.6): ≈ 1.44 + 0.76 + 0 ≈ **$2.2**.
@@ -195,8 +195,10 @@ M2 implementation details (Nov 2):
 
 Verified implementation references: [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling), [OpenAI reasoning replay](https://developers.openai.com/api/docs/guides/reasoning), [DeepSeek thinking mode](https://api-docs.deepseek.com/guides/thinking_mode/), [DeepSeek tool calls](https://api-docs.deepseek.com/guides/tool_calls/). These documentation checks do not establish account access or per-model live compatibility.
 
-## 9. Pilot gate (pending; originally planned Oct 31)
-The Luna-only t00/t01/t04/t08 × 3 diagnostic pilot was attempted after M2 smoke. At 30 RPM/concurrency 1/no retries/2,048 max output tokens, it retained 20 successful requests and 12 terminal HTTP 429 errors; all 12 trials are `api_error`, leaving zero graded outcomes. Source was clean commit `0b80d45`. Its raw artifacts remain unchanged in `runs/run-20261104T141828.777967000Z-53091/`. The cause (request/token rate versus quota/spend constraint) is unknown because original error codes/types were not retained; paid calls stopped. `configs/pilot.toml` is now reduced to a conservative 6 RPM, not yet rerun or verified to fix the cause. Future HTTP error diagnostics retain only safe machine code/type fields, and known request costs are counted even when a trial's total is unknown. The historical three-model comparison below still needs a model/budget decision beyond the current Luna-only restriction. Any pilot/full evidence must retain failed/errored trials and be reviewed before task hardening or publication.
+## 9. Historical pilot evidence and prior gate (originally planned Oct 31)
+The Luna pilot results and multi-provider model composition below are historical records, not current run instructions. The active Muse-only diagnostic and its owner sign-off gate are in §0. The Luna v1 result is frozen at 9/12 strict with no further OpenAI requests authorized; NIM candidates are archived and untested, with no key or live check required.
+
+The Luna-only t00/t01/t04/t08 × 3 diagnostic pilot was attempted after M2 smoke. At 30 RPM/concurrency 1/no retries/2,048 max output tokens, it retained 20 successful requests and 12 terminal HTTP 429 errors; all 12 trials are `api_error`, leaving zero graded outcomes. Source was clean commit `0b80d45`. Its raw artifacts remain unchanged in `runs/run-20261104T141828.777967000Z-53091/`. The cause (request/token rate versus quota/spend constraint) is unknown because original error codes/types were not retained; paid calls stopped. `configs/pilot.toml` is now reduced to a conservative 6 RPM, not yet rerun or verified to fix the cause. Future HTTP error diagnostics retain only safe machine code/type fields, and known request costs are counted even when a trial's total is unknown. The old three-model comparison was superseded by the current Muse-only diagnostic scope in §0. Any historical pilot/full evidence must retain failed/errored trials and be reviewed before publication.
 
 After owner balance confirmation (USD 4.97), one fresh t00 control at 6 RPM/1,024 output tokens passed all grading components with six requests, no API errors and estimated USD 0.00044962. This does not establish an account rate limit or validate the larger pilot. Run dispatch now limits active episodes by provider concurrency and halts new provider trials on an API error, retaining incomplete coverage explicitly. Offline reporting supports final selected results and separately labeled scratch previews; it does not run models, promote scratch data or turn API errors into model failures.
 

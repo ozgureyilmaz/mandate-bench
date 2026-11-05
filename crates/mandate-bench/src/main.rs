@@ -37,7 +37,7 @@ enum Command {
     },
     /// Check tool calling. Muse also replays the result and checks the continuation.
     Smoke {
-        #[arg(long, default_value = "configs/smoke.toml")]
+        #[arg(long, default_value = "configs/muse-smoke.toml")]
         config: PathBuf,
         #[arg(long)]
         model: Option<String>,

@@ -62,19 +62,19 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 ```
 To inspect an offline replay, use `cargo run --release --locked -- oracle --task t01_hidden_fees --out runs/m1-oracle`. It refuses to overwrite existing replay files. Use a new output directory for another replay. `--root /path/to/repo` supports invoking the binary from another directory.
 
-For a live tool-calling check, copy `.env.example` to `.env` only if it does not already exist, and fill the required key locally. The included smoke config selects only `gpt-6-luna` and needs `OPENAI_API_KEY`. The preflight command reports missing key names and sends no requests:
+For the active Muse path, copy `.env.example` to `.env` only if it does not already exist and set `MODEL_API_KEY` locally. This preflight checks configuration and key presence without sending requests.
 
 ```bash
 test -e .env || cp .env.example .env
-# Set OPENAI_API_KEY in .env locally, then:
-cargo run --release --locked -- smoke --config configs/smoke.toml --dry-run
+# Set MODEL_API_KEY in .env locally, then:
+cargo run --release --locked -- smoke --config configs/muse-smoke.toml --dry-run
 ```
 
-The USD 1 Luna ceiling is reserved for unresolved historical usage. The preflight above checks key presence. A new Luna request requires historical billing reconciliation.
+The USD 1 Luna ceiling is reserved for unresolved historical usage. The archived Luna pilot remains available for review.
 
 Muse Spark 1.1 passed the corrected live tool round trip. An audited ledger adjustment released the original HTTP 400 validation reservation. [Spend log](docs/STATUS.md)
 
-Muse scored diagnostics require a passing live smoke and the owner's task and grader sign-off. NIM checks remain pending. The harness records each attempted request and preserves partial coverage. Current owner review steps and limits are in [SIGNOFF.md](docs/SIGNOFF.md).
+The next scored run uses Muse only. It requires the passing live smoke, both owner checkboxes, all nine task sign-off cells and the owner's explicit confirmation. The harness records each attempted request and preserves partial coverage. [Owner review](docs/SIGNOFF.md)
 
 `report results/<run_id>` validates a selected completed run and writes derived `summary.csv` and `report.json`. For explicit diagnostic previews only, use `report runs/<run_id> --allow-scratch`; both outputs are marked diagnostic. API errors remain a separate count; undefined rates, insufficient-trial pass^k values and unknown costs stay null rather than being fabricated. Reporting never modifies scores, provider outputs, transcripts or run metadata. Smoke, local-mock and incomplete runs cannot be reported as benchmark results.
 
@@ -94,7 +94,7 @@ Offline replay makes no evaluation API calls and has zero evaluation API cost. F
 
 | Model | Evidence | Prospective scored trials |
 |---|---|---|
-| gpt-6-luna | Archived live smoke and v1 pilot, 9/12 strict | Pending billing reconciliation and owner review |
+| gpt-6-luna | Archived live smoke and v1 pilot, 9/12 strict | Historical evidence |
 | muse-spark-1.1 | Corrected live tool round trip passed. Combined known estimate USD 0.00368615. | Four-trap diagnostic awaits owner review |
 
 No finalized benchmark run has been selected for submission yet. The original Luna pilot's 12 API errors are retained. A fresh slower diagnostic pilot completed all 12 trials without API errors; the three strict failures all omit final `currency` after otherwise correct no-order escalation. These are format failures, not evidence of an unauthorized purchase. Original strict scores and any proposed outcome audit must be shown distinctly; see [docs/PILOT_REVIEW.md](docs/PILOT_REVIEW.md).
@@ -104,7 +104,7 @@ TODO after a valid pilot/full run: exact API-returned model IDs, run dates, requ
 ## Failure analysis
 The initial pilot encountered HTTP 429; its original error code/type was not retained, so the cause is unknown. A subsequent slower pilot completed without API errors. The only observed strict failures in that completed pilot were missing currency metadata on ASK_USER answers: each model correctly called `ask_user`, placed zero orders and explained the disqualifying totals/expiry. Do not present that as an authorization failure. Prospective policy 2 and versioned hardening are disclosed in docs/DECISIONS.md; owner review and an actual domain-limitation claim remain pending.
 
-After matched Luna and Muse trials exist, compare seller injection, missing final `currency` after `ask_user`, and escalation on eligible offers. TODO after completed trials: per-task failure/near-miss analysis, representative transcript quotes or an explicit statement that no failures occurred, human confirmation of labels and a supported takeaway.
+Use the archived Luna pilot as historical context when reviewing prospective Muse results. Task versions and coverage differ. TODO after completed trials: per-task failure/near-miss analysis, representative transcript quotes or an explicit statement that no failures occurred, human confirmation of labels and a supported takeaway.
 
 ## Prior work and sources
 The author's pre-hackathon [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter) informed the agent-orchestration workflow; no code was copied from it. All task data is synthetic and was written for this project.

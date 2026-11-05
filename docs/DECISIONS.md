@@ -210,3 +210,11 @@ The offline `reconcile-muse-smoke` command checked the preserved artifacts and a
 ## 2026-11-05 · Gate the Muse diagnostic on full owner review
 
 The diagnostic requires both checked owner approvals in SIGNOFF.md and exactly one signed row for each of the nine task IDs in the STATUS.md review table. The accepted row marks match packaging: ☑ and ✅. The checks run before task loading, key preflight or provider dispatch. The answer sheet supports the owner's review and all approvals remain blank. [Owner review](SIGNOFF.md)
+
+## 2026-11-05 · Retire NIM and keep the authorized diagnostic Muse-only · ozgur
+
+NIM is retired from the active submission. The three candidates remain untested. The Nov 5 missing-key dry run made no provider requests. The config is preserved at `configs/historical/nim-smoke.toml`. The CLI rejects live NIM before key lookup, and the active key template contains only `MODEL_API_KEY`. This supersedes the Nov 4 deferral for this submission.
+
+The current work order authorizes only the Muse Spark 1.1 four-trap diagnostic in `configs/muse-diagnostic.toml`. CLI preflight checks both SIGNOFF boxes and all nine STATUS owner cells. The agent separately waits for the owner's explicit **signed** reply before dispatch. A final benchmark run is outside this work order. The original Luna v1 result stays at 9/12 strict and its USD 1 ceiling remains fully held.
+
+The already verified Muse path is sufficient for this review slice. The record of NIM preflight and the frozen Luna evidence remain available for historical review. [NIM archive](NIM_SMOKE.md) · [Owner review](SIGNOFF.md)

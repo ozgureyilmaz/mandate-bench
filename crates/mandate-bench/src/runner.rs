@@ -318,24 +318,7 @@ fn configuration(
                 );
             }
             "nvidia" => {
-                ensure!(
-                    provider.base_url.trim_end_matches('/')
-                        == "https://integrate.api.nvidia.com/v1",
-                    "free comparison requires the approved NIM endpoint"
-                );
-                ensure!(
-                    matches!(
-                        model.id.as_str(),
-                        "moonshotai/kimi-k2.6"
-                            | "nvidia/nemotron-3-ultra-550b-a55b"
-                            | "mistralai/mistral-large-4-1t-a52b"
-                    ),
-                    "NIM model is outside the owner-approved list"
-                );
-                ensure!(
-                    provider.max_concurrency == 1 && provider.rpm.is_some_and(|rpm| rpm <= 30),
-                    "NIM requires serial dispatch and at most 30 RPM"
-                );
+                bail!("live NVIDIA NIM is disabled for this submission");
             }
             _ => bail!("provider is outside the current owner-approved model scope"),
         }
@@ -1204,7 +1187,7 @@ mod tests {
     #[test]
     fn nim_admission_requires_a_passing_check_and_a_later_failure_revokes_it() {
         let repo = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
-        let config = load_config(&repo.join("configs/nim-smoke.toml")).unwrap();
+        let config = load_config(&repo.join("configs/historical/nim-smoke.toml")).unwrap();
         let models = &config.models[..1];
         let root =
             std::env::temp_dir().join(format!("mandate-nim-admission-{}", std::process::id()));
