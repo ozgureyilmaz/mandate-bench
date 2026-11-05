@@ -471,12 +471,25 @@ impl Client {
                     }
 
                     let diagnostics = response.json::<Value>().await.ok();
-                    let error_code = diagnostics
-                        .as_ref()
-                        .and_then(|value| safe_error_field(value, "code", &self.key));
-                    let error_type = diagnostics
-                        .as_ref()
-                        .and_then(|value| safe_error_field(value, "type", &self.key));
+                    let error_code = diagnostics.as_ref().and_then(|value| {
+                        if self.name == "meta" {
+                            safe_meta_error_field(value, "code", &self.key)
+                        } else {
+                            safe_error_field(value, "code", &self.key)
+                        }
+                    });
+                    let error_type = diagnostics.as_ref().and_then(|value| {
+                        if self.name == "meta" {
+                            safe_meta_error_field(value, "type", &self.key)
+                        } else {
+                            safe_error_field(value, "type", &self.key)
+                        }
+                    });
+                    let meta_raw = if self.name == "meta" {
+                        sanitized_meta_error(status.as_u16(), diagnostics.as_ref(), &self.key)
+                    } else {
+                        None
+                    };
                     let mut attempt = AttemptRecord {
                         http_status: Some(status.as_u16()),
                         started_at: attempt_started,
@@ -501,6 +514,7 @@ impl Client {
                         api_error("http_status", &format!("HTTP {}", status.as_u16()), record);
                     error.error_code = error_code.map(String::into_boxed_str);
                     error.error_type = error_type.map(String::into_boxed_str);
+                    error.raw = meta_raw;
                     return Err(error);
                 }
             }
@@ -632,6 +646,67 @@ fn safe_error_field(body: &Value, field: &str, key: &str) -> Option<String> {
             .bytes()
             .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-' | b'.')))
     .then_some(redacted)
+}
+
+fn safe_meta_error_field(body: &Value, field: &str, key: &str) -> Option<String> {
+    let text = body.get("error")?.get(field)?.as_str()?;
+    let redacted = redact_meta_diagnostic(text, key);
+    (!redacted.is_empty()
+        && redacted.len() <= 128
+        && redacted
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-' | b'.')))
+    .then_some(redacted)
+}
+
+fn sanitized_meta_error(status: u16, body: Option<&Value>, key: &str) -> Option<Value> {
+    let body = body?;
+    let source = body.get("error")?;
+    let mut fields = serde_json::Map::new();
+    for (name, max_bytes) in [
+        ("message", 512),
+        ("param", 128),
+        ("type", 128),
+        ("code", 128),
+    ] {
+        let Some(value) = source.get(name) else {
+            continue;
+        };
+        let sanitized = match value {
+            Value::Null if name == "param" => Value::Null,
+            Value::String(value) => {
+                let redacted = redact_meta_diagnostic(value, key);
+                let bounded = truncate_utf8(&redacted, max_bytes);
+                if bounded.is_empty() {
+                    continue;
+                }
+                Value::String(bounded.to_owned())
+            }
+            _ => continue,
+        };
+        fields.insert(name.to_owned(), sanitized);
+    }
+    Some(serde_json::json!({
+        "status": status,
+        "error": Value::Object(fields),
+    }))
+}
+
+fn redact_meta_diagnostic(value: &str, key: &str) -> String {
+    let exact_redacted = redact_string(value, key);
+    if crate::config::contains_secret_material(&exact_redacted) {
+        "[REDACTED]".to_owned()
+    } else {
+        exact_redacted
+    }
+}
+
+fn truncate_utf8(value: &str, max_bytes: usize) -> &str {
+    let mut end = value.len().min(max_bytes);
+    while !value.is_char_boundary(end) {
+        end -= 1;
+    }
+    &value[..end]
 }
 
 fn timestamp() -> String {
@@ -1041,6 +1116,57 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn meta_http_error_retains_only_sanitized_envelope_fields() {
+        let (temp, guard) = BudgetTest::new_meta();
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let client = meta_budget_client(&listener, guard.clone());
+        let server = budget_server(
+            listener,
+            temp.0.clone(),
+            vec![(
+                400,
+                json!({
+                    "error": {
+                        "message": "Invalid tool_choice: only auto is supported.",
+                        "param": "tool_choice",
+                        "type": "invalid_request_error",
+                        "code": "unsupported_value",
+                        "debug": "this field must not be retained"
+                    },
+                    "debug": "this top-level field must not be retained"
+                }),
+            )],
+        );
+        let error = client
+            .complete(
+                &meta_model(),
+                &[json!({"role":"user","content":"hello"})],
+                &[],
+                ToolChoice::Auto,
+            )
+            .await
+            .unwrap_err();
+
+        assert_eq!(error.record.http_status, Some(400));
+        assert_eq!(error.error_type.as_deref(), Some("invalid_request_error"));
+        assert_eq!(error.error_code.as_deref(), Some("unsupported_value"));
+        assert_eq!(
+            error.raw,
+            Some(json!({
+                "status": 400,
+                "error": {
+                    "message": "Invalid tool_choice: only auto is supported.",
+                    "param": "tool_choice",
+                    "type": "invalid_request_error",
+                    "code": "unsupported_value"
+                }
+            }))
+        );
+        assert!(guard.snapshot().unwrap().halted);
+        server.join().unwrap();
+    }
+
+    #[tokio::test]
     async fn paid_response_reconciles_and_first_provider_error_stops_all_retries() {
         let (temp, guard) = BudgetTest::new(rust_decimal::Decimal::ZERO);
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
@@ -1168,5 +1294,64 @@ mod tests {
             ),
             None
         );
+        assert_eq!(
+            safe_meta_error_field(
+                &json!({"error":{"code":"unsupported_value"}}),
+                "code",
+                "local-test-only"
+            ),
+            Some("unsupported_value".into())
+        );
+        let shaped_code = ["sk", "-not-a-real-secret"].concat();
+        assert_eq!(
+            safe_meta_error_field(
+                &json!({"error":{"code":shaped_code}}),
+                "code",
+                "local-test-only"
+            ),
+            None
+        );
+    }
+
+    #[test]
+    fn meta_error_diagnostics_redact_credentials_and_bound_fields() {
+        let exact_secret_message = "Request rejected: local-test-only; only auto is supported.";
+        let exact = sanitized_meta_error(
+            400,
+            Some(&json!({
+                "error": {
+                    "message": exact_secret_message,
+                    "param": "tool_choice",
+                    "type": "invalid_request_error",
+                    "code": "unsupported_value"
+                }
+            })),
+            "local-test-only",
+        )
+        .unwrap();
+        assert_eq!(
+            exact["error"]["message"],
+            "Request rejected: [REDACTED]; only auto is supported."
+        );
+
+        let bearer_prefix = ["Bear", "er "].concat();
+        let bearer_message = format!("{bearer_prefix}not-a-real-secret");
+        let shaped = sanitized_meta_error(
+            400,
+            Some(&json!({"error":{"message":bearer_message}})),
+            "local-test-only",
+        )
+        .unwrap();
+        assert_eq!(shaped["error"]["message"], "[REDACTED]");
+
+        let long_message = "x".repeat(600);
+        let bounded = sanitized_meta_error(
+            400,
+            Some(&json!({"error":{"message":long_message}})),
+            "local-test-only",
+        )
+        .unwrap();
+        assert_eq!(bounded["error"]["message"].as_str().unwrap().len(), 512);
+        assert_eq!(bounded["status"], 400);
     }
 }

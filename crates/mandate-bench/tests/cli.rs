@@ -241,8 +241,9 @@ fn muse_smoke_replays_the_call_and_persists_both_responses() {
 
     let requests = requests.lock().unwrap();
     assert_eq!(requests.len(), 2);
+    assert_eq!(requests[0]["tool_choice"], "auto");
     assert_eq!(requests[1]["reasoning"]["effort"], "medium");
-    assert_eq!(requests[1]["tool_choice"], "none");
+    assert_eq!(requests[1]["tool_choice"], "auto");
     let input = requests[1]["input"].as_array().unwrap();
     assert!(
         input.iter().any(
@@ -257,6 +258,12 @@ fn muse_smoke_replays_the_call_and_persists_both_responses() {
                 .unwrap()
                 .contains("smoke-roundtrip-confirmed")
     }));
+    assert!(
+        input.last().unwrap()["content"]
+            .as_str()
+            .unwrap()
+            .contains("Do not make any further tool calls.")
+    );
     let (meta, scores, directory) = root.artifacts();
     assert_eq!(meta["http_attempts"], 2);
     assert_eq!(meta["token_usage"]["reasoning"], 4);
@@ -269,6 +276,44 @@ fn muse_smoke_replays_the_call_and_persists_both_responses() {
         2
     );
     assert!(!root.0.join("runs/muse-tool-eligibility.json").exists());
+}
+
+#[test]
+fn muse_smoke_preserves_sanitized_validation_details_and_stops() {
+    let (url, handle, requests) = server(vec![(
+        400,
+        json!({
+            "error": {
+                "message": format!("Unsupported tool choice. Request key was {KEY}"),
+                "param": "tool_choice",
+                "type": "invalid_request_error",
+                "code": null,
+            },
+            "debug": "discard this field"
+        }),
+    )]);
+    let root = TempRoot::new(&url);
+    let config =
+        include_str!("../../../configs/muse-smoke.toml").replace("https://api.meta.ai/v1", &url);
+    fs::write(root.0.join("config.toml"), config).unwrap();
+    assert!(!root.command("smoke", true).status.success());
+    handle.join().unwrap();
+    assert_eq!(requests.lock().unwrap().len(), 1);
+
+    let (meta, scores, directory) = root.artifacts();
+    assert_eq!(meta["http_attempts"], 1);
+    assert_eq!(scores[0]["status"], "api_error");
+    let transcript = read_json(&directory.join("transcripts/model-0.json"));
+    let detail = &transcript["api_error"]["raw"];
+    assert_eq!(detail["status"], 400);
+    assert_eq!(detail["error"]["param"], "tool_choice");
+    assert_eq!(detail["error"]["type"], "invalid_request_error");
+    assert_eq!(
+        detail["error"]["message"],
+        "Unsupported tool choice. Request key was [REDACTED]"
+    );
+    assert!(detail.get("debug").is_none());
+    assert!(!transcript.to_string().contains(KEY));
 }
 
 #[test]

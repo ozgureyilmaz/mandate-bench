@@ -542,7 +542,7 @@ fn is_deepseek_reasoning_effort(value: &str) -> bool {
     )
 }
 
-fn contains_secret_material(value: &str) -> bool {
+pub(crate) fn contains_secret_material(value: &str) -> bool {
     let lower = value.to_ascii_lowercase();
     if [
         "sk-",

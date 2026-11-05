@@ -11,7 +11,7 @@ use crate::{
     },
 };
 
-/// Build one request body for the configured wire protocol without dropping set options.
+/// Build one request body for the configured wire protocol and provider constraints.
 pub fn build_request(
     api: WireApi,
     model: &ModelConfig,
@@ -21,6 +21,12 @@ pub fn build_request(
 ) -> Result<Value> {
     validate_provider_api(&model.provider, api)?;
     validate_model_settings(model, api)?;
+    // Meta rejects every other choice, including on text-only continuation turns.
+    let choice = if model.provider == "meta" {
+        ToolChoice::Auto
+    } else {
+        choice
+    };
     ensure!(!model.id.trim().is_empty(), "model ID must not be empty");
     ensure!(
         model.max_output_tokens > 0,
@@ -699,9 +705,10 @@ mod tests {
             &model,
             &initial_history,
             &[tool()],
-            ToolChoice::Auto,
+            ToolChoice::Required("get_offer".into()),
         )
         .unwrap();
+        assert_eq!(first_request["tool_choice"], "auto");
         assert_eq!(first_request["input"], json!(initial_history));
 
         let first_response = json!({
@@ -734,9 +741,10 @@ mod tests {
             &model,
             &replay,
             &[tool()],
-            ToolChoice::Auto,
+            ToolChoice::None,
         )
         .unwrap();
+        assert_eq!(second_request["tool_choice"], "auto");
         assert_eq!(second_request["input"][2], reply.history[0]);
         assert_eq!(second_request["input"][3], reply.history[1]);
         assert_eq!(

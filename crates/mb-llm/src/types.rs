@@ -194,7 +194,7 @@ pub struct ApiError {
     pub kind: String,
     pub message: String,
     pub record: Box<RequestRecord>,
-    /// Sanitized model output from malformed successful responses, if available.
+    /// Sanitized model output or an allowlisted provider error diagnostic, if available.
     pub raw: Option<Value>,
     /// Bounded machine-readable fields only; never retain the HTTP error body.
     #[serde(default, skip_serializing_if = "Option::is_none")]

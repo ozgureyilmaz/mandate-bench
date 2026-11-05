@@ -97,7 +97,7 @@ impl Artifacts {
             "trials_per_task": if kind == "smoke" { 1 } else { config.trials },
             "max_turns": config.max_turns, "max_tool_calls": MAX_TOOL_CALLS,
             "cost_is_estimate": true,
-            "raw_output_policy": "Provider payloads are retained after credential redaction before first write. Request headers and HTTP error bodies are not recorded.",
+            "raw_output_policy": "Model payloads are redacted before first write. Meta HTTP errors retain only sanitized diagnostic fields. Request headers are omitted.",
             "cost_note": "Configured prices; cached input is within input and reasoning within output. Missing usage/price keeps cost unknown. Failed attempts may have unreported billable usage.",
         });
         let artifacts = Self {
@@ -610,8 +610,9 @@ async fn finish_muse_smoke(
     let mut continuation = history.to_vec();
     continuation.extend(reply.history.iter().cloned());
     continuation.push(output.clone());
+    continuation.push(json!({"role":"user","content":"Reply with exactly the value in the tool result. Do not make any further tool calls."}));
     match client
-        .complete(model, &continuation, tools, ToolChoice::None)
+        .complete(model, &continuation, tools, ToolChoice::Auto)
         .await
     {
         Ok(next) => {
@@ -624,7 +625,7 @@ async fn finish_muse_smoke(
             } else {
                 "invalid_tool_round_trip"
             };
-            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"continuation_reply":next});
+            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"continuation_input":continuation,"continuation_reply":next});
             (
                 status,
                 transcript,
@@ -633,7 +634,7 @@ async fn finish_muse_smoke(
             )
         }
         Err(error) => {
-            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"api_error":error});
+            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"continuation_input":continuation,"api_error":error});
             (
                 "api_error",
                 transcript,
@@ -672,12 +673,12 @@ pub async fn smoke(
     for (index, model) in models.iter().enumerate() {
         let id = format!("model-{index}");
         let instruction = if model.provider == "meta" {
-            "Call smoke_echo with value ready. After the tool returns, reply with exactly the value from its result and no other text."
+            "You must call smoke_echo exactly once with value ready. Do not answer in plain text before calling the tool."
         } else {
             "Call smoke_echo with value ready. This is a transport check; do not answer with text."
         };
         let history = [json!({"role":"user","content":instruction})];
-        let choice = if model.provider == "nvidia"
+        let choice = if matches!(model.provider.as_str(), "meta" | "nvidia")
             || (model.provider == "deepseek"
                 && model
                     .thinking
