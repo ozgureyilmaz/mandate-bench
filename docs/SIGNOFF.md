@@ -27,7 +27,7 @@ The task contract now permits eight offers. The four v2 fixtures retain the exis
 
 ## Muse live verification
 
-The corrected `muse-spark-1.1` live smoke passed. The initial call returned the exact tool invocation. The continuation returned `smoke-roundtrip-confirmed` with zero additional calls. The first reply was reused after the local replay fix, so only the pending continuation was sent. Both requests returned HTTP 200. Local evidence is in `runs/smoke-20261105T122337.636593000Z-54711/` and `runs/smoke-20261105T122821.305894000Z-57376/`. The NIM live checks remain deferred by the owner. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
+The corrected `muse-spark-1.1` live smoke passed. The initial call returned the exact tool invocation. The continuation returned `smoke-roundtrip-confirmed` with zero additional calls. The first reply was reused after the local replay fix, so only the pending continuation was sent. Both requests returned HTTP 200. Local evidence is in `runs/smoke-20261105T122337.636593000Z-54711/` and `runs/smoke-20261105T122821.305894000Z-57376/`. The NIM dry run found the local key missing. Live checks remain pending. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
 
 | Spend ledger | Project ceiling | Current checkpoint |
 |---|---:|---|

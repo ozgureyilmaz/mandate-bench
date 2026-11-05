@@ -10,7 +10,7 @@ Last updated Nov 5, 2026 (Istanbul).
 | Task hardening | t01/t02/t05/t06 and their references are v2. The task schema admits up to eight offers. Other task versions and historical run artifacts retain their original bytes. |
 | Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. OpenAI capacity is fully held for unresolved historical exposure. |
 | Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. Live tool round trip passed after the tool-choice and replay fixes. The four-trap diagnostic awaits owner task and grader sign-off. |
-| NVIDIA NIM | Three candidate entries configured. The owner left live smoke pending. Each needs a passing live tool check for admission. [NIM_SMOKE.md](NIM_SMOKE.md) |
+| NVIDIA NIM | Nov 5 dry run found `NVIDIA_API_KEY` missing. All three live smokes were skipped. Each candidate still needs a passing live tool check for admission. [NIM_SMOKE.md](NIM_SMOKE.md) |
 | Final benchmark | Pending owner review, live qualification and budget admission. Eligible models for the final set are Luna, passing NIM models and Muse if its smoke and diagnostic pass review. |
 
 ## Verification on Nov 5
@@ -34,6 +34,7 @@ Token-price estimates are distinct from the conservative ledger balances. Add an
 | Nov 5 | Meta | Continuation `smoke-20261105T122821.305894000Z-57376`. One HTTP 200, exact echo result, zero extra calls. | 0.00159120 | Continuation settled. Historical USD 1.319424 hold retained. |
 | Nov 5 | Meta | Audit of reservation 1 for the initial 400 at 17:04:16.643Z | 0 under project policy | Released USD 1.319424. Available capacity increased from USD 13.67664125 to USD 14.99606525. |
 | Nov 5 | NVIDIA NIM | Live checks deferred by owner, no provider requests | 0 | Live eligibility pending |
+| Nov 5 | NVIDIA NIM | Resumed dry run. Local key missing. | 0 | All three candidates remain untested. |
 
 Archived live evidence is under `results/diagnostics/`. The initial pilot retained 12 HTTP 429 errors. The slower pilot completed 12 trials and its three strict failures omitted final currency after correct no-order escalation. [PILOT_REVIEW.md](PILOT_REVIEW.md).
 
