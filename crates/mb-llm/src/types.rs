@@ -161,6 +161,41 @@ pub struct BudgetSnapshot {
     pub overrun_count: u64,
 }
 
+/// Owner-reviewed evidence for a narrowly supported Meta validation-error release.
+/// `generation_started = false` is an explicit caller determination; the guard does
+/// not infer provider billing behavior from the status code on its own.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct BudgetReconciliationEvidence {
+    pub provider: String,
+    pub api: WireApi,
+    pub http_status: u16,
+    pub generation_started: bool,
+    pub usage_reported: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum BudgetReconciliationReason {
+    UnbillableValidationError,
+}
+
+/// Immutable audit event appended when an owner-reviewed validation error releases a hold.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct BudgetReconciliationRecord {
+    pub reason: BudgetReconciliationReason,
+    pub reservation_id: u64,
+    pub run_id: String,
+    pub reconciled_at_utc: String,
+    pub released_usd: Decimal,
+    /// Remaining spendable USD immediately before this release.
+    pub balance_before_usd: Decimal,
+    /// Remaining spendable USD immediately after this release.
+    pub balance_after_usd: Decimal,
+    pub evidence: BudgetReconciliationEvidence,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestRecord {
     pub provider: String,

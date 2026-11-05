@@ -8,12 +8,15 @@ use std::{
 };
 
 use anyhow::{Context, Result, bail, ensure};
+use chrono::{SecondsFormat, Utc};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use crate::types::{
-    BudgetConfig, BudgetEvidence, BudgetReservationState, BudgetSnapshot, ModelConfig, TokenUsage,
+    BudgetConfig, BudgetEvidence, BudgetReconciliationEvidence, BudgetReconciliationReason,
+    BudgetReconciliationRecord, BudgetReservationState, BudgetSnapshot, ModelConfig, TokenUsage,
+    WireApi,
 };
 
 pub const USD_BUDGET_CEILING: Decimal = Decimal::ONE;
@@ -233,6 +236,8 @@ struct BudgetLedger {
     next_reservation_id: u64,
     halted: bool,
     entries: Vec<LedgerEntry>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    reconciliation_audit: Vec<BudgetReconciliationRecord>,
 }
 
 fn default_ledger_provider() -> String {
@@ -476,6 +481,88 @@ impl BudgetGuard {
         })
     }
 
+    /// Release one Meta hold after the caller has reviewed evidence of a pre-generation
+    /// validation error with no reported usage. The original ledger entry is left intact;
+    /// this appends an auditable adjustment and deliberately does not clear the halt flag.
+    pub fn reconcile_unbillable_validation_error(
+        &self,
+        reservation_id: u64,
+        run_id: &str,
+        evidence: &BudgetReconciliationEvidence,
+    ) -> Result<BudgetReconciliationRecord> {
+        validate_unbillable_validation_evidence(&self.provider, evidence)?;
+        validate_run_id(run_id)?;
+
+        self.with_ledger(|ledger| {
+            ensure!(
+                ledger.provider == "meta",
+                "unbillable validation-error reconciliation is supported only for Meta"
+            );
+            ensure!(
+                !ledger
+                    .reconciliation_audit
+                    .iter()
+                    .any(|event| event.reservation_id == reservation_id),
+                "budget reservation already has an audit reconciliation"
+            );
+            let before_snapshot = snapshot(ledger)?;
+            ensure!(
+                before_snapshot.overrun_count == 0,
+                "cannot reconcile a hold while the budget ledger contains an overrun"
+            );
+            let used_before = before_snapshot
+                .settled_usd
+                .checked_add(before_snapshot.held_usd)
+                .context("budget exposure overflow before reconciliation")?;
+            ensure!(
+                used_before <= ledger.ceiling_usd,
+                "cannot reconcile a hold while total budget exposure exceeds its ceiling"
+            );
+            let before = before_snapshot.remaining_usd;
+            let entry = ledger
+                .entries
+                .iter()
+                .find(|entry| entry.id == reservation_id && entry.id != 0)
+                .context("budget reservation ID is missing")?;
+            ensure!(
+                entry.provider == "meta",
+                "unbillable validation-error reconciliation target is not a Meta reservation"
+            );
+            ensure!(
+                entry.state == BudgetReservationState::Unknown,
+                "only an unknown Meta reservation can be reconciled"
+            );
+            ensure!(
+                entry.charged_usd.is_none(),
+                "a charged reservation cannot be reconciled as unbillable"
+            );
+            let released_usd = entry.reserved_usd;
+            ensure!(
+                released_usd > Decimal::ZERO,
+                "a zero-value reservation cannot be reconciled"
+            );
+            let after = before
+                .checked_add(released_usd)
+                .context("budget balance overflow during reconciliation")?;
+            ensure!(
+                after <= ledger.ceiling_usd,
+                "reconciliation would exceed the fixed provider budget ceiling"
+            );
+            let record = BudgetReconciliationRecord {
+                reason: BudgetReconciliationReason::UnbillableValidationError,
+                reservation_id,
+                run_id: run_id.to_owned(),
+                reconciled_at_utc: Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true),
+                released_usd,
+                balance_before_usd: before,
+                balance_after_usd: after,
+                evidence: evidence.clone(),
+            };
+            ledger.reconciliation_audit.push(record.clone());
+            Ok(record)
+        })
+    }
+
     pub(crate) fn mark_policy_rejected() -> BudgetEvidence {
         BudgetEvidence {
             reservation_id: None,
@@ -697,6 +784,7 @@ impl BudgetGuard {
             historical_count == expected_historical,
             "budget ledger is missing or duplicating its historical carry-in"
         );
+        validate_reconciliation_audit(ledger)?;
         Ok(())
     }
 
@@ -776,8 +864,99 @@ impl BudgetLedger {
             next_reservation_id: 1,
             halted: false,
             entries,
+            reconciliation_audit: Vec::new(),
         }
     }
+}
+
+fn validate_unbillable_validation_evidence(
+    guard_provider: &str,
+    evidence: &BudgetReconciliationEvidence,
+) -> Result<()> {
+    ensure!(
+        guard_provider == "meta" && evidence.provider == "meta",
+        "unbillable validation-error evidence must identify the Meta provider"
+    );
+    ensure!(
+        evidence.api == WireApi::Responses,
+        "unbillable Meta validation-error evidence must use the Responses API"
+    );
+    ensure!(
+        evidence.http_status == 400,
+        "only HTTP 400 validation errors are supported for unbillable reconciliation"
+    );
+    ensure!(
+        !evidence.generation_started,
+        "cannot release a hold when generation may have started"
+    );
+    ensure!(
+        !evidence.usage_reported,
+        "cannot release a hold when usage was reported"
+    );
+    Ok(())
+}
+
+fn validate_run_id(run_id: &str) -> Result<()> {
+    ensure!(
+        !run_id.is_empty()
+            && run_id.len() <= 128
+            && run_id
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || b"-_.:".contains(&byte)),
+        "budget reconciliation run ID is empty or contains unsupported characters"
+    );
+    Ok(())
+}
+
+fn validate_reconciliation_audit(ledger: &BudgetLedger) -> Result<()> {
+    let mut reconciled_reservations = std::collections::BTreeSet::new();
+    for event in &ledger.reconciliation_audit {
+        ensure!(
+            event.reason == BudgetReconciliationReason::UnbillableValidationError,
+            "budget ledger contains an unsupported reconciliation reason"
+        );
+        ensure!(
+            reconciled_reservations.insert(event.reservation_id),
+            "budget ledger contains duplicate reconciliation events"
+        );
+        validate_run_id(&event.run_id)?;
+        validate_unbillable_validation_evidence("meta", &event.evidence)?;
+        let timestamp = chrono::DateTime::parse_from_rfc3339(&event.reconciled_at_utc)
+            .context("budget reconciliation timestamp is invalid")?;
+        ensure!(
+            timestamp.offset().local_minus_utc() == 0 && event.reconciled_at_utc.ends_with('Z'),
+            "budget reconciliation timestamp must be UTC"
+        );
+        ensure!(
+            event.reservation_id > 0
+                && event.released_usd > Decimal::ZERO
+                && event.balance_before_usd >= Decimal::ZERO
+                && event.balance_after_usd >= Decimal::ZERO,
+            "budget reconciliation contains invalid IDs or amounts"
+        );
+        let expected_after = event
+            .balance_before_usd
+            .checked_add(event.released_usd)
+            .context("budget reconciliation balance overflow")?;
+        ensure!(
+            expected_after == event.balance_after_usd
+                && event.balance_after_usd <= ledger.ceiling_usd,
+            "budget reconciliation balances do not match the released hold"
+        );
+        let entry = ledger
+            .entries
+            .iter()
+            .find(|entry| entry.id == event.reservation_id)
+            .context("budget reconciliation refers to a missing reservation")?;
+        ensure!(
+            entry.provider == "meta"
+                && entry.state == BudgetReservationState::Unknown
+                && entry.charged_usd.is_none()
+                && entry.reserved_usd == event.released_usd,
+            "budget reconciliation does not match an uncharged unknown Meta reservation"
+        );
+    }
+    Ok(())
 }
 
 fn snapshot(ledger: &BudgetLedger) -> Result<BudgetSnapshot> {
@@ -786,6 +965,11 @@ fn snapshot(ledger: &BudgetLedger) -> Result<BudgetSnapshot> {
     let mut unknown_count = 0_u64;
     let mut overrun_count = 0_u64;
     let mut reservation_count = 0_u64;
+    let reconciled_reservations: std::collections::BTreeSet<u64> = ledger
+        .reconciliation_audit
+        .iter()
+        .map(|event| event.reservation_id)
+        .collect();
     for entry in &ledger.entries {
         if entry.id > 0 {
             reservation_count += 1;
@@ -802,13 +986,19 @@ fn snapshot(ledger: &BudgetLedger) -> Result<BudgetSnapshot> {
             BudgetReservationState::Reserved
             | BudgetReservationState::Unknown
             | BudgetReservationState::HistoricalUnresolved => {
-                held = held
-                    .checked_add(entry.reserved_usd)
-                    .context("budget held subtotal overflow")?;
-                if matches!(
-                    entry.state,
-                    BudgetReservationState::Unknown | BudgetReservationState::HistoricalUnresolved
-                ) {
+                let released_by_audit = reconciled_reservations.contains(&entry.id);
+                if !released_by_audit {
+                    held = held
+                        .checked_add(entry.reserved_usd)
+                        .context("budget held subtotal overflow")?;
+                }
+                if !released_by_audit
+                    && matches!(
+                        entry.state,
+                        BudgetReservationState::Unknown
+                            | BudgetReservationState::HistoricalUnresolved
+                    )
+                {
                     unknown_count += 1;
                 }
             }
@@ -962,7 +1152,10 @@ mod tests {
     use serde_json::Value;
 
     use super::{BudgetGuard, MAX_BUDGETED_BODY_BYTES, MAX_INPUT_CONTEXT_TOKENS, ReconcileResult};
-    use crate::types::{BudgetConfig, BudgetReservationState, ModelConfig, TokenUsage};
+    use crate::types::{
+        BudgetConfig, BudgetReconciliationEvidence, BudgetReconciliationReason,
+        BudgetReservationState, ModelConfig, TokenUsage, WireApi,
+    };
 
     static NEXT_SANDBOX: AtomicU64 = AtomicU64::new(0);
 
@@ -1029,6 +1222,16 @@ mod tests {
             thinking: None,
             seed: None,
             price: None,
+        }
+    }
+
+    fn meta_validation_error_evidence() -> BudgetReconciliationEvidence {
+        BudgetReconciliationEvidence {
+            provider: "meta".into(),
+            api: WireApi::Responses,
+            http_status: 400,
+            generation_started: false,
+            usage_reported: false,
         }
     }
 
@@ -1157,6 +1360,254 @@ mod tests {
             BudgetGuard::open_for_provider(sandbox.muse_ledger(), "meta", &config).unwrap();
         assert!(reopened.snapshot().unwrap().halted);
         assert!(reopened.reserve(&meta_model(4096), 100).is_err());
+    }
+
+    #[test]
+    fn audited_meta_400_release_keeps_original_entry_and_successful_charge_unchanged() {
+        let sandbox = Sandbox::new();
+        let config = meta_config(Decimal::ZERO);
+        let guard = BudgetGuard::open_for_provider(sandbox.muse_ledger(), "meta", &config).unwrap();
+        let successful = guard.reserve(&meta_model(4096), 100).unwrap();
+        let (successful_evidence, outcome) = guard
+            .reconcile(
+                successful.id,
+                &TokenUsage {
+                    input: Some(1_000),
+                    cached_input: Some(0),
+                    output: Some(200),
+                    reasoning: Some(150),
+                },
+                false,
+            )
+            .unwrap();
+        assert_eq!(outcome, ReconcileResult::Settled);
+        let successful_charge = successful_evidence.charged_usd.unwrap();
+
+        let failed = guard.reserve(&meta_model(4096), 100).unwrap();
+        guard.mark_provider_error(failed.id).unwrap();
+        let bytes_before = fs::read(sandbox.muse_ledger()).unwrap();
+        let ledger_before: Value = serde_json::from_slice(&bytes_before).unwrap();
+        let original_entry = ledger_before["entries"][1].clone();
+        let before_snapshot = guard.snapshot().unwrap();
+        assert_eq!(before_snapshot.held_usd, failed.reserved_usd);
+        assert_eq!(before_snapshot.unknown_count, 1);
+        assert!(before_snapshot.halted);
+
+        let record = guard
+            .reconcile_unbillable_validation_error(
+                failed.id,
+                "smoke-20261105T121126.314341000Z-49545",
+                &meta_validation_error_evidence(),
+            )
+            .unwrap();
+        assert_eq!(
+            record.reason,
+            BudgetReconciliationReason::UnbillableValidationError
+        );
+        assert_eq!(record.reservation_id, failed.id);
+        assert_eq!(record.run_id, "smoke-20261105T121126.314341000Z-49545");
+        assert_eq!(record.released_usd, failed.reserved_usd);
+        assert_eq!(record.balance_before_usd, before_snapshot.remaining_usd);
+        assert_eq!(
+            record.balance_after_usd,
+            before_snapshot.remaining_usd + failed.reserved_usd
+        );
+        assert!(record.reconciled_at_utc.ends_with('Z'));
+        assert_eq!(record.evidence.http_status, 400);
+
+        let ledger_after: Value =
+            serde_json::from_slice(&fs::read(sandbox.muse_ledger()).unwrap()).unwrap();
+        assert_eq!(ledger_after["entries"][1], original_entry);
+        assert_eq!(
+            ledger_after["reconciliation_audit"]
+                .as_array()
+                .unwrap()
+                .len(),
+            1
+        );
+        let after_snapshot = guard.snapshot().unwrap();
+        assert_eq!(after_snapshot.settled_usd, successful_charge);
+        assert_eq!(after_snapshot.held_usd, Decimal::ZERO);
+        assert_eq!(after_snapshot.unknown_count, 0);
+        assert_eq!(
+            after_snapshot.remaining_usd,
+            config.ceiling_usd - successful_charge
+        );
+        assert!(
+            after_snapshot.halted,
+            "reconciliation must preserve first-error halt"
+        );
+
+        drop(guard);
+        let reopened =
+            BudgetGuard::open_for_provider(sandbox.muse_ledger(), "meta", &config).unwrap();
+        assert_eq!(
+            reopened.snapshot().unwrap().remaining_usd,
+            after_snapshot.remaining_usd
+        );
+        assert!(
+            reopened
+                .reconcile_unbillable_validation_error(
+                    failed.id,
+                    "smoke-20261105T121126.314341000Z-49545",
+                    &meta_validation_error_evidence(),
+                )
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn unsupported_or_non_meta_reconciliation_evidence_fails_without_writing() {
+        let cases = [
+            BudgetReconciliationEvidence {
+                provider: "meta".into(),
+                api: WireApi::Responses,
+                http_status: 401,
+                generation_started: false,
+                usage_reported: false,
+            },
+            BudgetReconciliationEvidence {
+                provider: "meta".into(),
+                api: WireApi::Responses,
+                http_status: 400,
+                generation_started: true,
+                usage_reported: false,
+            },
+            BudgetReconciliationEvidence {
+                provider: "meta".into(),
+                api: WireApi::Responses,
+                http_status: 400,
+                generation_started: false,
+                usage_reported: true,
+            },
+            BudgetReconciliationEvidence {
+                provider: "meta".into(),
+                api: WireApi::ChatCompletions,
+                http_status: 400,
+                generation_started: false,
+                usage_reported: false,
+            },
+            BudgetReconciliationEvidence {
+                provider: "openai".into(),
+                api: WireApi::Responses,
+                http_status: 400,
+                generation_started: false,
+                usage_reported: false,
+            },
+        ];
+        let sandbox = Sandbox::new();
+        let meta_configuration = meta_config(Decimal::ZERO);
+        let guard =
+            BudgetGuard::open_for_provider(sandbox.muse_ledger(), "meta", &meta_configuration)
+                .unwrap();
+        let reservation = guard.reserve(&meta_model(4096), 100).unwrap();
+        guard.mark_provider_error(reservation.id).unwrap();
+        for evidence in &cases {
+            let before = fs::read(sandbox.muse_ledger()).unwrap();
+            assert!(
+                guard
+                    .reconcile_unbillable_validation_error(reservation.id, "run-1", evidence)
+                    .is_err()
+            );
+            assert_eq!(fs::read(sandbox.muse_ledger()).unwrap(), before);
+        }
+
+        let openai_guard = BudgetGuard::open(sandbox.ledger(), &config(Decimal::ZERO)).unwrap();
+        let openai_reservation = openai_guard.reserve(&model(2048), 100).unwrap();
+        openai_guard
+            .mark_provider_error(openai_reservation.id)
+            .unwrap();
+        let before = fs::read(sandbox.ledger()).unwrap();
+        assert!(
+            openai_guard
+                .reconcile_unbillable_validation_error(
+                    openai_reservation.id,
+                    "run-1",
+                    &meta_validation_error_evidence(),
+                )
+                .is_err()
+        );
+        assert_eq!(fs::read(sandbox.ledger()).unwrap(), before);
+    }
+
+    #[test]
+    fn reconciliation_rejects_reserved_charged_and_overrun_entries() {
+        let evidence = meta_validation_error_evidence();
+
+        let reserved_sandbox = Sandbox::new();
+        let meta_configuration = meta_config(Decimal::ZERO);
+        let reserved_guard = BudgetGuard::open_for_provider(
+            reserved_sandbox.muse_ledger(),
+            "meta",
+            &meta_configuration,
+        )
+        .unwrap();
+        let reserved = reserved_guard.reserve(&meta_model(4096), 100).unwrap();
+        let before = fs::read(reserved_sandbox.muse_ledger()).unwrap();
+        assert!(
+            reserved_guard
+                .reconcile_unbillable_validation_error(reserved.id, "run-1", &evidence)
+                .is_err()
+        );
+        assert_eq!(fs::read(reserved_sandbox.muse_ledger()).unwrap(), before);
+
+        let charged_sandbox = Sandbox::new();
+        let charged_guard = BudgetGuard::open_for_provider(
+            charged_sandbox.muse_ledger(),
+            "meta",
+            &meta_configuration,
+        )
+        .unwrap();
+        let charged = charged_guard.reserve(&meta_model(4096), 100).unwrap();
+        charged_guard
+            .reconcile(
+                charged.id,
+                &TokenUsage {
+                    input: Some(100),
+                    cached_input: None,
+                    output: Some(100),
+                    reasoning: None,
+                },
+                false,
+            )
+            .unwrap();
+        let before = fs::read(charged_sandbox.muse_ledger()).unwrap();
+        assert!(
+            charged_guard
+                .reconcile_unbillable_validation_error(charged.id, "run-1", &evidence)
+                .is_err()
+        );
+        assert_eq!(fs::read(charged_sandbox.muse_ledger()).unwrap(), before);
+
+        let overrun_sandbox = Sandbox::new();
+        let overrun_guard = BudgetGuard::open_for_provider(
+            overrun_sandbox.muse_ledger(),
+            "meta",
+            &meta_configuration,
+        )
+        .unwrap();
+        let overrun = overrun_guard.reserve(&meta_model(4096), 100).unwrap();
+        let unknown = overrun_guard.reserve(&meta_model(4096), 100).unwrap();
+        overrun_guard
+            .reconcile(
+                overrun.id,
+                &TokenUsage {
+                    input: Some(super::META_MAX_INPUT_CONTEXT_TOKENS + 1),
+                    cached_input: Some(0),
+                    output: Some(0),
+                    reasoning: None,
+                },
+                false,
+            )
+            .unwrap();
+        overrun_guard.mark_provider_error(unknown.id).unwrap();
+        let before = fs::read(overrun_sandbox.muse_ledger()).unwrap();
+        assert!(
+            overrun_guard
+                .reconcile_unbillable_validation_error(unknown.id, "run-1", &evidence)
+                .is_err()
+        );
+        assert_eq!(fs::read(overrun_sandbox.muse_ledger()).unwrap(), before);
     }
 
     #[test]

@@ -32,7 +32,7 @@ The corrected `muse-spark-1.1` live smoke passed. The initial call returned the 
 | Spend ledger | Project ceiling | Current checkpoint |
 |---|---:|---|
 | OpenAI | USD 1 | Full historical hold. Reconcile billing before another paid Luna request. |
-| Muse | USD 15 | USD 0.00368615 estimated for the two successful requests. USD 1.319424 remains held for the original 400 with unknown usage. Remaining conservative capacity is USD 13.67664125. |
+| Muse | USD 15 | USD 0.00368615 estimated for the two successful requests. The original validation reservation was released by audit. Remaining conservative capacity is USD 14.99606525. |
 
 After both sign-offs and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
 

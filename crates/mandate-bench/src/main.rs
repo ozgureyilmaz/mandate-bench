@@ -10,6 +10,7 @@ use mb_core::load_task;
 use mb_grader::{grade, load_reference, validate_reference};
 
 mod audit;
+mod reconcile;
 mod report;
 mod runner;
 
@@ -74,6 +75,8 @@ enum Command {
         #[arg(long)]
         allow_scratch: bool,
     },
+    /// Reconcile the documented Nov 5 Muse validation rejection from local evidence.
+    ReconcileMuseSmoke,
 }
 
 #[tokio::main]
@@ -121,6 +124,7 @@ async fn main() -> Result<()> {
             run_dir,
             allow_scratch,
         } => audit::generate(&cli.root, &run_dir, allow_scratch),
+        Command::ReconcileMuseSmoke => reconcile::muse_smoke(&cli.root),
     }
 }
 

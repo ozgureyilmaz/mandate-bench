@@ -72,7 +72,7 @@ cargo run --release --locked -- smoke --config configs/smoke.toml --dry-run
 
 The USD 1 Luna ceiling is reserved for unresolved historical usage. The preflight above checks key presence. A new Luna request requires historical billing reconciliation.
 
-Muse Spark 1.1 passed the corrected live tool round trip. The ledger retains the worst-case reservation for the original HTTP 400 because that request's usage is unknown.
+Muse Spark 1.1 passed the corrected live tool round trip. An audited ledger adjustment released the original HTTP 400 validation reservation. [Spend log](docs/STATUS.md)
 
 Muse scored diagnostics require a passing live smoke and the owner's task and grader sign-off. NIM checks remain pending. The harness records each attempted request and preserves partial coverage. Current owner review steps and limits are in [SIGNOFF.md](docs/SIGNOFF.md).
 

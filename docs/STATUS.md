@@ -32,6 +32,7 @@ Token-price estimates are distinct from the conservative ledger balances. Add an
 | Nov 5 | Meta | Live smoke `smoke-20261105T121126.314341000Z-49545`, one HTTP 400 | Unknown | USD 1.319424 held at worst case. Ledger halted. |
 | Nov 5 | Meta | Corrected smoke `smoke-20261105T122337.636593000Z-54711`. Initial call returned HTTP 200 and the expected tool call. Local validation blocked the continuation before HTTP. | 0.00209495 | Initial call settled. Historical hold retained. |
 | Nov 5 | Meta | Continuation `smoke-20261105T122821.305894000Z-57376`. One HTTP 200, exact echo result, zero extra calls. | 0.00159120 | Continuation settled. Historical USD 1.319424 hold retained. |
+| Nov 5 | Meta | Audit of reservation 1 for the initial 400 at 17:04:16.643Z | 0 under project policy | Released USD 1.319424. Available capacity increased from USD 13.67664125 to USD 14.99606525. |
 | Nov 5 | NVIDIA NIM | Live checks deferred by owner, no provider requests | 0 | Live eligibility pending |
 
 Archived live evidence is under `results/diagnostics/`. The initial pilot retained 12 HTTP 429 errors. The slower pilot completed 12 trials and its three strict failures omitted final currency after correct no-order escalation. [PILOT_REVIEW.md](PILOT_REVIEW.md).
@@ -57,4 +58,4 @@ Owner hand-solves and checks the tasks, references and grader. Freeze the eligib
 
 ## Owner checkpoint
 
-The review packet is ready. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates and retains the original USD 1.319424 unknown-usage hold. Remaining ledger capacity is USD 13.67664125. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)
+The review packet is ready. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)
