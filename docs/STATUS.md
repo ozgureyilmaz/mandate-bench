@@ -9,13 +9,13 @@ Last updated Nov 5, 2026 (Istanbul).
 | Metrics | Prospective policy 2 frozen Nov 4 before new scored trials. It records outcome, strict outcome plus raw format, and independent raw format. The v1 Luna pilot remains 9/12 strict. The separate outcome audit is a retrospective of those trials. |
 | Task hardening | t01/t02/t05/t06 and their references are v2. The task schema admits up to eight offers. Other task versions and historical run artifacts retain their original bytes. |
 | Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. OpenAI capacity is fully held for unresolved historical exposure. |
-| Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. The live smoke stopped on HTTP 400 (`invalid_request_error`) before a tool call. Muse is excluded from scored runs. |
+| Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. Live tool round trip passed after the tool-choice and replay fixes. The four-trap diagnostic awaits owner task and grader sign-off. |
 | NVIDIA NIM | Three candidate entries configured. The owner left live smoke pending. Each needs a passing live tool check for admission. [NIM_SMOKE.md](NIM_SMOKE.md) |
 | Final benchmark | Pending owner review, live qualification and budget admission. Eligible models for the final set are Luna, passing NIM models and Muse if its smoke and diagnostic pass review. |
 
 ## Verification on Nov 5
 
-All 136 workspace tests pass, including the local two-request Muse smoke, separate-ledger checks, policy 2 reporting, mutants and reference isolation. Formatting, denied-warning Clippy, the locked release build and packaging fixtures pass. The release oracle scored 1.0 on all nine tasks. Muse dry-run preflight reported missing `MODEL_API_KEY` before dispatch. OpenAI key presence was confirmed by dry run.
+All 139 workspace tests pass, including the local two-request Muse smoke, separate-ledger checks, policy 2 reporting, mutants and reference isolation. Formatting, denied-warning Clippy, the locked release build and packaging fixtures pass. The release oracle scored 1.0 on all nine tasks. The Muse live smoke passed with one echo tool call and a completed continuation. OpenAI key presence was confirmed by dry run.
 
 ## Spend log
 
@@ -30,6 +30,8 @@ Token-price estimates are distinct from the conservative ledger balances. Add an
 | Nov 5 | OpenAI | Offline implementation checks, no provider requests | 0 | Historical hold carried forward |
 | Nov 5 | Meta | Offline implementation checks, no provider requests | 0 | Live smoke pending |
 | Nov 5 | Meta | Live smoke `smoke-20261105T121126.314341000Z-49545`, one HTTP 400 | Unknown | USD 1.319424 held at worst case. Ledger halted. |
+| Nov 5 | Meta | Corrected smoke `smoke-20261105T122337.636593000Z-54711`. Initial call returned HTTP 200 and the expected tool call. Local validation blocked the continuation before HTTP. | 0.00209495 | Initial call settled. Historical hold retained. |
+| Nov 5 | Meta | Continuation `smoke-20261105T122821.305894000Z-57376`. One HTTP 200, exact echo result, zero extra calls. | 0.00159120 | Continuation settled. Historical USD 1.319424 hold retained. |
 | Nov 5 | NVIDIA NIM | Live checks deferred by owner, no provider requests | 0 | Live eligibility pending |
 
 Archived live evidence is under `results/diagnostics/`. The initial pilot retained 12 HTTP 429 errors. The slower pilot completed 12 trials and its three strict failures omitted final currency after correct no-order escalation. [PILOT_REVIEW.md](PILOT_REVIEW.md).
@@ -51,8 +53,8 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 
 ## Remaining submission work
 
-Owner hand-solves and checks the tasks, references and grader. Freeze the eligible model set after live qualification and budget clearance, then collect five trials per task. Muse remains excluded after its failed smoke. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
+Owner hand-solves and checks the tasks, references and grader. Freeze the eligible model set after live qualification and budget clearance, then collect five trials per task. Muse passed its smoke and is ready for the diagnostic after owner approval. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
 
 ## Owner checkpoint
 
-The review packet is ready. The Muse smoke stopped on its first request. The provider supplied no machine-readable error code or usage. The local artifacts and halted ledger are retained under `runs/`. Scored work awaits owner review and an eligible model set. [SIGNOFF.md](SIGNOFF.md)
+The review packet is ready. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates and retains the original USD 1.319424 unknown-usage hold. Remaining ledger capacity is USD 13.67664125. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)

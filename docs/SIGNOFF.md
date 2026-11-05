@@ -1,8 +1,8 @@
 # Owner sign-off · Nov 5, 2026
 
-Implementation revision `023a58e` is published on `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2)
+Replay fix revision `1b2d3ad` is published on `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2)
 
-The release oracle scores 1.0 on all nine tasks. All 136 workspace tests pass, including policy 2 metrics, hidden-reference isolation, hardening mutants, both ledgers and the local Muse tool round trip. Formatting, Clippy, release build and packaging fixtures pass. The original Luna v1 pilot remains 9/12 strict. [STATUS.md](STATUS.md) · [PILOT_REVIEW.md](PILOT_REVIEW.md)
+The release oracle scores 1.0 on all nine tasks. All 139 workspace tests pass, including policy 2 metrics, hidden-reference isolation, hardening mutants, both ledgers and the local Muse tool round trip. Formatting, Clippy, release build and packaging fixtures pass. The original Luna v1 pilot remains 9/12 strict. [STATUS.md](STATUS.md) · [PILOT_REVIEW.md](PILOT_REVIEW.md)
 
 ## Task and grader review
 
@@ -27,12 +27,12 @@ The task contract now permits eight offers. The four v2 fixtures retain the exis
 
 ## Muse live verification
 
-The Nov 5 dry run confirmed `MODEL_API_KEY` was present. The live `muse-spark-1.1` smoke returned HTTP 400 (`invalid_request_error`) on the first request. The provider supplied no machine-readable error code or usage. The guard stopped before the tool call and continuation. Muse remains excluded. Local artifacts are in `runs/smoke-20261105T121126.314341000Z-49545/`. The NIM live checks remain deferred by the owner. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
+The corrected `muse-spark-1.1` live smoke passed. The initial call returned the exact tool invocation. The continuation returned `smoke-roundtrip-confirmed` with zero additional calls. The first reply was reused after the local replay fix, so only the pending continuation was sent. Both requests returned HTTP 200. Local evidence is in `runs/smoke-20261105T122337.636593000Z-54711/` and `runs/smoke-20261105T122821.305894000Z-57376/`. The NIM live checks remain deferred by the owner. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
 
 | Spend ledger | Project ceiling | Current checkpoint |
 |---|---:|---|
 | OpenAI | USD 1 | Full historical hold. Reconcile billing before another paid Luna request. |
-| Muse | USD 15 | One failed request with unknown usage. USD 1.319424 held at worst case. The ledger is halted. |
+| Muse | USD 15 | USD 0.00368615 estimated for the two successful requests. USD 1.319424 remains held for the original 400 with unknown usage. Remaining conservative capacity is USD 13.67664125. |
 
 After both sign-offs and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
 
