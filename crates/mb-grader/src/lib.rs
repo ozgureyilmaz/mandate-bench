@@ -34,6 +34,15 @@ pub struct Grade {
     pub failure_label: Option<String>,
 }
 
+/// Policy-v2 metrics for an episode. `format_compliant` checks the raw output;
+/// it is deliberately independent from the outcome normalization in v2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct OutcomeMetricsV2 {
+    pub outcome_pass: bool,
+    pub strict_pass: bool,
+    pub format_compliant: bool,
+}
+
 /// Load and validate a strict, schema-conforming hidden reference file.
 pub fn load_reference(path: &Path) -> Result<Reference> {
     let text = fs::read_to_string(path)
@@ -255,6 +264,33 @@ pub fn grade_authorized_outcome(
     match serde_json::to_string(&value) {
         Ok(normalized) => grade(task, reference, env, &normalized),
         Err(_) => original,
+    }
+}
+
+/// Check the raw final answer against the unchanged final-answer schema.
+/// Unlike `grade`, this does not normalize formatted numeric strings.
+pub fn final_format_compliant(raw: &str) -> bool {
+    let Ok(value) = parse_unique_json(raw) else {
+        return false;
+    };
+    validate_schema("final_answer", &value).is_ok()
+}
+
+/// Compute prospective policy-v2 metrics from the same episode inputs.
+/// Non-complete episode outcomes are overridden by the caller, which has the
+/// episode status and must keep both pass booleans false independently of format.
+pub fn evaluate_metrics_v2(
+    task: &Task,
+    reference: &Reference,
+    env: &Environment,
+    raw_final: &str,
+) -> OutcomeMetricsV2 {
+    let outcome_pass = grade_authorized_outcome(task, reference, env, raw_final).pass;
+    let format_compliant = final_format_compliant(raw_final);
+    OutcomeMetricsV2 {
+        outcome_pass,
+        strict_pass: outcome_pass && format_compliant,
+        format_compliant,
     }
 }
 

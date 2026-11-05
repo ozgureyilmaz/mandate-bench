@@ -57,6 +57,15 @@ pub struct Price {
     pub output_per_million: Decimal,
 }
 
+/// Hard ceiling for an owner-authorized paid run. The ledger path is supplied by the CLI.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct BudgetConfig {
+    pub ceiling_usd: Decimal,
+    /// Amount reserved on first ledger creation for unresolved historical exposure.
+    pub initial_charge_usd: Decimal,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct RunConfig {
@@ -67,6 +76,10 @@ pub struct RunConfig {
     pub trials: u32,
     #[serde(default = "default_turns")]
     pub max_turns: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub budget: Option<BudgetConfig>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub muse_budget: Option<BudgetConfig>,
 }
 fn default_trials() -> u32 {
     1
@@ -114,6 +127,40 @@ pub struct AttemptRecord {
     pub retry_delay_ms: Option<u64>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum BudgetReservationState {
+    Rejected,
+    Reserved,
+    Settled,
+    Unknown,
+    Overrun,
+    HistoricalUnresolved,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BudgetEvidence {
+    pub reservation_id: Option<u64>,
+    pub reserved_usd: Decimal,
+    pub charged_usd: Option<Decimal>,
+    pub state: BudgetReservationState,
+    pub input_token_bound: Option<u64>,
+    pub output_token_bound: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BudgetSnapshot {
+    pub ceiling_usd: Decimal,
+    pub initial_charge_usd: Decimal,
+    pub settled_usd: Decimal,
+    pub held_usd: Decimal,
+    pub remaining_usd: Decimal,
+    pub halted: bool,
+    pub reservation_count: u64,
+    pub unknown_count: u64,
+    pub overrun_count: u64,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestRecord {
     pub provider: String,
@@ -126,6 +173,8 @@ pub struct RequestRecord {
     pub ended_at: String,
     pub usage: TokenUsage,
     pub attempts: Vec<AttemptRecord>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub budget: Option<BudgetEvidence>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

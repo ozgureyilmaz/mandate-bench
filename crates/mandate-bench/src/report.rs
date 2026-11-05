@@ -40,6 +40,8 @@ struct ScoreRow {
     requested_model: String,
     returned_models: BTreeSet<String>,
     status: TrialStatus,
+    strict_pass: Option<bool>,
+    format_compliant: Option<bool>,
     cost: Option<Decimal>,
 }
 
@@ -50,6 +52,7 @@ struct RunInput {
     scope: &'static str,
     models: Vec<ModelSpec>,
     tasks: Vec<TaskSpec>,
+    metrics_policy_version: u32,
     trials_per_task: u32,
     metadata_known_cost: Decimal,
     successful_request_costs: BTreeMap<String, Decimal>,
@@ -66,6 +69,10 @@ struct Counts {
     c: u64,
     api_errors: u64,
     pass_rate: Option<f64>,
+    strict_passes: Option<u64>,
+    strict_pass_rate: Option<f64>,
+    format_compliant_trials: Option<u64>,
+    format_compliance_rate: Option<f64>,
 }
 
 struct TaskMetrics {
@@ -188,6 +195,19 @@ fn load_run(root_arg: &Path, run_arg: &Path, allow_scratch: bool) -> Result<RunI
 
     let models = parse_models(metadata.get("models"))?;
     let tasks = parse_tasks(metadata.get("tasks"))?;
+    let metrics_policy_version = match metadata.get("metrics_policy_version") {
+        None | Some(Value::Null) => 1,
+        Some(value) => {
+            let version = value
+                .as_u64()
+                .context("metrics_policy_version must be a positive integer")?;
+            ensure!(
+                version == 1 || version == 2,
+                "unsupported metrics_policy_version {version}"
+            );
+            version as u32
+        }
+    };
     let trials_per_task = metadata
         .get("trials_per_task")
         .and_then(Value::as_u64)
@@ -218,6 +238,7 @@ fn load_run(root_arg: &Path, run_arg: &Path, allow_scratch: bool) -> Result<RunI
         &transcript_dir,
         &models,
         &tasks,
+        metrics_policy_version,
         trials_per_task,
     )?;
     validate_coverage(&models, &tasks, trials_per_task, &rows)?;
@@ -255,6 +276,7 @@ fn load_run(root_arg: &Path, run_arg: &Path, allow_scratch: bool) -> Result<RunI
         scope,
         models,
         tasks,
+        metrics_policy_version,
         trials_per_task,
         metadata_known_cost,
         successful_request_costs,
@@ -477,6 +499,7 @@ fn parse_score_rows(
     transcript_dir: &Path,
     models: &[ModelSpec],
     tasks: &[TaskSpec],
+    metrics_policy_version: u32,
     trials_per_task: u32,
 ) -> Result<Vec<ScoreRow>> {
     let file = fs::File::open(path).context("opening scores.jsonl")?;
@@ -536,37 +559,98 @@ fn parse_score_rows(
             "scores.jsonl contains a duplicate model/task/trial row"
         );
 
-        let status = match required_str(&value, "status")? {
-            "pass" => {
-                ensure!(
-                    value
-                        .get("grade")
-                        .and_then(|grade| grade.get("pass"))
-                        .and_then(Value::as_bool)
-                        == Some(true),
-                    "pass score row must contain grade.pass=true"
-                );
-                TrialStatus::Pass
+        let status_value = required_str(&value, "status")?;
+        let (status, strict_pass, format_compliant) = if metrics_policy_version == 2 {
+            ensure!(
+                required_u64(&value, "metrics_policy_version")? == 2,
+                "v2 score row metrics_policy_version must equal 2"
+            );
+            match status_value {
+                "pass" | "fail" => {
+                    let outcome_pass = required_bool(&value, "outcome_pass")?;
+                    let strict_pass = required_bool(&value, "strict_pass")?;
+                    let format_compliant = required_bool(&value, "format_compliant")?;
+                    ensure!(
+                        (status_value == "pass") == outcome_pass,
+                        "v2 status must follow outcome_pass"
+                    );
+                    ensure!(
+                        strict_pass == (outcome_pass && format_compliant),
+                        "v2 strict_pass must equal outcome_pass && format_compliant"
+                    );
+                    ensure!(
+                        value
+                            .get("grade")
+                            .and_then(|grade| grade.get("pass"))
+                            .and_then(Value::as_bool)
+                            .is_some(),
+                        "non-API v2 score rows must retain the strict grade"
+                    );
+                    (
+                        if outcome_pass {
+                            TrialStatus::Pass
+                        } else {
+                            TrialStatus::Fail
+                        },
+                        Some(strict_pass),
+                        Some(format_compliant),
+                    )
+                }
+                "api_error" => {
+                    ensure!(
+                        value.get("grade") == Some(&Value::Null),
+                        "api_error score row must be ungraded"
+                    );
+                    for field in ["outcome_pass", "strict_pass", "format_compliant"] {
+                        ensure!(
+                            value.get(field) == Some(&Value::Null),
+                            "api_error score row {field} must be null"
+                        );
+                    }
+                    (TrialStatus::ApiError, None, None)
+                }
+                _ => bail!("score row contains an unsupported status"),
             }
-            "fail" => {
+        } else {
+            if let Some(row_version) = value.get("metrics_policy_version") {
                 ensure!(
-                    value
-                        .get("grade")
-                        .and_then(|grade| grade.get("pass"))
-                        .and_then(Value::as_bool)
-                        == Some(false),
-                    "fail score row must contain grade.pass=false"
+                    row_version.as_u64() == Some(u64::from(metrics_policy_version)),
+                    "score row metrics_policy_version does not match run metadata"
                 );
-                TrialStatus::Fail
             }
-            "api_error" => {
-                ensure!(
-                    value.get("grade") == Some(&Value::Null),
-                    "api_error score row must be ungraded"
-                );
-                TrialStatus::ApiError
-            }
-            _ => bail!("score row contains an unsupported status"),
+            let status = match status_value {
+                "pass" => {
+                    ensure!(
+                        value
+                            .get("grade")
+                            .and_then(|grade| grade.get("pass"))
+                            .and_then(Value::as_bool)
+                            == Some(true),
+                        "pass score row must contain grade.pass=true"
+                    );
+                    TrialStatus::Pass
+                }
+                "fail" => {
+                    ensure!(
+                        value
+                            .get("grade")
+                            .and_then(|grade| grade.get("pass"))
+                            .and_then(Value::as_bool)
+                            == Some(false),
+                        "fail score row must contain grade.pass=false"
+                    );
+                    TrialStatus::Fail
+                }
+                "api_error" => {
+                    ensure!(
+                        value.get("grade") == Some(&Value::Null),
+                        "api_error score row must be ungraded"
+                    );
+                    TrialStatus::ApiError
+                }
+                _ => bail!("score row contains an unsupported status"),
+            };
+            (status, None, None)
         };
 
         let returned = value
@@ -598,6 +682,8 @@ fn parse_score_rows(
             requested_model,
             returned_models,
             status,
+            strict_pass,
+            format_compliant,
             cost,
         });
     }
@@ -642,6 +728,7 @@ fn calculate_metrics(input: &RunInput) -> Result<Vec<ModelMetrics>> {
             let overall = counts(
                 &rows,
                 (input.tasks.len() as u64) * u64::from(input.trials_per_task),
+                input.metrics_policy_version,
             );
             let control_rows = rows
                 .iter()
@@ -662,10 +749,12 @@ fn calculate_metrics(input: &RunInput) -> Result<Vec<ModelMetrics>> {
             let control = counts(
                 &control_rows,
                 (control_tasks as u64) * u64::from(input.trials_per_task),
+                input.metrics_policy_version,
             );
             let traps = counts(
                 &trap_rows,
                 (trap_tasks as u64) * u64::from(input.trials_per_task),
+                input.metrics_policy_version,
             );
 
             let mut task_metrics = Vec::new();
@@ -675,7 +764,11 @@ fn calculate_metrics(input: &RunInput) -> Result<Vec<ModelMetrics>> {
                     .copied()
                     .filter(|row| row.task_id == task.id)
                     .collect::<Vec<_>>();
-                let task_counts = counts(&task_rows, u64::from(input.trials_per_task));
+                let task_counts = counts(
+                    &task_rows,
+                    u64::from(input.trials_per_task),
+                    input.metrics_policy_version,
+                );
                 let pass_power = K_VALUES
                     .into_iter()
                     .map(|k| (k.to_string(), pass_power(task_counts.c, task_counts.n, k)))
@@ -752,7 +845,7 @@ fn calculate_metrics(input: &RunInput) -> Result<Vec<ModelMetrics>> {
         .collect()
 }
 
-fn counts(rows: &[&ScoreRow], expected_trials: u64) -> Counts {
+fn counts(rows: &[&ScoreRow], expected_trials: u64, metrics_policy_version: u32) -> Counts {
     let c = rows
         .iter()
         .filter(|row| row.status == TrialStatus::Pass)
@@ -762,6 +855,22 @@ fn counts(rows: &[&ScoreRow], expected_trials: u64) -> Counts {
         .filter(|row| row.status == TrialStatus::ApiError)
         .count() as u64;
     let n = rows.len() as u64 - api_errors;
+    let (strict_passes, format_compliant_trials) = if metrics_policy_version == 2 {
+        (
+            Some(
+                rows.iter()
+                    .filter(|row| row.strict_pass == Some(true))
+                    .count() as u64,
+            ),
+            Some(
+                rows.iter()
+                    .filter(|row| row.format_compliant == Some(true))
+                    .count() as u64,
+            ),
+        )
+    } else {
+        (None, None)
+    };
     Counts {
         expected_trials,
         completed_trials: rows.len() as u64,
@@ -769,6 +878,12 @@ fn counts(rows: &[&ScoreRow], expected_trials: u64) -> Counts {
         c,
         api_errors,
         pass_rate: (n > 0).then_some(c as f64 / n as f64),
+        strict_passes,
+        strict_pass_rate: strict_passes
+            .and_then(|count| (n > 0).then_some(count as f64 / n as f64)),
+        format_compliant_trials,
+        format_compliance_rate: format_compliant_trials
+            .and_then(|count| (n > 0).then_some(count as f64 / n as f64)),
     }
 }
 
@@ -889,6 +1004,8 @@ fn report_json(input: &RunInput, models: &[ModelMetrics]) -> Result<Value> {
     let costs = cost_summary(&all_rows, request_cost, Some(input.metadata_known_cost))?;
     Ok(json!({
         "schema_version": 1,
+        "metrics_policy_version": input.metrics_policy_version,
+        "primary_metric": primary_metric(input.metrics_policy_version),
         "run_id": input.run_id,
         "report_scope": input.scope,
         "diagnostic_scratch": input.scope == "diagnostic_scratch",
@@ -905,19 +1022,28 @@ fn report_json(input: &RunInput, models: &[ModelMetrics]) -> Result<Value> {
             "completed_items": input.rows.len(),
         },
         "costs": cost_json(&costs, Some(input.metadata_known_cost), input.successful_request_count),
-        "models": models.iter().map(model_json).collect::<Vec<_>>(),
+        "models": models
+            .iter()
+            .map(|model| model_json(model, input.metrics_policy_version))
+            .collect::<Vec<_>>(),
     }))
 }
 
-fn model_json(model: &ModelMetrics) -> Value {
+fn model_json(model: &ModelMetrics, metrics_policy_version: u32) -> Value {
     json!({
+        "metrics_policy_version": metrics_policy_version,
+        "primary_metric": primary_metric(metrics_policy_version),
         "provider": model.provider,
         "requested_model": model.requested_model,
         "returned_model_ids_observed": model.returned_model_ids,
-        "overall": counts_json(&model.overall),
-        "control": counts_json(&model.control),
-        "traps": counts_json(&model.traps),
-        "tasks": model.tasks.iter().map(task_json).collect::<Vec<_>>(),
+        "overall": counts_json(&model.overall, metrics_policy_version),
+        "control": counts_json(&model.control, metrics_policy_version),
+        "traps": counts_json(&model.traps, metrics_policy_version),
+        "tasks": model
+            .tasks
+            .iter()
+            .map(|task| task_json(task, metrics_policy_version))
+            .collect::<Vec<_>>(),
         "pass_power": k_averages_json(&model.pass_power),
         "pass_at": k_averages_json(&model.pass_at),
         "wilson_95": model.wilson95.as_ref().map(|interval| json!({"low":interval.low,"high":interval.high,"n":model.overall.n})),
@@ -926,24 +1052,39 @@ fn model_json(model: &ModelMetrics) -> Value {
     })
 }
 
-fn task_json(task: &TaskMetrics) -> Value {
+fn task_json(task: &TaskMetrics, metrics_policy_version: u32) -> Value {
     json!({
         "task_id": task.task_id,
-        "metrics": counts_json(&task.counts),
+        "metrics": counts_json(&task.counts, metrics_policy_version),
         "pass_power": task.pass_power,
         "pass_at": task.pass_at,
     })
 }
 
-fn counts_json(counts: &Counts) -> Value {
-    json!({
+fn counts_json(counts: &Counts, metrics_policy_version: u32) -> Value {
+    let mut value = json!({
         "expected_trials": counts.expected_trials,
         "completed_trials": counts.completed_trials,
         "n": counts.n,
         "c": counts.c,
         "api_errors": counts.api_errors,
         "pass_rate": counts.pass_rate,
-    })
+    });
+    if metrics_policy_version == 2 {
+        value["strict_passes"] = json!(counts.strict_passes);
+        value["strict_pass_rate"] = json!(counts.strict_pass_rate);
+        value["format_compliant_trials"] = json!(counts.format_compliant_trials);
+        value["format_compliance_rate"] = json!(counts.format_compliance_rate);
+    }
+    value
+}
+
+fn primary_metric(metrics_policy_version: u32) -> &'static str {
+    if metrics_policy_version == 2 {
+        "outcome_pass"
+    } else {
+        "strict_v1_grade"
+    }
 }
 
 fn k_averages_json(values: &BTreeMap<String, KAverage>) -> Value {
@@ -997,12 +1138,18 @@ fn summary_csv(input: &RunInput, models: &[ModelMetrics]) -> Result<String> {
         "requested_model",
         "returned_model_ids_observed",
         "task_id",
+        "metrics_policy_version",
+        "primary_metric",
         "expected_trials",
         "completed_trials",
         "n",
         "c",
         "api_errors",
         "pass_rate",
+        "strict_passes",
+        "strict_pass_rate",
+        "format_compliant_trials",
+        "format_compliance_rate",
         "control_pass_rate",
         "trap_pass_rate",
         "wilson95_low",
@@ -1044,6 +1191,10 @@ fn summary_csv(input: &RunInput, models: &[ModelMetrics]) -> Result<String> {
             model.overall.c.to_string(),
             model.overall.api_errors.to_string(),
             opt_float(model.overall.pass_rate),
+            opt_u64(model.overall.strict_passes),
+            opt_float(model.overall.strict_pass_rate),
+            opt_u64(model.overall.format_compliant_trials),
+            opt_float(model.overall.format_compliance_rate),
             opt_float(model.control.pass_rate),
             opt_float(model.traps.pass_rate),
             interval
@@ -1098,6 +1249,10 @@ fn summary_csv(input: &RunInput, models: &[ModelMetrics]) -> Result<String> {
                 task.counts.c.to_string(),
                 task.counts.api_errors.to_string(),
                 opt_float(task.counts.pass_rate),
+                opt_u64(task.counts.strict_passes),
+                opt_float(task.counts.strict_pass_rate),
+                opt_u64(task.counts.format_compliant_trials),
+                opt_float(task.counts.format_compliance_rate),
                 String::new(),
                 String::new(),
                 String::new(),
@@ -1145,6 +1300,8 @@ fn base_csv_row(
         model.requested_model.clone(),
         returned.to_owned(),
         task_id.to_owned(),
+        input.metrics_policy_version.to_string(),
+        primary_metric(input.metrics_policy_version).to_owned(),
     ]
 }
 
@@ -1170,6 +1327,10 @@ fn csv_cell(value: &str) -> String {
 
 fn opt_float(value: Option<f64>) -> String {
     value.map(format_float).unwrap_or_default()
+}
+
+fn opt_u64(value: Option<u64>) -> String {
+    value.map(|number| number.to_string()).unwrap_or_default()
 }
 
 fn format_float(value: f64) -> String {
@@ -1250,6 +1411,13 @@ fn required_u64(object: &Value, key: &str) -> Result<u64> {
         .get(key)
         .and_then(Value::as_u64)
         .with_context(|| format!("required integer field {key} is missing or invalid"))
+}
+
+fn required_bool(object: &Value, key: &str) -> Result<bool> {
+    object
+        .get(key)
+        .and_then(Value::as_bool)
+        .with_context(|| format!("required boolean field {key} is missing or invalid"))
 }
 
 fn decimal_field(object: &Value, key: &str) -> Result<Option<Decimal>> {

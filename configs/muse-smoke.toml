@@ -1,0 +1,28 @@
+# One tool round trip after local key setup. Diagnostic evidence only.
+trials = 1
+max_turns = 2
+tasks = ["t00_control"]
+
+[muse_budget]
+ceiling_usd = 15.00
+initial_charge_usd = 0.00
+
+[providers.meta]
+base_url = "https://api.meta.ai/v1"
+key_env = "MODEL_API_KEY"
+api = "responses"
+max_concurrency = 1
+rpm = 6
+max_retries = 0
+timeout_seconds = 120
+
+[[models]]
+id = "muse-spark-1.1"
+provider = "meta"
+max_output_tokens = 2048
+reasoning_effort = "medium"
+
+[models.price]
+input_per_million = 1.25
+cached_input_per_million = 0.15
+output_per_million = 4.25

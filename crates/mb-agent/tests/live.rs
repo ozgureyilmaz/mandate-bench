@@ -88,6 +88,7 @@ fn model() -> ModelConfig {
 
 fn record(api: WireApi) -> RequestRecord {
     RequestRecord {
+        budget: None,
         provider: "mock".into(),
         requested_model: "mock-model".into(),
         model: Some("mock-returned-model".into()),

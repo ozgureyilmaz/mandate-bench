@@ -34,7 +34,7 @@ enum Command {
         #[arg(long)]
         out: Option<PathBuf>,
     },
-    /// One forced tool-calling request per selected model; not an evaluation trial.
+    /// Check tool calling. Muse also replays the result and checks the continuation.
     Smoke {
         #[arg(long, default_value = "configs/smoke.toml")]
         config: PathBuf,

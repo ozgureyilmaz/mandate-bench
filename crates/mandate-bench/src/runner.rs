@@ -11,10 +11,13 @@ use anyhow::{Context, Result, bail, ensure};
 use chrono::{DateTime, FixedOffset, Utc};
 use mb_agent::{EpisodeOutcome, LiveEpisode, run_episode};
 use mb_core::{MAX_TOOL_CALLS, Task, load_task};
-use mb_grader::{Reference, grade, load_reference, validate_reference};
+use mb_grader::{
+    Reference, evaluate_metrics_v2, grade, grade_authorized_outcome, load_reference,
+    validate_reference,
+};
 use mb_llm::{
-    Client, CompletionBackend, ModelConfig, RequestRecord, RunConfig, TokenUsage, ToolChoice,
-    ToolDefinition, estimate_cost, load_config,
+    BudgetGuard, Client, CompletionBackend, ModelConfig, ModelReply, RequestRecord, RunConfig,
+    TokenUsage, ToolChoice, ToolDefinition, estimate_cost, load_config, tool_result,
 };
 use rust_decimal::Decimal;
 use serde_json::{Value, json};
@@ -28,6 +31,7 @@ struct Artifacts {
     records: Vec<RequestRecord>,
     costs: Vec<Option<Decimal>>,
     models: Vec<ModelConfig>,
+    budgets: PaidBudgets,
 }
 
 impl Artifacts {
@@ -80,6 +84,7 @@ impl Artifacts {
         };
         let metadata = json!({
             "schema_version": 1, "run_id": run_id, "kind": kind,
+            "metrics_policy_version": 2,
             "source": source, "state": "running",
             "started_at_utc": start.to_rfc3339(), "started_at_istanbul": istanbul(start),
             "ended_at_utc": null, "ended_at_istanbul": null,
@@ -103,6 +108,7 @@ impl Artifacts {
             records: Vec::new(),
             costs: Vec::new(),
             models: models.to_vec(),
+            budgets: BTreeMap::new(),
         };
         artifacts.flush("running")?;
         Ok(artifacts)
@@ -137,6 +143,14 @@ impl Artifacts {
 
     fn flush(&self, state: &str) -> Result<()> {
         let mut metadata = self.metadata.clone();
+        if !self.budgets.is_empty() {
+            let snapshots = self
+                .budgets
+                .iter()
+                .map(|(provider, budget)| Ok((provider, budget.snapshot()?)))
+                .collect::<Result<BTreeMap<_, _>>>()?;
+            metadata["paid_budgets"] = serde_json::to_value(snapshots)?;
+        }
         metadata["state"] = json!(state);
         if state != "running" {
             let end = Utc::now();
@@ -249,7 +263,82 @@ fn configuration(
         "no configured model matches the selector"
     );
     for model in &models {
-        config.providers[&model.provider].resolved(&model.provider)?;
+        let provider = config.providers[&model.provider].resolved(&model.provider)?;
+        // Literal loopback is reserved for the existing offline transport fixtures.
+        if provider.base_url.starts_with("http://") {
+            continue;
+        }
+        match model.provider.as_str() {
+            "openai" => {
+                ensure!(
+                    model.id == "gpt-6-luna",
+                    "only gpt-6-luna is approved for paid evaluation"
+                );
+                ensure!(
+                    provider.base_url.trim_end_matches('/') == "https://api.openai.com/v1",
+                    "paid evaluation requires the official OpenAI endpoint"
+                );
+                ensure!(
+                    config.budget.is_some(),
+                    "paid evaluation requires the cumulative budget guard"
+                );
+                ensure!(
+                    config
+                        .budget
+                        .as_ref()
+                        .is_some_and(|budget| budget.ceiling_usd == Decimal::ONE
+                            && budget.initial_charge_usd == Decimal::ONE),
+                    "current paid ceiling is USD 1, fully reserved until historical unknown billing is reconciled"
+                );
+                ensure!(
+                    provider.max_concurrency == 1 && provider.max_retries == 0,
+                    "paid evaluation requires serial dispatch and no provider retries"
+                );
+            }
+            "meta" => {
+                ensure!(
+                    model.id == "muse-spark-1.1",
+                    "only muse-spark-1.1 is approved for Meta evaluation"
+                );
+                ensure!(
+                    provider.base_url.trim_end_matches('/') == "https://api.meta.ai/v1",
+                    "Muse evaluation requires the official Meta endpoint"
+                );
+                ensure!(
+                    config
+                        .muse_budget
+                        .as_ref()
+                        .is_some_and(|budget| budget.ceiling_usd == Decimal::from(15)
+                            && budget.initial_charge_usd == Decimal::ZERO),
+                    "Muse evaluation requires its separate USD 15 budget with zero historical project carry-in"
+                );
+                ensure!(
+                    provider.max_concurrency == 1 && provider.max_retries == 0,
+                    "Muse evaluation requires serial dispatch and no provider retries"
+                );
+            }
+            "nvidia" => {
+                ensure!(
+                    provider.base_url.trim_end_matches('/')
+                        == "https://integrate.api.nvidia.com/v1",
+                    "free comparison requires the approved NIM endpoint"
+                );
+                ensure!(
+                    matches!(
+                        model.id.as_str(),
+                        "moonshotai/kimi-k2.6"
+                            | "nvidia/nemotron-3-ultra-550b-a55b"
+                            | "mistralai/mistral-large-4-1t-a52b"
+                    ),
+                    "NIM model is outside the owner-approved list"
+                );
+                ensure!(
+                    provider.max_concurrency == 1 && provider.rpm.is_some_and(|rpm| rpm <= 30),
+                    "NIM requires serial dispatch and at most 30 RPM"
+                );
+            }
+            _ => bail!("provider is outside the current owner-approved model scope"),
+        }
     }
     Ok((config, models))
 }
@@ -265,6 +354,11 @@ fn preflight_keys(config: &RunConfig, models: &[ModelConfig], dry_run: bool) -> 
                 "{provider}: {key} {}",
                 if present { "present" } else { "missing" }
             );
+            if provider == "openai" && config.budget.is_some() {
+                println!(
+                    "paid budget: USD 1 ceiling is reserved for unresolved historical usage; live paid calls remain blocked"
+                );
+            }
         }
         if !present {
             missing.push(key.clone());
@@ -278,15 +372,173 @@ fn preflight_keys(config: &RunConfig, models: &[ModelConfig], dry_run: bool) -> 
     Ok(())
 }
 
-fn clients(config: &RunConfig, models: &[ModelConfig]) -> Result<BTreeMap<String, Arc<Client>>> {
+fn tool_eligibility_path(root: &Path, provider: &str) -> Option<(PathBuf, &'static str)> {
+    match provider {
+        "nvidia" => Some((
+            root.join("runs/nim-tool-eligibility.json"),
+            "https://integrate.api.nvidia.com/v1",
+        )),
+        "meta" => Some((
+            root.join("runs/muse-tool-eligibility.json"),
+            "https://api.meta.ai/v1",
+        )),
+        _ => None,
+    }
+}
+
+fn record_tool_eligibility(
+    root: &Path,
+    model: &ModelConfig,
+    status: &str,
+    run_dir: &Path,
+) -> Result<()> {
+    let Some((path, base_url)) = tool_eligibility_path(root, &model.provider) else {
+        return Ok(());
+    };
+    let mut checks: BTreeMap<String, Value> = if path.exists() {
+        serde_json::from_slice(&fs::read(&path)?)
+            .context("invalid tool eligibility record; refusing to replace it")?
+    } else {
+        BTreeMap::new()
+    };
+    checks.insert(
+        model.id.clone(),
+        json!({
+            "status":status,"checked_at_utc":Utc::now().to_rfc3339(),
+            "source":"provider_api","base_url":base_url,
+            "reasoning_effort":model.reasoning_effort,
+            "run_id":run_dir.file_name().and_then(|name|name.to_str()),
+            "git_commit":command_output(root,"git",&["rev-parse","HEAD"]),
+        }),
+    );
+    let temporary = path.with_extension("tmp");
+    fs::write(&temporary, serde_json::to_vec_pretty(&checks)?)?;
+    fs::rename(temporary, path)?;
+    Ok(())
+}
+
+fn require_tool_eligibility(root: &Path, config: &RunConfig, models: &[ModelConfig]) -> Result<()> {
+    for model in models {
+        let Some((path, base_url)) = tool_eligibility_path(root, &model.provider) else {
+            continue;
+        };
+        if config.providers[&model.provider]
+            .resolved(&model.provider)?
+            .base_url
+            .starts_with("http://")
+        {
+            continue;
+        }
+        let checks: BTreeMap<String, Value> =
+            serde_json::from_slice(&fs::read(&path).with_context(|| {
+                format!("{} requires a passing live tool smoke before run", model.id)
+            })?)?;
+        ensure!(
+            checks
+                .get(&model.id)
+                .is_some_and(|check| check["status"] == "tool_call_supported"
+                    && check["source"] == "provider_api"
+                    && check["base_url"] == base_url
+                    && (model.provider != "meta"
+                        || check["reasoning_effort"] == json!(model.reasoning_effort))),
+            "model {} has no passing tool-calling smoke for these settings",
+            model.id
+        );
+        if model.provider == "meta" {
+            let signoff = fs::read_to_string(root.join("docs/SIGNOFF.md"))
+                .context("Muse scored runs require owner review in docs/SIGNOFF.md")?;
+            ensure!(
+                [
+                    "- [x] Task and reference sign-off",
+                    "- [x] Grader and metrics sign-off"
+                ]
+                .iter()
+                .all(|approval| signoff.lines().any(|line| line == *approval)),
+                "Muse scored runs require task and grader sign-off in docs/SIGNOFF.md"
+            );
+        }
+    }
+    Ok(())
+}
+
+type Clients = BTreeMap<String, Arc<Client>>;
+type PaidBudgets = BTreeMap<String, Arc<BudgetGuard>>;
+fn clients(
+    root: &Path,
+    config: &RunConfig,
+    models: &[ModelConfig],
+) -> Result<(Clients, PaidBudgets)> {
     let providers: BTreeSet<_> = models.iter().map(|model| model.provider.clone()).collect();
-    providers
+    let mut budgets = PaidBudgets::new();
+    for name in &providers {
+        let resolved = config.providers[name].resolved(name)?;
+        if resolved.base_url.starts_with("http://") {
+            continue;
+        }
+        let (file, budget) = match name.as_str() {
+            "openai" => ("paid-budget-ledger.json", &config.budget),
+            "meta" => ("muse-spend-ledger.json", &config.muse_budget),
+            _ => continue,
+        };
+        let directory = root.join("runs");
+        fs::create_dir_all(&directory)?;
+        budgets.insert(
+            name.clone(),
+            BudgetGuard::open_for_provider(
+                directory.join(file),
+                name,
+                budget.as_ref().context("paid budget is missing")?,
+            )?,
+        );
+    }
+    let clients = providers
         .into_iter()
         .map(|name| {
-            let client = Client::from_env(&name, &config.providers[&name])?;
+            let mut client = Client::from_env(&name, &config.providers[&name])?;
+            if let Some(budget) = budgets.get(&name) {
+                client = client.with_budget(budget.clone());
+            }
             Ok((name, Arc::new(client)))
         })
-        .collect()
+        .collect::<Result<_>>()?;
+    Ok((clients, budgets))
+}
+
+fn admit_paid_batch(
+    budgets: &PaidBudgets,
+    models: &[ModelConfig],
+    trials_per_model: Option<u64>,
+    max_turns: usize,
+) -> Result<BTreeMap<String, Decimal>> {
+    let mut estimates = BTreeMap::new();
+    for model in models {
+        let Some(budget) = budgets.get(&model.provider) else {
+            continue;
+        };
+        let reservation = budget.projected_request_cost(model)?;
+        let estimate = if let Some(trials) = trials_per_model {
+            // Planning assumption for repeated text/tool history. The durable
+            // reservation still uses the full context bound on every request.
+            let output = u64::from(model.max_output_tokens)
+                .checked_mul(u64::try_from(max_turns)?)
+                .context("projected output token count overflow")?;
+            let per_trial = budget.projected_usage_cost(100_000, output)?;
+            per_trial
+                .checked_mul(Decimal::from(trials))
+                .context("projected batch cost overflow")?
+                .max(reservation)
+        } else {
+            reservation * Decimal::from(if model.provider == "meta" { 2 } else { 1 })
+        };
+        budget.ensure_batch_fits(estimate).with_context(|| {
+            format!(
+                "{} batch requires USD {estimate} of available budget",
+                model.provider
+            )
+        })?;
+        estimates.insert(model.provider.clone(), estimate);
+    }
+    Ok(estimates)
 }
 
 fn sum_costs(costs: &[Option<Decimal>]) -> Option<Decimal> {
@@ -320,6 +572,78 @@ fn request_cost(model: &ModelConfig, record: &RequestRecord) -> Option<Decimal> 
     estimate_cost(model.price.as_ref(), &record.usage)
 }
 
+const MUSE_SMOKE_ECHO: &str = "smoke-roundtrip-confirmed";
+
+fn smoke_is_complete(reply: &ModelReply) -> bool {
+    !matches!(
+        reply.finish_reason.as_deref(),
+        Some("length" | "incomplete" | "max_output_tokens" | "content_filter")
+    )
+}
+
+fn smoke_called_echo(reply: &ModelReply) -> bool {
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct EchoArgs {
+        value: String,
+    }
+
+    smoke_is_complete(reply)
+        && reply.calls.len() == 1
+        && reply.calls[0].name == "smoke_echo"
+        && serde_json::from_str::<EchoArgs>(&reply.calls[0].arguments)
+            .is_ok_and(|args| args.value == "ready")
+}
+
+async fn finish_muse_smoke(
+    client: &dyn CompletionBackend,
+    model: &ModelConfig,
+    history: &[Value],
+    tools: &[ToolDefinition],
+    reply: ModelReply,
+) -> (&'static str, Value, Value, Vec<RequestRecord>) {
+    let output = tool_result(
+        client.api(),
+        &reply.calls[0],
+        &json!({"value": MUSE_SMOKE_ECHO}),
+    );
+    let mut continuation = history.to_vec();
+    continuation.extend(reply.history.iter().cloned());
+    continuation.push(output.clone());
+    match client
+        .complete(model, &continuation, tools, ToolChoice::None)
+        .await
+    {
+        Ok(next) => {
+            let passed = next.finish_reason.as_deref() == Some("completed")
+                && next.calls.is_empty()
+                && next.text.trim() == MUSE_SMOKE_ECHO
+                && next.record.model.as_deref() == Some(model.id.as_str());
+            let status = if passed {
+                "tool_call_supported"
+            } else {
+                "invalid_tool_round_trip"
+            };
+            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"continuation_reply":next});
+            (
+                status,
+                transcript,
+                json!([reply.raw, next.raw]),
+                vec![reply.record, next.record],
+            )
+        }
+        Err(error) => {
+            let transcript = json!({"source":"smoke","initial_messages":history,"reply":reply,"tool_output":output,"api_error":error});
+            (
+                "api_error",
+                transcript,
+                json!([reply.raw, error.raw]),
+                vec![reply.record, *error.record],
+            )
+        }
+    }
+}
+
 pub async fn smoke(
     root: &Path,
     path: &Path,
@@ -333,23 +657,31 @@ pub async fn smoke(
         println!("smoke preflight passed; no API requests sent");
         return Ok(());
     }
-    let clients = clients(&config, &models)?;
+    let (clients, budgets) = clients(root, &config, &models)?;
+    let estimates = admit_paid_batch(&budgets, &models, None, config.max_turns)?;
     let mut artifacts = Artifacts::create(root, out, "smoke", &config, &models, &[])?;
+    artifacts.budgets = budgets;
+    artifacts.metadata["projected_paid_usd"] = json!(estimates);
+    artifacts.flush("running")?;
     let tools = vec![ToolDefinition {
         name: "smoke_echo".into(),
         description: "Confirm function-calling transport support.".into(),
         parameters: json!({"type":"object","properties":{"value":{"type":"string","enum":["ready"]}},"required":["value"],"additionalProperties":false}),
     }];
-    let history = vec![
-        json!({"role":"user","content":"Call smoke_echo with value ready. This is a transport check; do not answer with text."}),
-    ];
     let mut failures = 0;
     for (index, model) in models.iter().enumerate() {
         let id = format!("model-{index}");
-        let choice = if model.provider == "deepseek"
-            && model
-                .thinking
-                .unwrap_or(model.reasoning_effort.as_deref() != Some("none"))
+        let instruction = if model.provider == "meta" {
+            "Call smoke_echo with value ready. After the tool returns, reply with exactly the value from its result and no other text."
+        } else {
+            "Call smoke_echo with value ready. This is a transport check; do not answer with text."
+        };
+        let history = [json!({"role":"user","content":instruction})];
+        let choice = if model.provider == "nvidia"
+            || (model.provider == "deepseek"
+                && model
+                    .thinking
+                    .unwrap_or(model.reasoning_effort.as_deref() != Some("none")))
         {
             ToolChoice::Auto
         } else {
@@ -358,24 +690,34 @@ pub async fn smoke(
         let result = clients[&model.provider]
             .complete(model, &history, &tools, choice)
             .await;
-        let (status, transcript, raw, record) = match result {
+        let (status, transcript, raw, records) = match result {
+            Ok(reply)
+                if model.provider == "meta"
+                    && smoke_called_echo(&reply)
+                    && reply.record.model.as_deref() == Some(model.id.as_str()) =>
+            {
+                finish_muse_smoke(
+                    clients[&model.provider].as_ref(),
+                    model,
+                    &history,
+                    &tools,
+                    reply,
+                )
+                .await
+            }
             Ok(reply) => {
-                let supported = reply.calls.len() == 1
-                    && reply.calls[0].name == "smoke_echo"
-                    && serde_json::from_str::<Value>(&reply.calls[0].arguments)
-                        .is_ok_and(|args| args == json!({"value":"ready"}))
-                    && !matches!(
-                        reply.finish_reason.as_deref(),
-                        Some("length" | "incomplete" | "max_output_tokens" | "content_filter")
-                    );
-                let status = if supported {
+                let status = if model.provider == "meta"
+                    && reply.record.model.as_deref() != Some(model.id.as_str())
+                {
+                    "unexpected_model"
+                } else if smoke_called_echo(&reply) {
                     "tool_call_supported"
                 } else {
                     "no_tool_call"
                 };
                 let transcript =
                     json!({"source":"smoke", "initial_messages": history, "reply": reply});
-                (status, transcript, reply.raw, reply.record)
+                (status, transcript, reply.raw, vec![reply.record])
             }
             Err(error) => {
                 let transcript =
@@ -384,15 +726,29 @@ pub async fn smoke(
                     "api_error",
                     transcript,
                     error.raw.unwrap_or(Value::Null),
-                    *error.record,
+                    vec![*error.record],
                 )
             }
         };
-        let cost = request_cost(model, &record);
-        let row = json!({"item_id":id,"status":status,"provider":model.provider,"requested_model":model.id,"model":record.model,"wire_api":record.api,"usage":record.usage,"cost_estimate_usd":cost});
-        artifacts.save(&id, &transcript, &raw, row, vec![record], cost)?;
+        let cost = sum_costs(
+            &records
+                .iter()
+                .map(|record| request_cost(model, record))
+                .collect::<Vec<_>>(),
+        );
+        let record = records.last().expect("probe records at least one request");
+        let row = json!({"item_id":id,"status":status,"provider":model.provider,"requested_model":model.id,"model":record.model,"wire_api":record.api,"usage":sum_usage(&records),"cost_estimate_usd":cost});
+        artifacts.save(&id, &transcript, &raw, row, records, cost)?;
+        if artifacts.metadata["source"] == "provider_api" {
+            record_tool_eligibility(root, model, status, &artifacts.run_dir)?;
+        }
         println!("{}: {status}", model.id);
         failures += usize::from(status != "tool_call_supported");
+        if status == "api_error" {
+            artifacts.metadata["unstarted_items"] = json!(models.len() - index - 1);
+            artifacts.metadata["halted_providers"] = json!([model.provider]);
+            break;
+        }
     }
     artifacts.flush(if failures == 0 { "completed" } else { "failed" })?;
     println!(
@@ -435,6 +791,7 @@ pub async fn run(
     dry_run: bool,
 ) -> Result<()> {
     let (config, models) = configuration(root, path, selector)?;
+    require_tool_eligibility(root, &config, &models)?;
     let mut tasks = Vec::new();
     for id in config
         .tasks
@@ -461,12 +818,19 @@ pub async fn run(
         );
         return Ok(());
     }
-    let clients = clients(&config, &models)?;
+    let (clients, budgets) = clients(root, &config, &models)?;
+    let trials = u64::try_from(tasks.len())?
+        .checked_mul(u64::from(config.trials))
+        .context("batch trial count overflow")?;
+    let estimates = admit_paid_batch(&budgets, &models, Some(trials), config.max_turns)?;
     let visible_tasks = tasks
         .iter()
         .map(|(task, _)| task.clone())
         .collect::<Vec<_>>();
     let mut artifacts = Artifacts::create(root, out, "run", &config, &models, &visible_tasks)?;
+    artifacts.budgets = budgets;
+    artifacts.metadata["projected_paid_usd"] = json!(estimates);
+    artifacts.flush("running")?;
     let mut jobs = JoinSet::new();
     let mut pending: BTreeMap<String, VecDeque<TrialJob>> = BTreeMap::new();
     for (model_index, model) in models.iter().enumerate() {
@@ -528,6 +892,22 @@ pub async fn run(
                 .collect::<Vec<_>>(),
         );
         let outcome_value = serde_json::to_value(episode.outcome)?;
+        let mut metrics = if matches!(episode.outcome, EpisodeOutcome::ApiError) {
+            None
+        } else {
+            Some(evaluate_metrics_v2(
+                &task,
+                &reference,
+                &episode.environment,
+                &episode.transcript.final_output,
+            ))
+        };
+        if !matches!(episode.outcome, EpisodeOutcome::Complete)
+            && let Some(metrics) = &mut metrics
+        {
+            metrics.outcome_pass = false;
+            metrics.strict_pass = false;
+        }
         let (status, grading) = match episode.outcome {
             EpisodeOutcome::ApiError => ("api_error", None),
             outcome => {
@@ -554,18 +934,36 @@ pub async fn run(
                         1
                     }] = false;
                 }
-                (if grading.pass { "pass" } else { "fail" }, Some(grading))
+                (
+                    if metrics.as_ref().is_some_and(|metrics| metrics.outcome_pass) {
+                        "pass"
+                    } else {
+                        "fail"
+                    },
+                    Some(grading),
+                )
             }
         };
         let returned_models = records
             .iter()
             .filter_map(|record| record.model.clone())
             .collect::<BTreeSet<_>>();
-        let label = grading
-            .as_ref()
-            .and_then(|grade| grade.failure_label.clone())
-            .or_else(|| (status == "api_error").then(|| "api_error".to_owned()));
-        let row = json!({"trial_id":id,"task_id":task.task_id,"task_version":task.task_version,"trial":trial,"provider":model.provider,"requested_model":model.id,"returned_models":returned_models,"status":status,"episode_outcome":outcome_value,"grade":grading,"failure_label":label,"usage":sum_usage(&records),"cost_estimate_usd":cost,"cost_is_estimate":true});
+        let label = match episode.outcome {
+            EpisodeOutcome::ApiError => Some("api_error".to_owned()),
+            EpisodeOutcome::InvalidToolCall => Some("tool_protocol_failure".to_owned()),
+            EpisodeOutcome::NoDecision => Some("no_decision".to_owned()),
+            EpisodeOutcome::Complete if status != "pass" => {
+                grade_authorized_outcome(
+                    &task,
+                    &reference,
+                    &episode.environment,
+                    &episode.transcript.final_output,
+                )
+                .failure_label
+            }
+            _ => None,
+        };
+        let row = json!({"trial_id":id,"task_id":task.task_id,"task_version":task.task_version,"trial":trial,"provider":model.provider,"requested_model":model.id,"returned_models":returned_models,"status":status,"episode_outcome":outcome_value,"grade":grading,"failure_label":label,"usage":sum_usage(&records),"cost_estimate_usd":cost,"cost_is_estimate":true,"metrics_policy_version":2,"outcome_pass":metrics.as_ref().map(|metrics|metrics.outcome_pass),"strict_pass":metrics.as_ref().map(|metrics|metrics.strict_pass),"format_compliant":metrics.as_ref().map(|metrics|metrics.format_compliant),"final_answer_present":!episode.transcript.final_output.trim().is_empty(),"tool_protocol_failure":matches!(episode.outcome, EpisodeOutcome::InvalidToolCall)});
         let mut raw_outputs = episode
             .transcript
             .replies
@@ -649,5 +1047,54 @@ mod tests {
             istanbul("2026-11-02T00:00:00Z".parse().unwrap()),
             "2026-11-02T03:00:00+03:00"
         );
+    }
+
+    #[test]
+    fn muse_batch_admission_checks_remaining_spend_before_dispatch() {
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let config = load_config(&repo.join("configs/muse-diagnostic.toml")).unwrap();
+        let root =
+            std::env::temp_dir().join(format!("mandate-muse-admission-{}", std::process::id()));
+        fs::create_dir(&root).unwrap();
+        let ledger = BudgetGuard::open_for_provider(
+            root.join("ledger.json"),
+            "meta",
+            config.muse_budget.as_ref().unwrap(),
+        )
+        .unwrap();
+        let budgets = BTreeMap::from([("meta".to_owned(), ledger.clone())]);
+        let estimates = admit_paid_batch(&budgets, &config.models, Some(12), 20).unwrap();
+        assert_eq!(estimates["meta"], Decimal::new(358896, 5));
+        assert!(admit_paid_batch(&budgets, &config.models, Some(51), 20).is_err());
+        let smoke_estimate = admit_paid_batch(&budgets, &config.models, None, 2).unwrap();
+        assert_eq!(smoke_estimate["meta"], Decimal::new(2638848, 6));
+        assert_eq!(ledger.snapshot().unwrap().reservation_count, 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn nim_admission_requires_a_passing_check_and_a_later_failure_revokes_it() {
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let config = load_config(&repo.join("configs/nim-smoke.toml")).unwrap();
+        let models = &config.models[..1];
+        let root =
+            std::env::temp_dir().join(format!("mandate-nim-admission-{}", std::process::id()));
+        fs::create_dir(&root).unwrap();
+        fs::create_dir(root.join("runs")).unwrap();
+        assert!(require_tool_eligibility(&root, &config, models).is_err());
+        for status in ["no_tool_call", "tool_call_supported", "api_error"] {
+            record_tool_eligibility(
+                &root,
+                &models[0],
+                status,
+                &root.join("runs/synthetic-test-only"),
+            )
+            .unwrap();
+            assert_eq!(
+                require_tool_eligibility(&root, &config, models).is_ok(),
+                status == "tool_call_supported"
+            );
+        }
+        fs::remove_dir_all(root).unwrap();
     }
 }

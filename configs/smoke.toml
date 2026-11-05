@@ -4,36 +4,26 @@ trials = 1
 max_turns = 20
 tasks = ["t00_control", "t01_hidden_fees"]
 
+
+[budget]
+ceiling_usd = 1.00
+initial_charge_usd = 1.00
+# Entire ceiling reserved until earlier unknown error billing is reconciled.
+
 [providers.openai]
 base_url = "https://api.openai.com/v1"
 key_env = "OPENAI_API_KEY"
 api = "responses"
 max_concurrency = 1
-rpm = 30
+rpm = 6
 max_retries = 0
-timeout_seconds = 120
-
-[providers.deepseek]
-base_url = "https://api.deepseek.com"
-key_env = "DEEPSEEK_API_KEY"
-api = "chat_completions"
-max_concurrency = 8
-max_retries = 6
-timeout_seconds = 120
-
-[providers.nvidia]
-base_url = "https://integrate.api.nvidia.com/v1"
-key_env = "NVIDIA_API_KEY"
-api = "chat_completions"
-max_concurrency = 2
-rpm = 30
-max_retries = 6
 timeout_seconds = 120
 
 [[models]]
 id = "gpt-6-luna"
 provider = "openai"
 max_output_tokens = 1024
+reasoning_effort = "none"
 
 # Standard short-context prices checked Nov 4, 2026 against official pricing.
 # https://developers.openai.com/api/docs/pricing

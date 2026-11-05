@@ -79,9 +79,13 @@ output_per_million = 2.0
                 "config.toml",
             ])
             .env_remove("OPENAI_BASE_URL")
+            .env_remove("META_BASE_URL")
+            .env_remove("MODEL_API_KEY")
             .env_remove("MB_TEST_API_KEY");
         if key_present {
-            process.env("MB_TEST_API_KEY", KEY);
+            process
+                .env("MB_TEST_API_KEY", KEY)
+                .env("MODEL_API_KEY", KEY);
         }
         process.output().unwrap()
     }
@@ -204,6 +208,70 @@ fn final_reply(status: &str, malformed: bool) -> Value {
 }
 
 #[test]
+fn muse_smoke_replays_the_call_and_persists_both_responses() {
+    let mut first = response(
+        json!([
+            {"type":"reasoning","id":"rs_smoke","summary":[],"encrypted_content":"opaque-fixture"},
+            {"type":"function_call","id":"fc_smoke","call_id":"call_smoke","name":"smoke_echo","arguments":"{\"value\":\"ready\"}"}
+        ]),
+        "completed",
+    );
+    first["model"] = json!("muse-spark-1.1");
+    let mut second = response(
+        json!([
+            {"type":"message","role":"assistant","content":[{"type":"output_text","text":"smoke-roundtrip-confirmed"}]}
+        ]),
+        "completed",
+    );
+    second["model"] = json!("muse-spark-1.1");
+    let (url, handle, requests) = server(vec![(200, first), (200, second)]);
+    let root = TempRoot::new(&url);
+    let config = include_str!("../../../configs/muse-smoke.toml")
+        .replace("https://api.meta.ai/v1", &url)
+        .replace("rpm = 6\n", "rpm = 6000\n");
+    fs::write(root.0.join("config.toml"), config).unwrap();
+    let output = root.command("smoke", true);
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr),
+    );
+    handle.join().unwrap();
+
+    let requests = requests.lock().unwrap();
+    assert_eq!(requests.len(), 2);
+    assert_eq!(requests[1]["reasoning"]["effort"], "medium");
+    assert_eq!(requests[1]["tool_choice"], "none");
+    let input = requests[1]["input"].as_array().unwrap();
+    assert!(
+        input.iter().any(
+            |item| item["type"] == "reasoning" && item["encrypted_content"] == "opaque-fixture"
+        )
+    );
+    assert!(input.iter().any(|item| {
+        item["type"] == "function_call_output"
+            && item["call_id"] == "call_smoke"
+            && item["output"]
+                .as_str()
+                .unwrap()
+                .contains("smoke-roundtrip-confirmed")
+    }));
+    let (meta, scores, directory) = root.artifacts();
+    assert_eq!(meta["http_attempts"], 2);
+    assert_eq!(meta["token_usage"]["reasoning"], 4);
+    assert_eq!(scores[0]["status"], "tool_call_supported");
+    assert_eq!(
+        read_json(&directory.join("outputs/model-0.json"))
+            .as_array()
+            .unwrap()
+            .len(),
+        2
+    );
+    assert!(!root.0.join("runs/muse-tool-eligibility.json").exists());
+}
+
+#[test]
 fn cli_runs_a_fresh_trial_and_persists_real_returned_model_and_totals() {
     let (url, handle, requests) = server(vec![
         (200, order_reply()),
@@ -219,6 +287,10 @@ fn cli_runs_a_fresh_trial_and_persists_real_returned_model_and_totals() {
     handle.join().unwrap();
     let (meta, scores, directory) = root.artifacts();
     assert_eq!(scores[0]["status"], "pass");
+    assert_eq!(scores[0]["metrics_policy_version"], 2);
+    assert_eq!(scores[0]["outcome_pass"], true);
+    assert_eq!(scores[0]["strict_pass"], true);
+    assert_eq!(scores[0]["format_compliant"], true);
     assert_eq!(
         scores[0]["returned_models"],
         json!(["returned-model-version"])
@@ -291,6 +363,9 @@ fn api_errors_are_saved_once_without_grades_or_secret_error_bodies() {
     assert_eq!(meta["state"], "completed_with_api_errors");
     assert_eq!(scores[0]["status"], "api_error");
     assert!(scores[0]["grade"].is_null());
+    assert!(scores[0]["outcome_pass"].is_null());
+    assert!(scores[0]["strict_pass"].is_null());
+    assert!(scores[0]["format_compliant"].is_null());
     assert!(meta["cost_estimate_usd"].is_null());
     assert!(!meta.to_string().contains(KEY));
 }
@@ -373,5 +448,67 @@ fn missing_keys_fail_preflight_before_any_run_directory_is_created() {
     let output = root.command("smoke", false);
     assert!(!output.status.success());
     assert!(String::from_utf8_lossy(&output.stderr).contains("MB_TEST_API_KEY"));
+    assert!(!root.0.join("runs").exists());
+}
+
+#[test]
+fn prospective_ask_user_metrics_preserve_the_raw_format_failure() {
+    let ask = response(
+        json!([{"type":"function_call","id":"item-ask","call_id":"call-ask","name":"ask_user","arguments":"{\"question\":\"No offer qualifies; may the mandate change?\"}"}]),
+        "completed",
+    );
+    let answer =
+        json!({"decision":"ASK_USER","order":null,"reason":"No eligible offer"}).to_string();
+    let final_answer = response(
+        json!([{"type":"message","role":"assistant","content":[{"type":"output_text","text":answer}]}]),
+        "completed",
+    );
+    let (url, handle, _) = server(vec![(200, ask), (200, final_answer)]);
+    let root = TempRoot::new(&url);
+    let repo = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    fs::create_dir_all(root.0.join("tasks/t08_no_valid_offer")).unwrap();
+    for file in [
+        "tasks/t08_no_valid_offer/task.json",
+        "reference/t08_no_valid_offer.json",
+    ] {
+        fs::copy(repo.join(file), root.0.join(file)).unwrap();
+    }
+    let config = fs::read_to_string(root.0.join("config.toml"))
+        .unwrap()
+        .replace("t00_control", "t08_no_valid_offer");
+    fs::write(root.0.join("config.toml"), config).unwrap();
+    assert!(root.command("run", true).status.success());
+    handle.join().unwrap();
+    let (meta, scores, directory) = root.artifacts();
+    assert_eq!(meta["metrics_policy_version"], 2);
+    assert_eq!(scores[0]["status"], "pass");
+    assert_eq!(scores[0]["outcome_pass"], true);
+    assert_eq!(scores[0]["strict_pass"], false);
+    assert_eq!(scores[0]["format_compliant"], false);
+    assert_eq!(scores[0]["grade"]["pass"], false);
+    assert!(scores[0]["failure_label"].is_null());
+    let transcript = read_json(
+        &directory
+            .join("transcripts")
+            .join("model-0-t08_no_valid_offer-trial-1.json"),
+    );
+    assert!(
+        !transcript["final_output"]
+            .as_str()
+            .unwrap()
+            .contains("currency")
+    );
+}
+
+#[test]
+fn real_paid_config_requires_the_cumulative_guard_before_key_preflight() {
+    let root = TempRoot::new("https://api.openai.com/v1");
+    let config = fs::read_to_string(root.0.join("config.toml"))
+        .unwrap()
+        .replace("mock-model", "gpt-6-luna");
+    fs::write(root.0.join("config.toml"), config).unwrap();
+    let output = root.command("smoke", true);
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("cumulative budget guard"));
     assert!(!root.0.join("runs").exists());
 }

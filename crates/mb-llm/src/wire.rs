@@ -573,6 +573,7 @@ mod tests {
             id: match provider {
                 "openai" => "gpt-example",
                 "deepseek" => "deepseek-flash",
+                "meta" => "muse-spark-1.1",
                 _ => "nvidia/example-model",
             }
             .into(),
@@ -601,6 +602,7 @@ mod tests {
 
     fn record(api: WireApi) -> RequestRecord {
         RequestRecord {
+            budget: None,
             provider: match api {
                 WireApi::Responses => "openai",
                 WireApi::ChatCompletions => "deepseek",
@@ -659,6 +661,97 @@ mod tests {
             forced["tool_choice"],
             json!({"type":"function","name":"get_offer"})
         );
+    }
+
+    #[test]
+    fn meta_responses_request_uses_medium_reasoning_and_official_stateless_replay_fields() {
+        let mut model = model("meta");
+        model.reasoning_effort = Some("medium".into());
+        let request = build_request(
+            WireApi::Responses,
+            &model,
+            &[json!({"role": "user", "content": "Find an offer."})],
+            &[tool()],
+            ToolChoice::Auto,
+        )
+        .unwrap();
+
+        assert_eq!(request["model"], "muse-spark-1.1");
+        assert_eq!(request["max_output_tokens"], 1024);
+        assert_eq!(request["reasoning"]["effort"], "medium");
+        assert_eq!(request["store"], false);
+        assert_eq!(request["include"], json!(["reasoning.encrypted_content"]));
+        assert_eq!(request["parallel_tool_calls"], false);
+        assert!(request.get("service_tier").is_none());
+        assert!(request.get("max_tokens").is_none());
+    }
+
+    #[test]
+    fn meta_tool_round_trip_replays_reasoning_and_pairs_the_call_output() {
+        let mut model = model("meta");
+        model.reasoning_effort = Some("medium".into());
+        let initial_history = vec![
+            json!({"role":"system","content":"Use the tool when needed."}),
+            json!({"role":"user","content":"Find one offer."}),
+        ];
+        let first_request = build_request(
+            WireApi::Responses,
+            &model,
+            &initial_history,
+            &[tool()],
+            ToolChoice::Auto,
+        )
+        .unwrap();
+        assert_eq!(first_request["input"], json!(initial_history));
+
+        let first_response = json!({
+            "model":"muse-spark-1.1",
+            "status":"completed",
+            "output":[
+                {"type":"reasoning","id":"rs_smoke","summary":[],"encrypted_content":"opaque-state"},
+                {"type":"function_call","id":"fc_smoke","call_id":"call_smoke","name":"get_offer","arguments":r#"{"offer_id":"A"}"#,"status":"completed"}
+            ],
+            "usage":{"input_tokens":12,"output_tokens":9,"output_tokens_details":{"reasoning_tokens":5}}
+        });
+        let reply = parse_response(
+            WireApi::Responses,
+            first_response,
+            record(WireApi::Responses),
+        )
+        .unwrap();
+        assert_eq!(reply.finish_reason.as_deref(), Some("completed"));
+        assert_eq!(reply.calls.len(), 1);
+        let mut replay = initial_history;
+        replay.extend(reply.history.clone());
+        replay.push(tool_result(
+            WireApi::Responses,
+            &reply.calls[0],
+            &json!({"offer_id":"A","price":42}),
+        ));
+
+        let second_request = build_request(
+            WireApi::Responses,
+            &model,
+            &replay,
+            &[tool()],
+            ToolChoice::Auto,
+        )
+        .unwrap();
+        assert_eq!(second_request["input"][2], reply.history[0]);
+        assert_eq!(second_request["input"][3], reply.history[1]);
+        assert_eq!(
+            second_request["input"][4],
+            json!({
+                "type":"function_call_output",
+                "call_id":"call_smoke",
+                "output":"{\"offer_id\":\"A\",\"price\":42}"
+            })
+        );
+        assert_eq!(
+            second_request["include"],
+            json!(["reasoning.encrypted_content"])
+        );
+        assert_eq!(second_request["store"], false);
     }
 
     #[test]

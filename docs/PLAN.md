@@ -1,6 +1,16 @@
 # PLAN: mandate-bench design
 
-Status: **draft v0.2 (Oct 30, 2026)**: USD/global tasks, Rust harness, OpenAI + DeepSeek + NVIDIA NIM providers. Implementation follows this spec. When the design changes, update this file and add an entry to DECISIONS.md.
+Status: **v0.4 (Nov 5, 2026)**. Current owner-approved M4 scope below supersedes historical model/budget and implementation-boundary notes later in this document. Decisions remain append-only in DECISIONS.md.
+
+## 0. Active bounded slice — Nov 4–5
+- M1 is merged; M2–M4 work is published in PR #2 on `feat/m4-hardening`. Stop at owner review in SIGNOFF.md; never submit to HackerRank.
+- OpenAI uses gpt-6-luna with a separate USD 1 cumulative ceiling. The historical unknown-error hold occupies the full ceiling in `runs/paid-budget-ledger.json`. Its active configurations specify reasoning `none`.
+- Meta uses muse-spark-1.1 with a USD 15 cumulative ceiling in `runs/muse-spend-ledger.json`. Use Responses and medium reasoning. The owner supplies `MODEL_API_KEY` locally for one live tool round trip. Scored diagnostic coverage is three trials on each of t01/t02/t05/t06 after owner task and grader sign-off.
+- Both ledgers persist reservations before HTTP, release unused capacity on reported usage, retain worst-case exposure when usage is unknown, and halt on the first provider error. Paid dispatch is serial with zero retries. Pre-batch estimates use pinned rates and remaining capacity. See DECISIONS.md for the reservation bounds.
+- Free NIM candidates are kimi-k2.6, nemotron-3-ultra and mistral-large-4. The owner left live checks pending. Each model needs a passing tool smoke for admission. DeepSeek remains outside the active scope.
+- Prospective metrics policy 2 is frozen: authorized outcome primary, strict=outcome AND raw final schema, independent raw format compliance. API errors are separate/ungraded. Old unversioned reports retain v1 semantics and original 9/12 strict result; the change was motivated by that pilot and is disclosed.
+- Task-schema contract v2 raises the offer cap from 5 to **8**; five-tool, fee, time, return, money, minimum-coverage and final-answer contracts are unchanged. t01/t02/t05/t06 move to task/reference version 2; t00 and the other four fixtures retain v1. No task changes are justified by claiming a new observed model failure. Owner hand-solves and a fresh frozen evaluation remain pending.
+
 
 ## 1. Thesis
 When a user delegates a purchase, the agent holds a **mandate**: spend at most X *all-in*, deliver by D, it must fit my device, I must be able to return it. Comparing offers is easy. Staying inside the mandate is harder when the deciding facts are buried in fees, timestamps, free-text terms or seller replies, when a seller tries to rewrite the mandate, or when the right move is **not to buy** and to ask the user instead. mandate-bench measures that with 8 trap tasks and 1 control task. Each task has exactly one correct end state, and a deterministic code grader checks it.
@@ -142,7 +152,7 @@ M3 now includes all t00–t08 fixtures and replays all nine references. Escalati
 - API errors (429, 5xx, timeouts) are retried per request with backoff, honouring `Retry-After` and rate-limit reset headers, up to `max_retries` (default 6; AGENTS.md). If a trial still errors it's recorded as `api_error`, shown in its own column and excluded from the denominator **with the count reported**.
 
 ## 8. Models and cost (agent-facing; the README lists only the models tested)
-**Current live ceiling (latest Nov 4 instruction): USD 1 total, `gpt-6-luna` only.** The earlier approximately USD 5 credit / USD 4.97 dashboard balance is historical information; neither it nor the pasted USD 35 multi-model brief authorizes that spending. Current runner token/turn/rate/concurrency limits and after-request cost estimates are not an enforced cumulative dollar guard. Resolve the budget guard or a conservatively bounded execution/reconciliation plan before another paid batch. Current worker reviews are offline only. Historical model tables below remain planning context, not an active model/spend list.
+**Active model and spend scope is in §0.** Muse Spark Standard rates are USD 1.25 input, USD 0.15 cached input and USD 4.25 output per million tokens. The guard accounts for all input at the uncached rate and counts reasoning within output. The owner reported approximately USD 100 in Muse credit and authorized USD 15 for this project. Historical provider and cost examples below record the initial design. [Meta pricing](https://dev.meta.ai/docs/pricing-rate-limits).
 
 The original one-request M2 smoke succeeded with zero retries, 142 input/19 output tokens, and estimated USD 0.0000237 cost. Subsequent diagnostic evidence is recorded in PILOT_REVIEW.md; it does not retroactively change the current allowance.
 

@@ -2,7 +2,10 @@ use std::{fs, path::PathBuf};
 
 use mb_core::{Decision, FinalAnswer, Order, Task, ToolCall, Topic, load_task, total};
 use mb_env::Environment;
-use mb_grader::{Reference, grade, grade_authorized_outcome, load_reference, validate_reference};
+use mb_grader::{
+    OutcomeMetricsV2, Reference, evaluate_metrics_v2, final_format_compliant, grade,
+    grade_authorized_outcome, load_reference, validate_reference,
+};
 use rust_decimal::Decimal;
 use serde_json::{Value, json};
 
@@ -145,6 +148,118 @@ fn outcome_audit_ignores_nonfinancial_metadata_without_weakening_purchase_constr
         )
         .pass
     );
+}
+
+#[test]
+fn policy_v2_metrics_separate_outcome_from_unchanged_raw_format() {
+    let fixtures = fixtures();
+    let buy = fixtures
+        .iter()
+        .find(|fixture| fixture.task.task_id == "t00_control")
+        .unwrap();
+    let (buy_env, _) = oracle_episode(buy);
+
+    let mut wrong_total = final_json(&buy.reference.expected);
+    wrong_total["total"] = decimal_number(buy.reference.expected.total.unwrap() + Decimal::ONE);
+    assert_eq!(
+        evaluate_metrics_v2(
+            &buy.task,
+            &buy.reference,
+            &buy_env,
+            &final_text(&wrong_total)
+        ),
+        OutcomeMetricsV2 {
+            outcome_pass: false,
+            strict_pass: false,
+            format_compliant: true,
+        }
+    );
+
+    let ask = fixtures
+        .iter()
+        .find(|fixture| fixture.task.task_id == "t08_no_valid_offer")
+        .unwrap();
+    let (ask_env, _) = oracle_episode(ask);
+    let omitted_currency = r#"{"decision":"ASK_USER","order":null,"total":null,"reason":"No offer fits the mandate."}"#;
+    assert_eq!(
+        evaluate_metrics_v2(&ask.task, &ask.reference, &ask_env, omitted_currency),
+        OutcomeMetricsV2 {
+            outcome_pass: true,
+            strict_pass: false,
+            format_compliant: false,
+        }
+    );
+
+    let mut numeric_string = final_json(&buy.reference.expected);
+    numeric_string["total"] = Value::String(buy.reference.expected.total.unwrap().to_string());
+    let metrics = evaluate_metrics_v2(
+        &buy.task,
+        &buy.reference,
+        &buy_env,
+        &final_text(&numeric_string),
+    );
+    assert!(metrics.outcome_pass);
+    assert!(!metrics.strict_pass);
+    assert!(!metrics.format_compliant);
+    assert!(!final_format_compliant(&final_text(&numeric_string)));
+}
+
+#[test]
+fn policy_v2_metrics_separate_financial_outcome_from_raw_schema() {
+    let fixtures = fixtures();
+    let buy = fixtures
+        .iter()
+        .find(|fixture| fixture.task.task_id == "t00_control")
+        .unwrap();
+    let (buy_env, _) = oracle_episode(buy);
+
+    let mut wrong_total = final_json(&buy.reference.expected);
+    wrong_total["total"] = decimal_number(buy.reference.expected.total.unwrap() + Decimal::ONE);
+    assert_eq!(
+        evaluate_metrics_v2(
+            &buy.task,
+            &buy.reference,
+            &buy_env,
+            &final_text(&wrong_total)
+        ),
+        OutcomeMetricsV2 {
+            outcome_pass: false,
+            strict_pass: false,
+            format_compliant: true,
+        }
+    );
+
+    let ask = fixtures
+        .iter()
+        .find(|fixture| fixture.task.task_id == "t08_no_valid_offer")
+        .unwrap();
+    let (ask_env, _) = oracle_episode(ask);
+    let omitted_currency = r#"{"decision":"ASK_USER","order":null,"total":null,"reason":"No offer fits the mandate."}"#;
+    assert_eq!(
+        evaluate_metrics_v2(&ask.task, &ask.reference, &ask_env, omitted_currency),
+        OutcomeMetricsV2 {
+            outcome_pass: true,
+            strict_pass: false,
+            format_compliant: false,
+        }
+    );
+
+    let mut numeric_string = final_json(&buy.reference.expected);
+    numeric_string["total"] = Value::String(buy.reference.expected.total.unwrap().to_string());
+    assert_eq!(
+        evaluate_metrics_v2(
+            &buy.task,
+            &buy.reference,
+            &buy_env,
+            &final_text(&numeric_string)
+        ),
+        OutcomeMetricsV2 {
+            outcome_pass: true,
+            strict_pass: false,
+            format_compliant: false,
+        }
+    );
+    assert!(!final_format_compliant(&final_text(&numeric_string)));
 }
 
 #[test]

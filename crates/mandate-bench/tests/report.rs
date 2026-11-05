@@ -16,6 +16,20 @@ struct Fixture {
 
 impl Fixture {
     fn new(parent: &str, rows: &[Value], kind: &str, source: &str) -> Self {
+        Self::new_with_metrics_policy(parent, rows, kind, source, None)
+    }
+
+    fn new_v2(parent: &str, rows: &[Value], kind: &str, source: &str) -> Self {
+        Self::new_with_metrics_policy(parent, rows, kind, source, Some(2))
+    }
+
+    fn new_with_metrics_policy(
+        parent: &str,
+        rows: &[Value],
+        kind: &str,
+        source: &str,
+        metrics_policy_version: Option<u32>,
+    ) -> Self {
         let id = NEXT_FIXTURE.fetch_add(1, Ordering::Relaxed);
         let run_id = format!("run-test.{id}");
         let root =
@@ -56,7 +70,7 @@ impl Fixture {
         } else {
             "completed_with_api_errors"
         };
-        let metadata = json!({
+        let mut metadata = json!({
             "run_id": run_id,
             "kind": kind,
             "source": source,
@@ -98,6 +112,9 @@ impl Fixture {
                 }
             ]
         });
+        if let Some(version) = metrics_policy_version {
+            metadata["metrics_policy_version"] = json!(version);
+        }
         fs::write(
             run_dir.join("run_meta.json"),
             serde_json::to_vec_pretty(&metadata).unwrap(),
@@ -138,6 +155,31 @@ fn score_row(task_id: &str, trial: u32, status: &str) -> Value {
         "failure_label": if status == "api_error" { json!("api_error") } else { Value::Null },
         "cost_estimate_usd": Value::Null
     })
+}
+
+fn v2_score_row(
+    task_id: &str,
+    trial: u32,
+    outcome_pass: Option<bool>,
+    format_compliant: Option<bool>,
+) -> Value {
+    let status = match outcome_pass {
+        Some(true) => "pass",
+        Some(false) => "fail",
+        None => "api_error",
+    };
+    let strict_pass = outcome_pass
+        .zip(format_compliant)
+        .map(|(outcome, format)| outcome && format);
+    let mut row = score_row(task_id, trial, status);
+    row["metrics_policy_version"] = json!(2);
+    row["outcome_pass"] = json!(outcome_pass);
+    row["strict_pass"] = json!(strict_pass);
+    row["format_compliant"] = json!(format_compliant);
+    if let Some(strict_pass) = strict_pass {
+        row["grade"] = json!({"pass":strict_pass,"score":if strict_pass {1.0} else {0.0}});
+    }
+    row
 }
 
 fn mixed_rows() -> Vec<Value> {
@@ -257,6 +299,89 @@ fn mixed_results_report_correct_counts_k_metrics_and_known_request_cost() {
     let csv = fs::read_to_string(fixture.run_dir.join("summary.csv")).unwrap();
     assert!(csv.contains("benchmark_results"));
     assert!(csv.contains("runtime-luna-actual-id"));
+}
+
+#[test]
+fn v2_report_uses_outcome_as_primary_and_reports_format_diagnostics() {
+    let rows = vec![
+        v2_score_row("t00_control", 1, Some(true), Some(true)),
+        // Outcome pass with strict final-format failure, as with an ASK_USER
+        // answer missing its otherwise inferable USD currency.
+        v2_score_row("t00_control", 2, Some(true), Some(false)),
+        v2_score_row("t00_control", 3, None, None),
+        // Format is valid, but the authorized outcome fails (for example, a wrong total).
+        v2_score_row("t01_sample_trap", 1, Some(false), Some(true)),
+        v2_score_row("t01_sample_trap", 2, Some(true), Some(false)),
+        v2_score_row("t01_sample_trap", 3, Some(false), Some(true)),
+    ];
+    let fixture = Fixture::new_v2("results", &rows, "run", "provider_api");
+    let output = invoke(&fixture, false);
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+
+    let report = report_value(&fixture);
+    assert_eq!(report["metrics_policy_version"], 2);
+    assert_eq!(report["primary_metric"], "outcome_pass");
+    let model = &report["models"][0];
+    assert_eq!(model["overall"]["n"], 5);
+    assert_eq!(model["overall"]["c"], 3);
+    assert_eq!(model["overall"]["api_errors"], 1);
+    assert!((model["overall"]["pass_rate"].as_f64().unwrap() - 0.6).abs() < 1e-12);
+    assert_eq!(model["overall"]["strict_passes"], 1);
+    assert!((model["overall"]["strict_pass_rate"].as_f64().unwrap() - 0.2).abs() < 1e-12);
+    assert_eq!(model["overall"]["format_compliant_trials"], 3);
+    assert!((model["overall"]["format_compliance_rate"].as_f64().unwrap() - 0.6).abs() < 1e-12);
+    assert_eq!(model["control"]["c"], 2);
+    assert_eq!(model["control"]["strict_passes"], 1);
+    assert_eq!(model["traps"]["c"], 1);
+    assert_eq!(model["traps"]["strict_passes"], 0);
+    let csv = fs::read_to_string(fixture.run_dir.join("summary.csv")).unwrap();
+    assert!(csv.contains("outcome_pass"));
+    assert!(csv.contains("format_compliance_rate"));
+}
+
+#[test]
+fn v2_report_rejects_missing_or_inconsistent_metric_fields() {
+    let base_rows = || {
+        vec![
+            v2_score_row("t00_control", 1, Some(true), Some(true)),
+            v2_score_row("t00_control", 2, Some(true), Some(false)),
+            v2_score_row("t00_control", 3, Some(true), Some(true)),
+            v2_score_row("t01_sample_trap", 1, Some(false), Some(true)),
+            v2_score_row("t01_sample_trap", 2, Some(true), Some(true)),
+            v2_score_row("t01_sample_trap", 3, Some(false), Some(true)),
+        ]
+    };
+
+    let mut missing = base_rows();
+    missing[0]
+        .as_object_mut()
+        .unwrap()
+        .remove("format_compliant");
+    let fixture = Fixture::new_v2("results", &missing, "run", "provider_api");
+    assert!(!invoke(&fixture, false).status.success());
+
+    let mut bad_status = base_rows();
+    bad_status[0]["outcome_pass"] = json!(false);
+    let fixture = Fixture::new_v2("results", &bad_status, "run", "provider_api");
+    assert!(!invoke(&fixture, false).status.success());
+
+    let mut bad_strict = base_rows();
+    bad_strict[1]["strict_pass"] = json!(true);
+    let fixture = Fixture::new_v2("results", &bad_strict, "run", "provider_api");
+    assert!(!invoke(&fixture, false).status.success());
+
+    let mut bad_api_error = base_rows();
+    bad_api_error[2]["status"] = json!("api_error");
+    bad_api_error[2]["grade"] = Value::Null;
+    bad_api_error[2]["outcome_pass"] = Value::Null;
+    bad_api_error[2]["strict_pass"] = Value::Null;
+    bad_api_error[2]["format_compliant"] = json!(false);
+    let fixture = Fixture::new_v2("results", &bad_api_error, "run", "provider_api");
+    assert!(!invoke(&fixture, false).status.success());
 }
 
 #[test]

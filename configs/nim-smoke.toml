@@ -1,0 +1,28 @@
+# Free NIM eligibility checks only; no benchmark claims before successful tools.
+trials = 1
+max_turns = 20
+tasks = ["t00_control"]
+
+[providers.nvidia]
+base_url = "https://integrate.api.nvidia.com/v1"
+key_env = "NVIDIA_API_KEY"
+api = "chat_completions"
+max_concurrency = 1
+rpm = 6
+max_retries = 6
+timeout_seconds = 120
+
+[[models]]
+id = "moonshotai/kimi-k2.6"
+provider = "nvidia"
+max_output_tokens = 2048
+
+[[models]]
+id = "nvidia/nemotron-3-ultra-550b-a55b"
+provider = "nvidia"
+max_output_tokens = 2048
+
+[[models]]
+id = "mistralai/mistral-large-4-1t-a52b"
+provider = "nvidia"
+max_output_tokens = 2048
