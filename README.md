@@ -72,12 +72,7 @@ cargo run --release --locked -- smoke --config configs/smoke.toml --dry-run
 
 The USD 1 Luna ceiling is reserved for unresolved historical usage. The preflight above checks key presence. A new Luna request requires historical billing reconciliation.
 
-For the pending Muse Spark 1.1 check, add `MODEL_API_KEY` to the local `.env`. The first command checks key presence. The second sends one bounded tool round trip.
-
-```bash
-cargo run --release --locked -- smoke --config configs/muse-smoke.toml --dry-run
-cargo run --release --locked -- smoke --config configs/muse-smoke.toml
-```
+The Muse Spark 1.1 live smoke stopped on HTTP 400 before the tool call. The ledger retains the worst-case reservation because usage is unknown.
 
 Muse scored diagnostics require a passing live smoke and the owner's task and grader sign-off. NIM checks remain pending. The harness records each attempted request and preserves partial coverage. Current owner review steps and limits are in [SIGNOFF.md](docs/SIGNOFF.md).
 
@@ -100,7 +95,7 @@ Offline replay makes no evaluation API calls and has zero evaluation API cost. F
 | Model | Evidence | Prospective scored trials |
 |---|---|---|
 | gpt-6-luna | Archived live smoke and v1 pilot, 9/12 strict | Pending billing reconciliation and owner review |
-| muse-spark-1.1 | Local tool round-trip fixture. Live smoke awaits the owner's key. | Pending live smoke and owner review |
+| muse-spark-1.1 | Local tool round trip passed. The live smoke returned HTTP 400. | Excluded after live smoke failure |
 
 No finalized benchmark run has been selected for submission yet. The original Luna pilot's 12 API errors are retained. A fresh slower diagnostic pilot completed all 12 trials without API errors; the three strict failures all omit final `currency` after otherwise correct no-order escalation. These are format failures, not evidence of an unauthorized purchase. Original strict scores and any proposed outcome audit must be shown distinctly; see [docs/PILOT_REVIEW.md](docs/PILOT_REVIEW.md).
 

@@ -27,19 +27,12 @@ The task contract now permits eight offers. The four v2 fixtures retain the exis
 
 ## Muse live verification
 
-The Nov 5 dry run found `MODEL_API_KEY` missing. Add the key to the ignored local `.env` using the variable shown in `.env.example`. From the repository root, check key presence, then run the single tool round trip once ready.
-
-```bash
-cargo run --release --locked -- smoke --config configs/muse-smoke.toml --dry-run
-cargo run --release --locked -- smoke --config configs/muse-smoke.toml
-```
-
-Muse uses `muse-spark-1.1`, medium reasoning and 2,048 output tokens per request. The smoke checks one call and its continuation. On failure, preserve the artifacts, add the safe status or error code and spend to STATUS.md, and leave Muse excluded. The NIM live checks remain deferred by the owner. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
+The Nov 5 dry run confirmed `MODEL_API_KEY` was present. The live `muse-spark-1.1` smoke returned HTTP 400 (`invalid_request_error`) on the first request. The provider supplied no machine-readable error code or usage. The guard stopped before the tool call and continuation. Muse remains excluded. Local artifacts are in `runs/smoke-20261105T121126.314341000Z-49545/`. The NIM live checks remain deferred by the owner. [Smoke config](../configs/muse-smoke.toml) · [NIM status](NIM_SMOKE.md)
 
 | Spend ledger | Project ceiling | Current checkpoint |
 |---|---:|---|
 | OpenAI | USD 1 | Full historical hold. Reconcile billing before another paid Luna request. |
-| Muse | USD 15 | Zero new provider requests. Smoke admission needs USD 2.638848 of remaining capacity for two worst-case reservations. |
+| Muse | USD 15 | One failed request with unknown usage. USD 1.319424 held at worst case. The ledger is halted. |
 
 After both sign-offs and a passing Muse smoke, the diagnostic selects t01/t02/t05/t06 at three trials each. Its pre-batch estimate is USD 3.58896. Each outbound request still reserves at the full documented input bound and configured output cap. Review coverage, outcome, format and spend before admitting Muse to the final comparison. [Diagnostic config](../configs/muse-diagnostic.toml) · [Accounting decisions](DECISIONS.md)
 
