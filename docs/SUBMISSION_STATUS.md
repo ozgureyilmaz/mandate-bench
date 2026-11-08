@@ -29,3 +29,5 @@ The current checkpoint is owner task and grader review after the passing Muse sm
 The two SIGNOFF approvals and all nine STATUS owner cells are empty. The current work is submission drafting. The next owner action is to review the answer sheet, mark both files and reply **signed**. [Review packet](SIGNOFF.md)
 
 A later diagnostic may support a clearly labeled partial-coverage submission, but the packaging helper's stricter nine-task/five-trial condition remains in force. Changing that condition requires an explicit project decision. This order authorizes neither an extra paid batch nor a real ZIP.
+
+The clean Nov 8 `scripts/package.sh --check` returned 12 pending gates. These are one README marker gate, one video-link gate, nine owner-approval gates and one committed result-coverage gate. The draft links resolve. No real ZIP was created.

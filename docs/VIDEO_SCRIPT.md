@@ -1,6 +1,6 @@
 # Video walkthrough script · Nov 8, 2026
 
-**Spoken narration:** 534 words, about 4½ minutes at a measured pace. The shot list is separate and not included in that count. **Current recording version:** includes a clearly pending Muse segment because the scored diagnostic has not run. The owner records and publishes the video. Do not add model calls to the recording.
+**Spoken narration:** about 530 words, about 4½ minutes at a measured pace. The shot list is separate and not included in that count. **Current recording version:** includes a clearly pending Muse segment because the scored diagnostic has not run. The owner records and publishes the video. Do not add model calls to the recording.
 
 ## Record-ready narration
 

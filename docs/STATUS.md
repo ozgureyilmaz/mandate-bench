@@ -68,3 +68,5 @@ Both owner SIGNOFF approvals and all nine STATUS owner cells remain unchecked. N
 The submission blurb and English video script are drafted using the archived Luna pilot and passing Muse smoke. Muse task scores remain pending. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
 
 The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Owner review, scored evidence and the video remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The currently authorized four-task, three-trial diagnostic would not satisfy that internal gate.
+
+Read-only packaging preflight on the clean Nov 8 source reported 12 pending gates: README TODOs, an actual video URL, nine unchecked owner cells and a qualifying committed nine-task/five-trial result set. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. No archive was created. No provider requests were made during this drafting checkpoint, and the Muse ledger checksum is unchanged.
