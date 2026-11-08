@@ -92,9 +92,9 @@ The live smoke and diagnostic runs are archived byte-for-byte under `results/dia
 
 Active trials are bounded by the provider's configured concurrency. A provider API error halts new trials for that provider; already-active work is retained, unstarted trials are counted, and the run is marked incomplete when selected coverage remains. Such a partial run must be resolved explicitly rather than silently reported as a smaller successful evaluation.
 
-The offline commands above were verified from a fresh local clone of the M1 source snapshot on Rust 1.99.1. That check used an installed toolchain and cached dependencies; the later fresh-machine live-model rerun is still pending.
+The offline README commands passed on Nov 8 from a fresh clone of public main at `54c8121`, using Rust 1.99.1 and cached dependencies. The clone had no `.env` and made no provider requests. Scored model reruns require a separate owner order.
 
-Offline replay has zero evaluation API cost. First-build runtime depends on the machine and dependency cache. Recorded diagnostic runtime and token-price estimates appear below. Final-version clean-room reproduction remains pending.
+Offline replay has zero evaluation API cost. First-build runtime depends on the machine and dependency cache. Recorded diagnostic runtime and token-price estimates appear below. Fresh-clone offline release verification is complete.
 
 ## Models tested and results
 

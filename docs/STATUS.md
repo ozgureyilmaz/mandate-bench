@@ -2,7 +2,7 @@
 
 Last updated Nov 8, 2026 (Istanbul).
 
-[M1 PR #1](https://github.com/ozgureyilmaz/mandate-bench/pull/1) merged at `3982bc4`. The current review branch is `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2).
+[M1 PR #1](https://github.com/ozgureyilmaz/mandate-bench/pull/1) merged at `3982bc4`. PR #2 merged into `main` at `54c812173ef5c4225c586600b4239102585a7a6a`. [Merged PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2).
 
 | Work | State |
 |---|---|
@@ -94,4 +94,14 @@ Fresh local checks passed 144 workspace tests, formatting, denied-warning Clippy
 
 An anonymous request to the exact Drive URL returned HTTP 200 with the expected recording title and no login redirect. Drive permissions list anyone/reader. No video was downloaded into the repository. The Muse ledger checksum is unchanged.
 
-Commit and publish these final edits before the ready PR merge. Post-merge clean-clone and ZIP proof will follow.
+These final edits were published before the normal GitHub merge. Post-merge proof is recorded below.
+
+## Merged-main release proof · Nov 8
+
+PR #2 merged normally at `54c812173ef5c4225c586600b4239102585a7a6a`. It was the only open PR. GitHub had no configured status checks. Fresh local checks supplied 144 tests, formatting, Clippy, release build and nine oracle passes. No main force-push or administrator bypass was used.
+
+A fresh HTTPS clone of public main at that merge, with no `.env`, passed the README offline build, oracle, 144 tests, formatting, Clippy and packaging preflight. The toolchain and dependencies were already cached. Live diagnostics were not rerun.
+
+A merged-main code ZIP was created and inspected at 1,188,137 bytes with 185 files. It had README at root, no encryption, and exact file/hash agreement with Git HEAD. Secret scans passed for the tracked tree and history. The ZIP excludes local credentials, video, target and runs. The final delivery archive is regenerated from main after these release notes at `/Users/0x79de/Downloads/mandate-bench-submission.zip`; exact final size and SHA-256 are reported in the handoff.
+
+The existing ignore rules covered required local junk. Added p8/ppk private-key and m4v/mp3 media rules. No tracked junk needed untracking. The Muse ledger checksum stayed unchanged. The remaining action is the owner's final playback check and upload of ZIP, exact Drive URL and submission blurb before the deadline.

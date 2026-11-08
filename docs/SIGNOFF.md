@@ -40,4 +40,4 @@ The two owner checkboxes, all nine STATUS cells and the owner's **signed** reply
 
 ## Submission checkpoint
 
-The Nov 8 final work order approves packaging the disclosed partial diagnostics and the owner-provided video. The original nine-task/five-trial target is historical. Final offline release checks, ready-PR merge and ZIP generation follow that approval. The owner handles final submission. [Submission readiness](SUBMISSION_STATUS.md)
+The Nov 8 final work order approves packaging the disclosed partial diagnostics and the owner-provided video. The original nine-task/five-trial target is historical. Final offline release checks, PR #2 merge and merged-main archive verification passed. The final ZIP handoff is recorded in STATUS.md. The owner handles final submission. [Submission readiness](SUBMISSION_STATUS.md)

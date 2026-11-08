@@ -3,7 +3,7 @@
 Status: **v0.5 (Nov 8, 2026)**. The latest owner-approved submission order below supersedes historical model/budget and implementation-boundary notes later in this document. Decisions remain append-only in DECISIONS.md.
 
 ## 0. Active owner order — Nov 8
-- M1 is merged; M2–M4 work is on `feat/m4-hardening` / PR #2. The owner authorizes merging PR #2 to `main` after required checks, then creating a ZIP after package checks. These steps remain pending until their actual proof is recorded. No HackerRank upload is authorized.
+- M1 and PR #2 are merged. PR #2's merge commit is `54c8121`. Fresh-clone offline validation and packaging checks passed. The owner-approved partial-evidence ZIP is delivered from main. No HackerRank upload is authorized.
 - The approved Muse Spark 1.1 diagnostic through Meta is complete. On t01/t02/t05/t06 v2 × 3 trials it scored 12/12 in outcome, strict and raw format, with zero API errors and zero missing decisions. Mean tool calls were 6.83; runtime was 15m32s; reported-token cost estimate was USD 0.20152740; conservative remaining Muse capacity is USD 14.51772725. See `docs/MUSE_DIAGNOSTIC_V1.md` and STATUS.md.
 - The frozen Luna v1 pilot remains 9/12 strict on t00/t01/t04/t08 × 3. Preserve its historical task versions and original score. No further OpenAI requests are authorized; the unresolved exposure holds the full OpenAI USD 1 ceiling.
 - The owner accepts a package with this partial evidence when it is plainly disclosed. The project has nine designed tasks, but no single model has nine-task coverage; the old nine-task × five-trial target is no longer a package blocker. Keep the Muse diagnostic's four-task scope and Luna's separate v1 scope clear.
