@@ -85,3 +85,5 @@ The selected diagnostic artifact directory is `results/diagnostics/run-20261108T
 ## Video link provided · Nov 8
 
 The README now includes the owner-provided [Google Drive video](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). Drive metadata lists the recording as MP4 with anyone/reader access. Duration and audio playback were not verified by the metadata read. Packaging now accepts the supplied Drive file URL. The nine-task/five-trial evidence requirement remains unchanged.
+
+The clean packaging check after adding the video reports one remaining gate: committed results covering nine tasks with at least five trials each. The README marker and video-URL gates pass.

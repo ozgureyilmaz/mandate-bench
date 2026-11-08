@@ -34,3 +34,5 @@ The clean post-diagnostic `scripts/package.sh --check` reports three pending gat
 ## Video link provided · Nov 8
 
 The owner supplied [the final video URL](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). Drive metadata identifies an MP4 recording and lists an anyone/reader permission. Duration and audio playback still need owner confirmation. The README video placeholder is replaced, and the same URL should be used in the submission field. The results-coverage requirement remains in force.
+
+The clean packaging check after adding the video reports one remaining gate: committed results covering nine tasks with at least five trials each. The README marker and video-URL gates pass.
