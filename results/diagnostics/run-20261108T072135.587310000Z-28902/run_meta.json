@@ -1,0 +1,3203 @@
+{
+  "api_error_count": 0,
+  "completed_items": 12,
+  "cost_estimate_usd": 0.20152740,
+  "cost_is_estimate": true,
+  "cost_note": "Configured prices; cached input is within input and reasoning within output. Missing usage/price keeps cost unknown. Failed attempts may have unreported billable usage.",
+  "ended_at_istanbul": "2026-11-08T10:37:07.393468+03:00",
+  "ended_at_utc": "2026-11-08T07:37:07.393468+00:00",
+  "git_commit": "45bbd8c13b377401d381cc78f4599dc6eea27b72",
+  "git_dirty": false,
+  "halted_providers": [],
+  "http_attempts": 94,
+  "kind": "run",
+  "known_cost_estimate_usd": 0.20152740,
+  "max_tool_calls": 20,
+  "max_turns": 20,
+  "metrics_policy_version": 2,
+  "models": [
+    {
+      "id": "muse-spark-1.1",
+      "max_output_tokens": 2048,
+      "price": {
+        "cached_input_per_million": 0.15,
+        "input_per_million": 1.25,
+        "output_per_million": 4.25
+      },
+      "provider": "meta",
+      "reasoning_effort": "medium",
+      "seed": null,
+      "temperature": null,
+      "thinking": null
+    }
+  ],
+  "paid_budgets": {
+    "meta": {
+      "ceiling_usd": 15.0,
+      "halted": false,
+      "held_usd": 0,
+      "initial_charge_usd": 0.0,
+      "overrun_count": 0,
+      "remaining_usd": 14.51772725,
+      "reservation_count": 97,
+      "settled_usd": 0.48227275,
+      "unknown_count": 0
+    }
+  },
+  "pass_count": 12,
+  "projected_paid_usd": {
+    "meta": 3.58896
+  },
+  "providers": {
+    "meta": {
+      "api": "responses",
+      "base_url": "https://api.meta.ai/v1",
+      "key_env": "MODEL_API_KEY",
+      "max_concurrency": 1,
+      "max_retries": 0,
+      "rpm": 6,
+      "timeout_seconds": 120,
+      "tpm": null
+    }
+  },
+  "raw_output_policy": "Model payloads are redacted before first write. Meta HTTP errors retain only sanitized diagnostic fields. Request headers are omitted.",
+  "requests": [
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:21:41.325Z",
+          "http_status": 200,
+          "request_id": "aef637fe-a978-469f-9c63-d3c3d8129dc5",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:21:35.851Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0031275,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 4,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:21:41.326Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:21:35.842Z",
+      "usage": {
+        "cached_input": 113,
+        "input": 1788,
+        "output": 210,
+        "reasoning": 110
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:21:48.571Z",
+          "http_status": 200,
+          "request_id": "c1ab591f-e050-4c99-8ad5-0e5928fd49aa",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:21:45.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00406950,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 5,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:21:48.571Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:21:41.334Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2341,
+        "output": 269,
+        "reasoning": 218
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:21:57.846Z",
+          "http_status": 200,
+          "request_id": "92f5c266-9fb5-4fb9-b587-aa71605a4967",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:21:55.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00542875,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 6,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:21:57.846Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:21:48.579Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2847,
+        "output": 440,
+        "reasoning": 356
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:07.917Z",
+          "http_status": 200,
+          "request_id": "e5d7df25-a45d-432e-b07c-ab10fd8dde20",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:05.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00459250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 7,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:07.917Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:21:57.853Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3521,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:17.333Z",
+          "http_status": 200,
+          "request_id": "c7826a74-73d7-4d5d-845d-cd8aa614f9c6",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:15.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00494625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 8,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:17.333Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:07.924Z",
+      "usage": {
+        "cached_input": 3441,
+        "input": 3804,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:26.696Z",
+          "http_status": 200,
+          "request_id": "6855eab8-c7c3-4ccb-b10d-19f3b97f872c",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:25.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00530000,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 9,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:26.696Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:17.344Z",
+      "usage": {
+        "cached_input": 3697,
+        "input": 4087,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:38.361Z",
+          "http_status": 200,
+          "request_id": "0a7ccc87-8ecd-4b37-a786-37c19800793d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:35.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00564125,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 10,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:38.362Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:26.703Z",
+      "usage": {
+        "cached_input": 113,
+        "input": 4360,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:47.113Z",
+          "http_status": 200,
+          "request_id": "e6fc3489-73e5-49e2-ae3d-73401bcb9440",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:45.853Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00599375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 11,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:47.114Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:38.369Z",
+      "usage": {
+        "cached_input": 4337,
+        "input": 4642,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:22:56.948Z",
+          "http_status": 200,
+          "request_id": "edb34535-7bb8-46b8-abcb-f244aae4732f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:22:55.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00631000,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 12,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:22:56.948Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:47.121Z",
+      "usage": {
+        "cached_input": 4593,
+        "input": 4895,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:10.439Z",
+          "http_status": 200,
+          "request_id": "d32ef6c4-50c1-4159-9f87-6bf73b90ce0d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:05.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.01094500,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 13,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:10.440Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:22:56.959Z",
+      "usage": {
+        "cached_input": 4081,
+        "input": 5135,
+        "output": 1065,
+        "reasoning": 949
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:19.219Z",
+          "http_status": 200,
+          "request_id": "ece6979b-6317-4f5c-90f9-2424e65db381",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:15.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.01109925,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 14,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:19.219Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:10.451Z",
+      "usage": {
+        "cached_input": 4849,
+        "input": 6241,
+        "output": 776,
+        "reasoning": 694
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:27.275Z",
+          "http_status": 200,
+          "request_id": "13532234-2cf3-4450-bc46-cfbba6afd98a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:25.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00950975,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 15,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:27.275Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:19.230Z",
+      "usage": {
+        "cached_input": 5105,
+        "input": 7057,
+        "output": 162,
+        "reasoning": 28
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:38.302Z",
+          "http_status": 200,
+          "request_id": "d109108e-717c-4e4b-b323-d6ca06464d0a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:35.853Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0029915,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 16,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:38.303Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:27.467Z",
+      "usage": {
+        "cached_input": 113,
+        "input": 1788,
+        "output": 178,
+        "reasoning": 81
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:46.953Z",
+          "http_status": 200,
+          "request_id": "5cbb7963-851a-425c-a106-182c9e86ca39",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:45.853Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00341750,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 17,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:46.953Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:38.311Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2309,
+        "output": 125,
+        "reasoning": 74
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:23:58.835Z",
+          "http_status": 200,
+          "request_id": "b5dc75a4-f323-48fc-841c-55bfde70470f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:23:55.851Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00613525,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 18,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:23:58.836Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:46.962Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2671,
+        "output": 658,
+        "reasoning": 574
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:06.587Z",
+          "http_status": 200,
+          "request_id": "58625941-30de-47fd-9fb2-26360d2c2b58",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:05.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00464500,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 19,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:06.587Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:23:58.846Z",
+      "usage": {
+        "cached_input": 2545,
+        "input": 3563,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:16.848Z",
+          "http_status": 200,
+          "request_id": "9d863e9e-f18c-4d2f-bfba-f6eda530a59b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:15.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00499875,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 20,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:16.848Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:06.597Z",
+      "usage": {
+        "cached_input": 3441,
+        "input": 3846,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:27.239Z",
+          "http_status": 200,
+          "request_id": "8126b2db-df51-4c38-a0ff-4783b33f1b2e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:25.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00535250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 21,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:27.239Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:16.860Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 4129,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:37.090Z",
+          "http_status": 200,
+          "request_id": "a5efc66e-d17c-483f-a2f2-ce325a600ab7",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:35.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00569375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 22,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:37.090Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:27.256Z",
+      "usage": {
+        "cached_input": 3825,
+        "input": 4402,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:47.280Z",
+          "http_status": 200,
+          "request_id": "ec210c8d-4eea-4398-9ee2-7df0981def36",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:45.853Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00604625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 23,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:47.281Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:37.100Z",
+      "usage": {
+        "cached_input": 4081,
+        "input": 4684,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:24:56.952Z",
+          "http_status": 200,
+          "request_id": "b3e24192-957d-494c-bcd5-9f821dd78325",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:24:55.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00636250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 24,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:24:56.953Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:47.291Z",
+      "usage": {
+        "cached_input": 4337,
+        "input": 4937,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:16.216Z",
+          "http_status": 200,
+          "request_id": "0e1dc822-d8ac-48a8-ac7a-a85493e26207",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:05.852Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.01231925,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 25,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:16.217Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:24:56.963Z",
+      "usage": {
+        "cached_input": 4849,
+        "input": 5177,
+        "output": 1376,
+        "reasoning": 1254
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:20.121Z",
+          "http_status": 200,
+          "request_id": "074e60ee-7ed8-41da-815c-95099d12da21",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:16.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.01140025,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 26,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:20.121Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:16.231Z",
+      "usage": {
+        "cached_input": 4593,
+        "input": 6594,
+        "output": 743,
+        "reasoning": 661
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:27.430Z",
+          "http_status": 200,
+          "request_id": "e95b8658-9bd8-4e19-881d-b5f70abe30b3",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:26.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00984175,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 27,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:27.430Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:20.134Z",
+      "usage": {
+        "cached_input": 6513,
+        "input": 7377,
+        "output": 146,
+        "reasoning": 27
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:37.379Z",
+          "http_status": 200,
+          "request_id": "70037fc3-e43b-485b-91da-503942cfa26e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:36.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0030595,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 28,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:37.379Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:27.650Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 1788,
+        "output": 194,
+        "reasoning": 86
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:48.378Z",
+          "http_status": 200,
+          "request_id": "21d1c1aa-a350-4434-a80b-cbb30c31dffd",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:46.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00332700,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 29,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:48.378Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:37.388Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2325,
+        "output": 99,
+        "reasoning": 48
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:25:57.704Z",
+          "http_status": 200,
+          "request_id": "15d240e5-f8f4-4e7e-8da6-c517a50055f1",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:25:56.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00351750,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 30,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:25:57.704Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:48.391Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2661,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:07.885Z",
+          "http_status": 200,
+          "request_id": "9b2d4fd0-3ff8-42dd-9f05-66097116652e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:06.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00386625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 31,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:07.886Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:25:57.732Z",
+      "usage": {
+        "cached_input": 2545,
+        "input": 2940,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:16.911Z",
+          "http_status": 200,
+          "request_id": "4616bb0e-4bf8-4fdf-b20e-b2cb02dd8844",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:16.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00422000,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 32,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:16.911Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:07.896Z",
+      "usage": {
+        "cached_input": 2929,
+        "input": 3223,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:29.597Z",
+          "http_status": 200,
+          "request_id": "2fa3d659-83fb-4852-9a28-610e02ca2803",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:26.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00457375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 33,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:29.598Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:16.921Z",
+      "usage": {
+        "cached_input": 3185,
+        "input": 3506,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:38.353Z",
+          "http_status": 200,
+          "request_id": "b4418fe4-594b-40fc-ad78-3d1137ab4295",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:36.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00491500,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 34,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:38.354Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:29.608Z",
+      "usage": {
+        "cached_input": 3441,
+        "input": 3779,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:47.022Z",
+          "http_status": 200,
+          "request_id": "8828473e-f931-4722-b4a3-9da8a20317ad",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:46.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00526750,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 35,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:47.022Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:38.365Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 4061,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:26:57.443Z",
+          "http_status": 200,
+          "request_id": "b4502862-5c12-41be-8111-016a4754cdac",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:26:56.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00558375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 36,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:26:57.444Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:47.033Z",
+      "usage": {
+        "cached_input": 3697,
+        "input": 4314,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:11.629Z",
+          "http_status": 200,
+          "request_id": "fefd7cdb-b6c8-4ccc-bba5-10edf1c94708",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:06.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.01141725,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 37,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:11.629Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:26:57.452Z",
+      "usage": {
+        "cached_input": 4209,
+        "input": 4554,
+        "output": 1347,
+        "reasoning": 1223
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:18.554Z",
+          "http_status": 200,
+          "request_id": "55c5635f-d943-4af5-aaaa-92ab753502fe",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:16.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00901275,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 38,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:18.554Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:11.640Z",
+      "usage": {
+        "cached_input": 3953,
+        "input": 5942,
+        "output": 373,
+        "reasoning": 291
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:27.739Z",
+          "http_status": 200,
+          "request_id": "a98b357d-28d2-4ef3-9ea8-4335b9a1cafc",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:26.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00847500,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 39,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:27.739Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:18.566Z",
+      "usage": {
+        "cached_input": 4465,
+        "input": 6355,
+        "output": 125,
+        "reasoning": 9
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:38.698Z",
+          "http_status": 200,
+          "request_id": "49c32d2b-f3b8-4e7f-8766-119a4cf2ad7a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:36.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00300250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 40,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:38.698Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:27.904Z",
+      "usage": {
+        "cached_input": 1521,
+        "input": 1773,
+        "output": 185,
+        "reasoning": 91
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:47.332Z",
+          "http_status": 200,
+          "request_id": "1c63f37c-3431-4c17-9fff-016eef65542b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:46.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00286425,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 41,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:47.332Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:38.706Z",
+      "usage": {
+        "cached_input": 1649,
+        "input": 2101,
+        "output": 56,
+        "reasoning": 5
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:27:57.390Z",
+          "http_status": 200,
+          "request_id": "9e41a592-d7e6-4d44-b1bb-3fab52f3524e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:27:56.241Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0036265,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 42,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:27:57.390Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:47.344Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2364,
+        "output": 158,
+        "reasoning": 107
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:07.682Z",
+          "http_status": 200,
+          "request_id": "09303cd0-4d6a-436b-bc06-6edac3e3e554",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:06.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00360250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 43,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:07.682Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:27:57.403Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2729,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:19.146Z",
+          "http_status": 200,
+          "request_id": "1d404371-e9d8-4c67-a143-2affc6990967",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:16.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00651850,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 44,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:19.146Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:07.693Z",
+      "usage": {
+        "cached_input": 2673,
+        "input": 2981,
+        "output": 657,
+        "reasoning": 548
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:27.840Z",
+          "http_status": 200,
+          "request_id": "e5fcd3b7-443f-43bf-8799-1b64601cbc9e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:26.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00523925,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 45,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:27.840Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:19.161Z",
+      "usage": {
+        "cached_input": 2929,
+        "input": 3678,
+        "output": 151,
+        "reasoning": 53
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:39.470Z",
+          "http_status": 200,
+          "request_id": "0581d4a2-0be8-4365-80a2-ef730b3d55b3",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:36.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00558650,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 46,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:39.470Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:27.946Z",
+      "usage": {
+        "cached_input": 1649,
+        "input": 1773,
+        "output": 793,
+        "reasoning": 702
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:46.877Z",
+          "http_status": 200,
+          "request_id": "dca87954-98c8-4c0e-9550-b32e4f7a8cba",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:46.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00362425,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 47,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:46.878Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:39.481Z",
+      "usage": {
+        "cached_input": 1649,
+        "input": 2709,
+        "output": 56,
+        "reasoning": 5
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:28:57.379Z",
+          "http_status": 200,
+          "request_id": "7c8eacc6-64c8-4efd-b7dc-98b847d6f381",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:28:56.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.004463,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 48,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:28:57.379Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:46.889Z",
+      "usage": {
+        "cached_input": 2673,
+        "input": 2972,
+        "output": 176,
+        "reasoning": 125
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:07.302Z",
+          "http_status": 200,
+          "request_id": "8fa69f8b-1e35-40fc-acd0-38f9c90ab67b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:06.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00517975,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 49,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:07.303Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:28:57.392Z",
+      "usage": {
+        "cached_input": 2929,
+        "input": 3355,
+        "output": 232,
+        "reasoning": 181
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:17.540Z",
+          "http_status": 200,
+          "request_id": "31277d6d-51f3-46a2-9d09-c074091eb26d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:16.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00560525,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 50,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:17.541Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:07.315Z",
+      "usage": {
+        "cached_input": 3313,
+        "input": 3794,
+        "output": 203,
+        "reasoning": 110
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:28.004Z",
+          "http_status": 200,
+          "request_id": "ebb5373a-9541-4400-951d-3890801e1857",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:26.243Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.006331,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 51,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:28.004Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:17.553Z",
+      "usage": {
+        "cached_input": 3697,
+        "input": 4140,
+        "output": 272,
+        "reasoning": 190
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:37.698Z",
+          "http_status": 200,
+          "request_id": "1e110105-d9c2-44e9-998c-b7baac54e36a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:36.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00611325,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 52,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:37.698Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:28.016Z",
+      "usage": {
+        "cached_input": 4081,
+        "input": 4452,
+        "output": 129,
+        "reasoning": 50
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:47.695Z",
+          "http_status": 200,
+          "request_id": "d4b3a590-5ec5-44eb-a744-175434f8aa7f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:46.242Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00316825,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 53,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:47.696Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:37.829Z",
+      "usage": {
+        "cached_input": 1649,
+        "input": 1773,
+        "output": 224,
+        "reasoning": 100
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:29:57.665Z",
+          "http_status": 200,
+          "request_id": "192fe8be-f7c3-4b95-82c2-c5466afe1490",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:29:56.243Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00293425,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 54,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:29:57.666Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:47.708Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2140,
+        "output": 61,
+        "reasoning": 10
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:07.784Z",
+          "http_status": 200,
+          "request_id": "e064b861-ea11-4376-a93a-838964600dcf",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:06.244Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00350725,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 55,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:07.784Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:29:57.689Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2408,
+        "output": 117,
+        "reasoning": 66
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:16.910Z",
+          "http_status": 200,
+          "request_id": "21381ab5-2a49-4463-afd5-dec4908bea85",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:16.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00360625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 56,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:16.911Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:07.796Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2732,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:29.661Z",
+          "http_status": 200,
+          "request_id": "78ce6edd-3c0e-4626-b432-8d87ede4947c",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:26.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00672625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 57,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:29.661Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:16.924Z",
+      "usage": {
+        "cached_input": 2673,
+        "input": 2984,
+        "output": 705,
+        "reasoning": 581
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:37.562Z",
+          "http_status": 200,
+          "request_id": "4e5e296d-3ae5-4466-994c-7cfae48bb459",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:36.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00511175,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 58,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:37.562Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:29.673Z",
+      "usage": {
+        "cached_input": 2929,
+        "input": 3729,
+        "output": 106,
+        "reasoning": 9
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:48.048Z",
+          "http_status": 200,
+          "request_id": "99049cc8-b276-4f90-b24e-edbcb8a41e64",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.003296,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 59,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:48.048Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:37.683Z",
+      "usage": {
+        "cached_input": 1521,
+        "input": 1780,
+        "output": 252,
+        "reasoning": 156
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:30:57.622Z",
+          "http_status": 200,
+          "request_id": "b180bcf4-2243-4173-be67-3ca06ee8ecfd",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:30:56.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00333775,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 60,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:30:57.622Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:48.059Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2184,
+        "output": 143,
+        "reasoning": 92
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:07.299Z",
+          "http_status": 200,
+          "request_id": "2ff96722-22db-46c6-83bf-bceb848dcc05",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:06.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00339375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 61,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:07.300Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:30:57.634Z",
+      "usage": {
+        "cached_input": 2161,
+        "input": 2562,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:18.346Z",
+          "http_status": 200,
+          "request_id": "78454dcd-1df5-4a30-80c4-2650ca320e50",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:16.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00374125,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 62,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:18.346Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:07.313Z",
+      "usage": {
+        "cached_input": 2545,
+        "input": 2840,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:30.376Z",
+          "http_status": 200,
+          "request_id": "932f3556-0eca-4aa6-9940-47b7878ddc65",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:26.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00810375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 63,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:30.376Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:18.359Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3117,
+        "output": 990,
+        "reasoning": 874
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:37.172Z",
+          "http_status": 200,
+          "request_id": "91f685e8-ee6d-4f9d-b657-2716cc19fd57",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:36.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00570650,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 64,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:37.172Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:30.389Z",
+      "usage": {
+        "cached_input": 3057,
+        "input": 4147,
+        "output": 123,
+        "reasoning": 31
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:47.445Z",
+          "http_status": 200,
+          "request_id": "687f073e-55bf-4da5-be5c-5cd064583d2e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0031685,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 65,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:47.445Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:37.289Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 1780,
+        "output": 222,
+        "reasoning": 105
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:31:57.209Z",
+          "http_status": 200,
+          "request_id": "34c728cc-7295-4f4d-b9af-465fbc9b230a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:31:56.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00347875,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 66,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:31:57.209Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:47.455Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2154,
+        "output": 185,
+        "reasoning": 134
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:08.185Z",
+          "http_status": 200,
+          "request_id": "28090ebe-13f2-4cdf-ad47-d1f97cfe3ad3",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:06.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00340875,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 67,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:08.186Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:31:57.219Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2574,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:16.821Z",
+          "http_status": 200,
+          "request_id": "08789aea-bb53-4057-b1bb-ee6ed6bccaea",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:16.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00375625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 68,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:16.821Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:08.195Z",
+      "usage": {
+        "cached_input": 2545,
+        "input": 2852,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:29.742Z",
+          "http_status": 200,
+          "request_id": "7903c1aa-49f8-4cfe-baf4-70781fd9a604",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:26.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00714975,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 69,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:29.743Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:16.831Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3129,
+        "output": 762,
+        "reasoning": 642
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:37.373Z",
+          "http_status": 200,
+          "request_id": "885b3aa6-bdaf-4bfd-ab1a-dc6a6a9702bd",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:36.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00559800,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 70,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:37.373Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:29.753Z",
+      "usage": {
+        "cached_input": 3057,
+        "input": 3931,
+        "output": 161,
+        "reasoning": 35
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:47.489Z",
+          "http_status": 200,
+          "request_id": "fd255430-bd1b-4cfd-873d-4ae914e5cac6",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00311325,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 71,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:47.489Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:37.485Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 1780,
+        "output": 209,
+        "reasoning": 95
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:32:57.422Z",
+          "http_status": 200,
+          "request_id": "91518aef-6569-4e09-85da-ca10bb860734",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:32:56.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00293975,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 72,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:32:57.423Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:47.500Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2141,
+        "output": 62,
+        "reasoning": 11
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:07.199Z",
+          "http_status": 200,
+          "request_id": "90b1f517-f08b-4d7e-8704-f7e3163a7218",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:06.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00323875,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 73,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:07.200Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:32:57.431Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2438,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:17.194Z",
+          "http_status": 200,
+          "request_id": "e08ff072-8277-46fc-9ec3-41d7cbb6e45e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:16.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00358625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 74,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:17.194Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:07.210Z",
+      "usage": {
+        "cached_input": 2417,
+        "input": 2716,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:30.572Z",
+          "http_status": 200,
+          "request_id": "db9c75bb-bce4-4074-b860-305e7afe9422",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:26.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00746425,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 75,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:30.573Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:17.201Z",
+      "usage": {
+        "cached_input": 2673,
+        "input": 2993,
+        "output": 876,
+        "reasoning": 751
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:37.622Z",
+          "http_status": 200,
+          "request_id": "9709edd8-3a4c-4c5f-bd00-d8902830e051",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:36.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00559175,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 76,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:37.623Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:30.580Z",
+      "usage": {
+        "cached_input": 2929,
+        "input": 3909,
+        "output": 166,
+        "reasoning": 37
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:49.392Z",
+          "http_status": 200,
+          "request_id": "4d715f1d-de49-48f5-bd55-78496841dd58",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0033070,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 77,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:49.392Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:37.736Z",
+      "usage": {
+        "cached_input": 1521,
+        "input": 1782,
+        "output": 254,
+        "reasoning": 144
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:33:59.023Z",
+          "http_status": 200,
+          "request_id": "22d7c15b-c16b-4548-b567-6a2d085073aa",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:33:56.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0029715,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 78,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:33:59.023Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:49.401Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2180,
+        "output": 58,
+        "reasoning": 7
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:06.991Z",
+          "http_status": 200,
+          "request_id": "74ce9388-e1c1-4143-b466-5d066452006f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:06.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00324125,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 79,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:06.991Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:33:59.036Z",
+      "usage": {
+        "cached_input": 2161,
+        "input": 2440,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:17.426Z",
+          "http_status": 200,
+          "request_id": "3ac60cdf-87fd-4756-911a-90efc9276cc4",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:16.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00355000,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 80,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:17.426Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:07.000Z",
+      "usage": {
+        "cached_input": 2417,
+        "input": 2687,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:28.643Z",
+          "http_status": 200,
+          "request_id": "b881807c-a8a0-4714-910b-4a578da398ec",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:26.245Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0061480,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 81,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:28.643Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:17.437Z",
+      "usage": {
+        "cached_input": 2673,
+        "input": 2926,
+        "output": 586,
+        "reasoning": 456
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:37.803Z",
+          "http_status": 200,
+          "request_id": "31c903e1-d64d-4927-8369-714851edb4d3",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:36.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00583625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 82,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:37.804Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:28.654Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3564,
+        "output": 325,
+        "reasoning": 243
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:47.245Z",
+          "http_status": 200,
+          "request_id": "1c42ad6b-09a3-4926-8961-189c99b24cd0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00533625,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 83,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:47.246Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:37.820Z",
+      "usage": {
+        "cached_input": 3441,
+        "input": 3929,
+        "output": 100,
+        "reasoning": 7
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:34:57.700Z",
+          "http_status": 200,
+          "request_id": "cd8b8e24-adbe-49ba-bf19-0c5a07889b66",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:34:56.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0030350,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 84,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:34:57.700Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:47.361Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 1782,
+        "output": 190,
+        "reasoning": 87
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:07.188Z",
+          "http_status": 200,
+          "request_id": "b8d2740b-f840-4571-ae83-232fa223c183",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:06.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.002900,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 85,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:07.188Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:34:57.712Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2116,
+        "output": 60,
+        "reasoning": 9
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:17.028Z",
+          "http_status": 200,
+          "request_id": "d2ae4145-ea2c-47bb-9931-2797a47d111c",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:16.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00316375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 86,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:17.028Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:07.196Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2378,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:27.107Z",
+          "http_status": 200,
+          "request_id": "e001c97e-6d62-408a-8baf-2ddf7f8820eb",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:26.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00347250,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 87,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:27.108Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:17.038Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2625,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:39.185Z",
+          "http_status": 200,
+          "request_id": "3e8b6c49-dc9d-45d1-9ad8-8777f1e4232e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:36.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00616825,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 88,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:39.186Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:27.119Z",
+      "usage": {
+        "cached_input": 2545,
+        "input": 2864,
+        "output": 609,
+        "reasoning": 488
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:48.407Z",
+          "http_status": 200,
+          "request_id": "b652e762-04b1-4d8a-b6dd-67ad42e817a9",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00537100,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 89,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:48.407Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:39.197Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3525,
+        "output": 227,
+        "reasoning": 145
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:35:57.583Z",
+          "http_status": 200,
+          "request_id": "f6a6909a-e57d-4d2e-824d-722c14c0de4a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:35:56.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00540725,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 90,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:35:57.583Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:48.418Z",
+      "usage": {
+        "cached_input": 3441,
+        "input": 3792,
+        "output": 157,
+        "reasoning": 32
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:07.387Z",
+          "http_status": 200,
+          "request_id": "26ea976f-4780-4f79-9c3f-fcd86bb55eca",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:06.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.0029330,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 91,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:07.387Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:35:57.709Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 1782,
+        "output": 166,
+        "reasoning": 64
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:17.403Z",
+          "http_status": 200,
+          "request_id": "2bd5d1c5-be31-4bca-b221-27f1243fef61",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:16.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00288275,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 92,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:17.404Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:07.397Z",
+      "usage": {
+        "cached_input": 1777,
+        "input": 2092,
+        "output": 63,
+        "reasoning": 12
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:27.892Z",
+          "http_status": 200,
+          "request_id": "455f2299-f589-43f5-bb5d-ad2c7e7152ff",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:26.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00416175,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 93,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:27.893Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:17.415Z",
+      "usage": {
+        "cached_input": 2033,
+        "input": 2357,
+        "output": 286,
+        "reasoning": 235
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:36.920Z",
+          "http_status": 200,
+          "request_id": "3687b7b0-1320-4029-8ab3-ff35d6f43529",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:36.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00374750,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 94,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:36.920Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:27.906Z",
+      "usage": {
+        "cached_input": 2289,
+        "input": 2845,
+        "output": 45,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:47.242Z",
+          "http_status": 200,
+          "request_id": "979075c8-d158-4f75-bb79-275a94e6987d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:46.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00441175,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 95,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:47.243Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:36.930Z",
+      "usage": {
+        "cached_input": 2801,
+        "input": 3084,
+        "output": 131,
+        "reasoning": 12
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:36:57.617Z",
+          "http_status": 200,
+          "request_id": "08697846-d3d3-4f2e-b6c8-b3c6b2a129ed",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:36:56.246Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00502300,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 96,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:36:57.618Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:47.253Z",
+      "usage": {
+        "cached_input": 3057,
+        "input": 3267,
+        "output": 221,
+        "reasoning": 139
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-08T07:37:07.271Z",
+          "http_status": 200,
+          "request_id": "97522692-48bf-4a20-8553-1dc4abc721e1",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-08T07:37:06.247Z"
+        }
+      ],
+      "budget": {
+        "charged_usd": 0.00498375,
+        "input_token_bound": 1048576,
+        "output_token_bound": 2048,
+        "reservation_id": 97,
+        "reserved_usd": 1.319424,
+        "state": "settled"
+      },
+      "ended_at": "2026-11-08T07:37:07.272Z",
+      "http_status": 200,
+      "model": "muse-spark-1.1",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "retries": 0,
+      "started_at": "2026-11-08T07:36:57.629Z",
+      "usage": {
+        "cached_input": 3185,
+        "input": 3528,
+        "output": 135,
+        "reasoning": 33
+      }
+    }
+  ],
+  "retries": 0,
+  "run_id": "run-20261108T072135.587310000Z-28902",
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "settings_note": "Requested settings; omitted settings use provider defaults. Effective settings are not inferred.",
+  "source": "provider_api",
+  "started_at_istanbul": "2026-11-08T10:21:35.587310+03:00",
+  "started_at_utc": "2026-11-08T07:21:35.587310+00:00",
+  "state": "completed",
+  "tasks": [
+    {
+      "task_id": "t01_hidden_fees",
+      "task_version": 2
+    },
+    {
+      "task_id": "t02_expired_offer",
+      "task_version": 2
+    },
+    {
+      "task_id": "t05_bundle_vs_unit",
+      "task_version": 2
+    },
+    {
+      "task_id": "t06_ship_vs_delivery",
+      "task_version": 2
+    }
+  ],
+  "token_usage": {
+    "cached_input": 251646,
+    "input": 308802,
+    "output": 21726,
+    "reasoning": 14692
+  },
+  "trials_per_task": 3,
+  "unstarted_trials": 0
+}

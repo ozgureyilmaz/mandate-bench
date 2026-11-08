@@ -1,0 +1,133 @@
+{
+  "costs": {
+    "cost_estimate_usd": 0.00044962,
+    "known_cost_subtotal_usd": 0.00044962,
+    "known_subtotal_source": "score_rows",
+    "known_successful_request_subtotal_usd": 0.00044962,
+    "known_trial_cost_subtotal_usd": 0.00044962,
+    "metadata_known_cost_estimate_usd": 0.00044962,
+    "priced_successful_requests": 6,
+    "unknown_cost_trials": 0
+  },
+  "coverage": {
+    "completed_items": 1,
+    "expected_trials": 1,
+    "models": 1,
+    "tasks": 1,
+    "trials_per_task": 1
+  },
+  "diagnostic_scratch": true,
+  "input_metadata": {
+    "kind": "run",
+    "source": "provider_api",
+    "state": "completed"
+  },
+  "models": [
+    {
+      "control": {
+        "api_errors": 0,
+        "c": 1,
+        "completed_trials": 1,
+        "expected_trials": 1,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "costs": {
+        "cost_estimate_usd": 0.00044962,
+        "known_cost_subtotal_usd": 0.00044962,
+        "known_subtotal_source": "score_rows",
+        "known_successful_request_subtotal_usd": 0.00044962,
+        "known_trial_cost_subtotal_usd": 0.00044962,
+        "metadata_known_cost_estimate_usd": null,
+        "priced_successful_requests": 6,
+        "unknown_cost_trials": 0
+      },
+      "overall": {
+        "api_errors": 0,
+        "c": 1,
+        "completed_trials": 1,
+        "expected_trials": 1,
+        "n": 1,
+        "pass_rate": 1.0
+      },
+      "pass_at": {
+        "1": {
+          "eligible_task_count": 1,
+          "value": 1.0
+        },
+        "3": {
+          "eligible_task_count": 0,
+          "value": null
+        },
+        "5": {
+          "eligible_task_count": 0,
+          "value": null
+        }
+      },
+      "pass_power": {
+        "1": {
+          "eligible_task_count": 1,
+          "value": 1.0
+        },
+        "3": {
+          "eligible_task_count": 0,
+          "value": null
+        },
+        "5": {
+          "eligible_task_count": 0,
+          "value": null
+        }
+      },
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "returned_model_ids_observed": [
+        "gpt-6-luna"
+      ],
+      "task_rate_spread": {
+        "max": 1.0,
+        "max_task": "t00_control",
+        "min": 1.0,
+        "min_task": "t00_control"
+      },
+      "tasks": [
+        {
+          "metrics": {
+            "api_errors": 0,
+            "c": 1,
+            "completed_trials": 1,
+            "expected_trials": 1,
+            "n": 1,
+            "pass_rate": 1.0
+          },
+          "pass_at": {
+            "1": 1.0,
+            "3": null,
+            "5": null
+          },
+          "pass_power": {
+            "1": 1.0,
+            "3": null,
+            "5": null
+          },
+          "task_id": "t00_control"
+        }
+      ],
+      "traps": {
+        "api_errors": 0,
+        "c": 0,
+        "completed_trials": 0,
+        "expected_trials": 0,
+        "n": 0,
+        "pass_rate": null
+      },
+      "wilson_95": {
+        "high": 1.0,
+        "low": 0.20654931437723745,
+        "n": 1
+      }
+    }
+  ],
+  "report_scope": "diagnostic_scratch",
+  "run_id": "run-20261104T143901.927556000Z-57636",
+  "schema_version": 1
+}

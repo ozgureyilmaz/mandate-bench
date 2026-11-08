@@ -9,11 +9,13 @@ use mb_agent::replay;
 use mb_core::load_task;
 use mb_grader::{grade, load_reference, validate_reference};
 
+mod audit;
+mod reconcile;
+mod report;
+mod runner;
+
 #[derive(Parser)]
-#[command(
-    version,
-    about = "Deterministic mandate-adherence evaluation (offline M1)"
-)]
+#[command(version, about = "Deterministic mandate-adherence evaluation")]
 struct Cli {
     /// Repository root containing tasks/ and reference/.
     #[arg(long, default_value = ".", global = true)]
@@ -33,12 +35,96 @@ enum Command {
         #[arg(long)]
         out: Option<PathBuf>,
     },
+    /// Check tool calling. Muse also replays the result and checks the continuation.
+    Smoke {
+        #[arg(long, default_value = "configs/muse-smoke.toml")]
+        config: PathBuf,
+        #[arg(long)]
+        model: Option<String>,
+        /// Output parent directory; a new, exclusive run directory is created inside it.
+        #[arg(long)]
+        out: Option<PathBuf>,
+        /// Validate configuration and key presence without sending requests.
+        #[arg(long)]
+        dry_run: bool,
+    },
+    /// Run the selected configured tasks, using a fresh environment for every trial.
+    Run {
+        #[arg(long)]
+        config: PathBuf,
+        #[arg(long)]
+        model: Option<String>,
+        #[arg(long)]
+        task: Option<String>,
+        #[arg(long)]
+        out: Option<PathBuf>,
+        #[arg(long)]
+        dry_run: bool,
+    },
+    /// Summarize complete provider-backed benchmark artifacts without API calls.
+    Report {
+        /// Run directory under root/results, or root/runs with --allow-scratch.
+        run_dir: PathBuf,
+        /// Allow a completed provider_api diagnostic run from runs/; output is marked scratch.
+        #[arg(long)]
+        allow_scratch: bool,
+    },
+    /// Compare a proposed outcome policy against unchanged strict scores, offline.
+    AuditOutcomes {
+        run_dir: PathBuf,
+        #[arg(long)]
+        allow_scratch: bool,
+    },
+    /// Reconcile the documented Nov 5 Muse validation rejection from local evidence.
+    ReconcileMuseSmoke,
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.command {
         Command::Oracle { task, out } => oracle(&cli.root, task.as_deref(), out.as_deref()),
+        Command::Smoke {
+            config,
+            model,
+            out,
+            dry_run,
+        } => {
+            runner::smoke(
+                &cli.root,
+                &config,
+                model.as_deref(),
+                out.as_deref(),
+                dry_run,
+            )
+            .await
+        }
+        Command::Run {
+            config,
+            model,
+            task,
+            out,
+            dry_run,
+        } => {
+            runner::run(
+                &cli.root,
+                &config,
+                model.as_deref(),
+                task.as_deref(),
+                out.as_deref(),
+                dry_run,
+            )
+            .await
+        }
+        Command::Report {
+            run_dir,
+            allow_scratch,
+        } => report::generate(&cli.root, &run_dir, allow_scratch),
+        Command::AuditOutcomes {
+            run_dir,
+            allow_scratch,
+        } => audit::generate(&cli.root, &run_dir, allow_scratch),
+        Command::ReconcileMuseSmoke => reconcile::muse_smoke(&cli.root),
     }
 }
 

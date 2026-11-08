@@ -10,6 +10,8 @@
 *.pem
 *.p12
 *.pfx
+*.p8
+*.ppk
 *.crt
 *.der
 *.jks
@@ -52,11 +54,13 @@ logs/
 *.tgz
 *.7z
 *.mp4
+*.m4v
 *.mov
 *.webm
 *.mkv
 *.avi
 *.m4a
+*.mp3
 *.wav
 
 # --- other languages' junk (nothing here needs them) ---

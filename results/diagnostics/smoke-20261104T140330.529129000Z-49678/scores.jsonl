@@ -1,0 +1,1 @@
+{"cost_estimate_usd":0.0000237,"item_id":"model-0","model":"gpt-6-luna","provider":"openai","requested_model":"gpt-6-luna","status":"tool_call_supported","usage":{"cached_input":0,"input":142,"output":19,"reasoning":0},"wire_api":"responses"}

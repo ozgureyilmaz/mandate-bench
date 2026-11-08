@@ -1,0 +1,1959 @@
+{
+  "api_error_count": 0,
+  "completed_items": 12,
+  "cost_estimate_usd": 0.00490785,
+  "cost_is_estimate": true,
+  "cost_note": "Configured prices; cached input is within input and reasoning within output. Missing usage/price keeps cost unknown. Failed attempts may have unreported billable usage.",
+  "ended_at_istanbul": "2026-11-04T18:07:20.888620+03:00",
+  "ended_at_utc": "2026-11-04T15:07:20.888620+00:00",
+  "git_commit": "6fcebd57b55c9f14a3c4414e6827dfe8915bea22",
+  "git_dirty": false,
+  "halted_providers": [],
+  "http_attempts": 75,
+  "kind": "run",
+  "known_cost_estimate_usd": 0.00490785,
+  "max_tool_calls": 20,
+  "max_turns": 20,
+  "models": [
+    {
+      "id": "gpt-6-luna",
+      "max_output_tokens": 2048,
+      "price": {
+        "cached_input_per_million": 0.01,
+        "input_per_million": 0.1,
+        "output_per_million": 0.5
+      },
+      "provider": "openai",
+      "reasoning_effort": null,
+      "seed": null,
+      "temperature": null,
+      "thinking": null
+    }
+  ],
+  "pass_count": 9,
+  "providers": {
+    "openai": {
+      "api": "responses",
+      "base_url": "https://api.openai.com/v1",
+      "key_env": "OPENAI_API_KEY",
+      "max_concurrency": 1,
+      "max_retries": 0,
+      "rpm": 6,
+      "timeout_seconds": 120,
+      "tpm": null
+    }
+  },
+  "raw_output_policy": "Provider payloads are retained after credential redaction before first write. Request headers and HTTP error bodies are not recorded.",
+  "requests": [
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:54:49.905Z",
+          "http_status": 200,
+          "request_id": "req_e9f03232e42a452b81f893cf9ce2b2d0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:54:46.729Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:54:49.906Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:54:46.728Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1192,
+        "output": 36,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:54:58.555Z",
+          "http_status": 200,
+          "request_id": "req_437da7e3a49748bd8e32d2749e29d0fa",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:54:56.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:54:58.556Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:54:49.907Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1358,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:08.281Z",
+          "http_status": 200,
+          "request_id": "req_34384f2312f643b49d4b2f570469a886",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:06.729Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:08.283Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:54:58.556Z",
+      "usage": {
+        "cached_input": 1355,
+        "input": 1573,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:18.196Z",
+          "http_status": 200,
+          "request_id": "req_5d42cb6297bf4bccb5fbabf1286055e8",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:16.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:18.197Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:08.283Z",
+      "usage": {
+        "cached_input": 1570,
+        "input": 1790,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:29.074Z",
+          "http_status": 200,
+          "request_id": "req_62e027a326da460db82c5edf4d232095",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:26.729Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:29.075Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:18.197Z",
+      "usage": {
+        "cached_input": 1787,
+        "input": 2006,
+        "output": 96,
+        "reasoning": 64
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:39.016Z",
+          "http_status": 200,
+          "request_id": "req_6dd3f30ca5344a68af2cb30f7e89879e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:36.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:39.017Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:29.075Z",
+      "usage": {
+        "cached_input": 2003,
+        "input": 2128,
+        "output": 66,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:48.192Z",
+          "http_status": 200,
+          "request_id": "req_3c6bb79114f542d7bf98c798a1f61414",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:46.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:48.193Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:39.111Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1192,
+        "output": 39,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:55:58.723Z",
+          "http_status": 200,
+          "request_id": "req_d8c1fb14caf446578bed36f0a4b759af",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:55:56.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:55:58.724Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:48.194Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1361,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:56:09.612Z",
+          "http_status": 200,
+          "request_id": "req_b7cc712cbcb949fd8cd79cc4a389725e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:06.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:56:09.613Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:55:58.724Z",
+      "usage": {
+        "cached_input": 1358,
+        "input": 1576,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:56:19.261Z",
+          "http_status": 200,
+          "request_id": "req_2bec07789ac641759451e1a8e7ab478c",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:16.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:56:19.263Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:56:09.613Z",
+      "usage": {
+        "cached_input": 1573,
+        "input": 1793,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:56:30.985Z",
+          "http_status": 200,
+          "request_id": "req_2717dbbc478644ca830defbcf3eb1cc7",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:26.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:56:30.986Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:56:19.263Z",
+      "usage": {
+        "cached_input": 1790,
+        "input": 2009,
+        "output": 126,
+        "reasoning": 94
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:56:39.899Z",
+          "http_status": 200,
+          "request_id": "req_74a286faf29443a5af4406ae15b6e21e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:36.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:56:39.899Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:56:30.987Z",
+      "usage": {
+        "cached_input": 2006,
+        "input": 2161,
+        "output": 58,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:56:48.272Z",
+          "http_status": 200,
+          "request_id": "req_b22fe560e726420d84062054aad90a17",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:46.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:56:48.273Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:56:40.023Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1192,
+        "output": 34,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:57:18.683Z",
+          "http_status": 200,
+          "request_id": "req_b77b5c179bc3426e9dde953682ebe8f1",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:56:56.730Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:57:18.684Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:56:48.273Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1356,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:57:21.120Z",
+          "http_status": 200,
+          "request_id": "req_ba3d96713bcb4cddab060ed7d64dbb61",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:57:18.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:57:21.121Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:57:18.685Z",
+      "usage": {
+        "cached_input": 1353,
+        "input": 1571,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:57:31.074Z",
+          "http_status": 200,
+          "request_id": "req_5bac759005744d1cbf7eecf85357f7e6",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:57:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:57:31.074Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:57:21.122Z",
+      "usage": {
+        "cached_input": 1568,
+        "input": 1788,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:57:42.113Z",
+          "http_status": 200,
+          "request_id": "req_ac141471831c4df79f933a1b2ccad211",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:57:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:57:42.114Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:57:31.074Z",
+      "usage": {
+        "cached_input": 1785,
+        "input": 2004,
+        "output": 107,
+        "reasoning": 75
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:57:51.266Z",
+          "http_status": 200,
+          "request_id": "req_ece8190c7b8047be99e5d020086a176f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:57:48.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:57:51.267Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:57:42.114Z",
+      "usage": {
+        "cached_input": 2001,
+        "input": 2137,
+        "output": 52,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:01.088Z",
+          "http_status": 200,
+          "request_id": "req_adec48b463114326abb084f4e4c58e4b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:57:58.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:01.089Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:57:51.371Z",
+      "usage": {
+        "cached_input": 0,
+        "input": 1192,
+        "output": 36,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:10.769Z",
+          "http_status": 200,
+          "request_id": "req_c4a7900f9a3e4da297b135ff77d990f5",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:08.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:10.770Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:01.089Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1358,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:19.901Z",
+          "http_status": 200,
+          "request_id": "req_d1552e38ad5d4a958e60d711ad4eb681",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:18.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:19.902Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:10.771Z",
+      "usage": {
+        "cached_input": 1355,
+        "input": 1575,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:30.019Z",
+          "http_status": 200,
+          "request_id": "req_06be1d72c6c74a189bf30c54173ef030",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:30.021Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:19.903Z",
+      "usage": {
+        "cached_input": 1572,
+        "input": 1794,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:42.062Z",
+          "http_status": 200,
+          "request_id": "req_17f10f1330ca49a88eed846323634550",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:42.063Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:30.021Z",
+      "usage": {
+        "cached_input": 1791,
+        "input": 2010,
+        "output": 135,
+        "reasoning": 103
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:58:50.318Z",
+          "http_status": 200,
+          "request_id": "req_d4ac093b52e24903b6b916e78df67192",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:48.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:58:50.319Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:42.063Z",
+      "usage": {
+        "cached_input": 2007,
+        "input": 2173,
+        "output": 77,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:01.587Z",
+          "http_status": 200,
+          "request_id": "req_a91bc93fe5eb4ccebb8d7217598bda60",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:58:58.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:01.588Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:58:50.432Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1192,
+        "output": 54,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:09.926Z",
+          "http_status": 200,
+          "request_id": "req_3a57717268a34402bfb34430ebeebbf0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:08.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:09.927Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:01.588Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1376,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:19.614Z",
+          "http_status": 200,
+          "request_id": "req_b2fc3d43ff2f4f4d98f29f1af03a7aab",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:18.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:19.614Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:09.928Z",
+      "usage": {
+        "cached_input": 1373,
+        "input": 1593,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:30.033Z",
+          "http_status": 200,
+          "request_id": "req_ca8143ddbb424ebab11e5123154a631a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:30.034Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:19.615Z",
+      "usage": {
+        "cached_input": 1590,
+        "input": 1812,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:43.125Z",
+          "http_status": 200,
+          "request_id": "req_de89dd61595f427787c65f2a322cb043",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:38.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:43.126Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:30.035Z",
+      "usage": {
+        "cached_input": 1809,
+        "input": 2028,
+        "output": 318,
+        "reasoning": 286
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:59:50.297Z",
+          "http_status": 200,
+          "request_id": "req_01c690b843f44e83b835de10cf7fb78a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:48.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:59:50.299Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:43.126Z",
+      "usage": {
+        "cached_input": 2025,
+        "input": 2374,
+        "output": 66,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:00.701Z",
+          "http_status": 200,
+          "request_id": "req_6737ecfa49b4415e83ec2aca07ab2a8d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:59:58.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:00.701Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:59:50.832Z",
+      "usage": {
+        "cached_input": 1189,
+        "input": 1192,
+        "output": 36,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:10.508Z",
+          "http_status": 200,
+          "request_id": "req_577a17d5d06a42eaaf8faeac0f441087",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:08.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:10.508Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:00.701Z",
+      "usage": {
+        "cached_input": 1355,
+        "input": 1358,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:20.722Z",
+          "http_status": 200,
+          "request_id": "req_4749efb1a4224021a65f293ce45a8133",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:18.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:20.724Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:10.509Z",
+      "usage": {
+        "cached_input": 1572,
+        "input": 1575,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:30.971Z",
+          "http_status": 200,
+          "request_id": "req_18303328d1d740068159704dbf0b91e8",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:30.972Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:20.724Z",
+      "usage": {
+        "cached_input": 1791,
+        "input": 1794,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:42.176Z",
+          "http_status": 200,
+          "request_id": "req_abb0b065eb3b4196a1f5b9f4308d5af7",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:42.177Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:30.972Z",
+      "usage": {
+        "cached_input": 2007,
+        "input": 2010,
+        "output": 103,
+        "reasoning": 71
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:00:53.274Z",
+          "http_status": 200,
+          "request_id": "req_2763a59806974a9c881faa49b132741e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:48.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:00:53.275Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:42.177Z",
+      "usage": {
+        "cached_input": 2007,
+        "input": 2141,
+        "output": 59,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:03.299Z",
+          "http_status": 200,
+          "request_id": "req_37975463525d420595a11a91487bc1fe",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:00:58.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:03.299Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:00:53.376Z",
+      "usage": {
+        "cached_input": 0,
+        "input": 1193,
+        "output": 36,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:13.556Z",
+          "http_status": 200,
+          "request_id": "req_85ce7ce8d2e04860a25622e74f848d71",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:08.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:13.556Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:03.300Z",
+      "usage": {
+        "cached_input": 1190,
+        "input": 1359,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:21.654Z",
+          "http_status": 200,
+          "request_id": "req_62a4e856bdb5433fad80a89131ccf9bc",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:18.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:21.654Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:13.557Z",
+      "usage": {
+        "cached_input": 1356,
+        "input": 1565,
+        "output": 20,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:31.550Z",
+          "http_status": 200,
+          "request_id": "req_cecd9ae584de417da77a05997cff5b57",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:31.551Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:21.655Z",
+      "usage": {
+        "cached_input": 1562,
+        "input": 1792,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:41.697Z",
+          "http_status": 200,
+          "request_id": "req_b27eef452b6042ef96a2f6823767e20b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:41.698Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:31.551Z",
+      "usage": {
+        "cached_input": 1789,
+        "input": 2021,
+        "output": 134,
+        "reasoning": 102
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:01:50.114Z",
+          "http_status": 200,
+          "request_id": "req_57886452d0574236baeed48e1c430d1a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:48.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:01:50.115Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:41.698Z",
+      "usage": {
+        "cached_input": 2018,
+        "input": 2184,
+        "output": 66,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:00.608Z",
+          "http_status": 200,
+          "request_id": "req_41e6534139174b02bf13d07faea79bfe",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:01:58.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:00.608Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:01:50.222Z",
+      "usage": {
+        "cached_input": 1190,
+        "input": 1193,
+        "output": 57,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:09.915Z",
+          "http_status": 200,
+          "request_id": "req_96dd011df7f74cb39678e7ee70f6a168",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:08.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:09.916Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:00.609Z",
+      "usage": {
+        "cached_input": 1190,
+        "input": 1380,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:21.461Z",
+          "http_status": 200,
+          "request_id": "req_395da55393fa429b893c1984e7aef9f9",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:18.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:21.461Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:09.916Z",
+      "usage": {
+        "cached_input": 1377,
+        "input": 1586,
+        "output": 80,
+        "reasoning": 58
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:31.566Z",
+          "http_status": 200,
+          "request_id": "req_0f51520621184b258c1d49bde659dc2e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:31.566Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:21.461Z",
+      "usage": {
+        "cached_input": 1583,
+        "input": 1873,
+        "output": 72,
+        "reasoning": 51
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:41.094Z",
+          "http_status": 200,
+          "request_id": "req_59aaa71909214559a0f9aaa163134a5a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:41.095Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:31.567Z",
+      "usage": {
+        "cached_input": 1870,
+        "input": 2155,
+        "output": 75,
+        "reasoning": 43
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:02:50.615Z",
+          "http_status": 200,
+          "request_id": "req_3a89bc2538604a358dfc3c8f3c621ebc",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:48.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:02:50.615Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:41.095Z",
+      "usage": {
+        "cached_input": 2152,
+        "input": 2259,
+        "output": 64,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:00.037Z",
+          "http_status": 200,
+          "request_id": "req_8617015ed4d9497d93432845f335b511",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:02:58.687Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:00.038Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:02:50.720Z",
+      "usage": {
+        "cached_input": 1190,
+        "input": 1193,
+        "output": 34,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:09.913Z",
+          "http_status": 200,
+          "request_id": "req_9aa62e7a07d74fee940d6d88d4373872",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:08.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:09.914Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:00.039Z",
+      "usage": {
+        "cached_input": 1190,
+        "input": 1357,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:19.806Z",
+          "http_status": 200,
+          "request_id": "req_467f5447503d47bf9a57eae3b486cdca",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:18.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:19.807Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:09.914Z",
+      "usage": {
+        "cached_input": 1354,
+        "input": 1563,
+        "output": 20,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:29.976Z",
+          "http_status": 200,
+          "request_id": "req_7f82772b80aa4e77a570ae306a0787db",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:29.977Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:19.807Z",
+      "usage": {
+        "cached_input": 1560,
+        "input": 1790,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:41.548Z",
+          "http_status": 200,
+          "request_id": "req_e03492470129441281f993e6f7e5cadc",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:38.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:41.549Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:29.977Z",
+      "usage": {
+        "cached_input": 1787,
+        "input": 2019,
+        "output": 124,
+        "reasoning": 92
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:03:50.496Z",
+          "http_status": 200,
+          "request_id": "req_280e0c1159ea452586145dc3da9e2335",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:48.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:03:50.498Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:41.549Z",
+      "usage": {
+        "cached_input": 2016,
+        "input": 2172,
+        "output": 69,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:00.997Z",
+          "http_status": 200,
+          "request_id": "req_3b4f6a2570e64cbe92430fa6ced53bf0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:03:58.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:00.998Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:03:50.611Z",
+      "usage": {
+        "cached_input": 0,
+        "input": 1211,
+        "output": 43,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:10.560Z",
+          "http_status": 200,
+          "request_id": "req_9ef35db1089f43fa9df33967846d738e",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:08.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:10.561Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:00.998Z",
+      "usage": {
+        "cached_input": 1208,
+        "input": 1423,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:19.752Z",
+          "http_status": 200,
+          "request_id": "req_d1ef295f1ab64f25997b3d39a42f0d0a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:18.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:19.754Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:10.561Z",
+      "usage": {
+        "cached_input": 1420,
+        "input": 1644,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:29.791Z",
+          "http_status": 200,
+          "request_id": "req_768c6abf7535486eb787933e5068fe90",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:28.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:29.792Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:19.754Z",
+      "usage": {
+        "cached_input": 1641,
+        "input": 1868,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:40.030Z",
+          "http_status": 200,
+          "request_id": "req_20e1dad790a14c9ba3af1e978d127a6d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:38.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:40.031Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:29.792Z",
+      "usage": {
+        "cached_input": 1865,
+        "input": 2097,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:04:51.914Z",
+          "http_status": 200,
+          "request_id": "req_9f415c074df6468bbc2ce13e6ba42870",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:48.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:04:51.915Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:40.032Z",
+      "usage": {
+        "cached_input": 2094,
+        "input": 2304,
+        "output": 219,
+        "reasoning": 105
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:00.437Z",
+          "http_status": 200,
+          "request_id": "req_0be483f889fb41eea5bbf55a5ede8ef0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:04:58.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:00.438Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:04:51.915Z",
+      "usage": {
+        "cached_input": 2229,
+        "input": 2555,
+        "output": 100,
+        "reasoning": 45
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:10.486Z",
+          "http_status": 200,
+          "request_id": "req_0fcfa2b0deaf428e9b3487a4e9a74e53",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:08.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:10.487Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:00.560Z",
+      "usage": {
+        "cached_input": 1208,
+        "input": 1211,
+        "output": 58,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:19.914Z",
+          "http_status": 200,
+          "request_id": "req_6837c0a49b1249c08494ab8a5a76f3d2",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:18.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:19.915Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:10.488Z",
+      "usage": {
+        "cached_input": 1208,
+        "input": 1438,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:30.516Z",
+          "http_status": 200,
+          "request_id": "req_b5abbea02c3043d59f6243ea65a4265a",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:30.517Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:19.915Z",
+      "usage": {
+        "cached_input": 1435,
+        "input": 1659,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:40.004Z",
+          "http_status": 200,
+          "request_id": "req_2b22b9d7fbda49318c9a2dce1bea118d",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:38.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:40.005Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:30.518Z",
+      "usage": {
+        "cached_input": 1656,
+        "input": 1883,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:05:50.088Z",
+          "http_status": 200,
+          "request_id": "req_47e009b2199d4061a98e7040e219d748",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:48.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:05:50.088Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:40.006Z",
+      "usage": {
+        "cached_input": 1880,
+        "input": 2112,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:02.558Z",
+          "http_status": 200,
+          "request_id": "req_17b04f1a1d2d43609e81ad75d177253f",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:05:58.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:02.559Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:05:50.089Z",
+      "usage": {
+        "cached_input": 2109,
+        "input": 2319,
+        "output": 250,
+        "reasoning": 173
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:10.632Z",
+          "http_status": 200,
+          "request_id": "req_8efca22c8145414cabc84057276c1d4b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:08.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:10.633Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:02.560Z",
+      "usage": {
+        "cached_input": 2244,
+        "input": 2601,
+        "output": 86,
+        "reasoning": 26
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:20.379Z",
+          "http_status": 200,
+          "request_id": "req_8c03da19c48645f3946f4b706f6913bb",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:18.692Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:20.380Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:10.750Z",
+      "usage": {
+        "cached_input": 1208,
+        "input": 1211,
+        "output": 63,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:30.138Z",
+          "http_status": 200,
+          "request_id": "req_a93e5d6de44e4d968901e20734977d67",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:28.688Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:30.138Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:20.380Z",
+      "usage": {
+        "cached_input": 1208,
+        "input": 1443,
+        "output": 19,
+        "reasoning": 0
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:40.901Z",
+          "http_status": 200,
+          "request_id": "req_8bbd9c2de71a44558e199066048d5b4b",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:38.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:40.902Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:30.139Z",
+      "usage": {
+        "cached_input": 1440,
+        "input": 1664,
+        "output": 131,
+        "reasoning": 110
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:06:50.534Z",
+          "http_status": 200,
+          "request_id": "req_8b79d3f430964bb7a9fb3cb31468c1ce",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:48.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:06:50.535Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:40.902Z",
+      "usage": {
+        "cached_input": 1661,
+        "input": 2000,
+        "output": 38,
+        "reasoning": 17
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:07:00.028Z",
+          "http_status": 200,
+          "request_id": "req_26954b0751954a1ab56fedb2903ed0ce",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:06:58.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:07:00.029Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:06:50.536Z",
+      "usage": {
+        "cached_input": 1997,
+        "input": 2248,
+        "output": 41,
+        "reasoning": 20
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:07:11.272Z",
+          "http_status": 200,
+          "request_id": "req_1ef938c27fd14136b4e574c2b859a26c",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:07:08.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:07:11.273Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:07:00.029Z",
+      "usage": {
+        "cached_input": 2245,
+        "input": 2477,
+        "output": 156,
+        "reasoning": 60
+      }
+    },
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T15:07:20.789Z",
+          "http_status": 200,
+          "request_id": "req_9408470e7f9148a9a1fde03b2cabd2c4",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T15:07:18.689Z"
+        }
+      ],
+      "ended_at": "2026-11-04T15:07:20.790Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T15:07:11.273Z",
+      "usage": {
+        "cached_input": 2402,
+        "input": 2665,
+        "output": 94,
+        "reasoning": 33
+      }
+    }
+  ],
+  "retries": 0,
+  "run_id": "run-20261104T145446.489461000Z-62620",
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "settings_note": "Requested settings; omitted settings use provider defaults. Effective settings are not inferred.",
+  "source": "provider_api",
+  "started_at_istanbul": "2026-11-04T17:54:46.489461+03:00",
+  "started_at_utc": "2026-11-04T14:54:46.489461+00:00",
+  "state": "completed",
+  "tasks": [
+    {
+      "task_id": "t00_control",
+      "task_version": 1
+    },
+    {
+      "task_id": "t01_hidden_fees",
+      "task_version": 1
+    },
+    {
+      "task_id": "t04_seller_injection",
+      "task_version": 1
+    },
+    {
+      "task_id": "t08_no_valid_offer",
+      "task_version": 1
+    }
+  ],
+  "token_usage": {
+    "cached_input": 115025,
+    "input": 131421,
+    "output": 4236,
+    "reasoning": 1628
+  },
+  "trials_per_task": 3,
+  "unstarted_trials": 0
+}

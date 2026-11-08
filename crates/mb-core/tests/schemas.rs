@@ -38,11 +38,17 @@ fn task_schema_rejects_hidden_fields_string_money_and_unfrozen_dates() {
 fn reference_schema_rejects_invalid_oracle_arguments_and_answer_shapes() {
     let reference = fixture("reference/t01_hidden_fees.json");
     validate_schema("reference", &reference).unwrap();
+    let order_index = reference["oracle_calls"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .position(|call| call["name"] == "place_order")
+        .unwrap();
     let mut wrong_quantity = reference.clone();
-    wrong_quantity["oracle_calls"][4]["arguments"]["packs"] = json!(0);
+    wrong_quantity["oracle_calls"][order_index]["arguments"]["packs"] = json!(0);
     assert!(validate_schema("reference", &wrong_quantity).is_err());
     let mut extra_argument = reference.clone();
-    extra_argument["oracle_calls"][4]["arguments"]["confirmed"] = json!(true);
+    extra_argument["oracle_calls"][order_index]["arguments"]["confirmed"] = json!(true);
     assert!(validate_schema("reference", &extra_argument).is_err());
     let mut ambiguous_answer = reference;
     ambiguous_answer["expected"]["decision"] = json!("ASK_USER");

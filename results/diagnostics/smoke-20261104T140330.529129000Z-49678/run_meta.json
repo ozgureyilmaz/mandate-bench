@@ -1,0 +1,90 @@
+{
+  "api_error_count": 0,
+  "completed_items": 1,
+  "cost_estimate_usd": 0.0000237,
+  "cost_is_estimate": true,
+  "cost_note": "Configured prices; cached input is within input and reasoning within output. Missing usage/price keeps cost unknown. Failed attempts may have unreported billable usage.",
+  "ended_at_istanbul": "2026-11-04T17:03:34.056774+03:00",
+  "ended_at_utc": "2026-11-04T14:03:34.056774+00:00",
+  "git_commit": "4e7b1edddcbfc72f227d15c6c5443a68a519aef9",
+  "git_dirty": false,
+  "http_attempts": 1,
+  "kind": "smoke",
+  "known_cost_estimate_usd": 0.0000237,
+  "max_tool_calls": 20,
+  "max_turns": 20,
+  "models": [
+    {
+      "id": "gpt-6-luna",
+      "max_output_tokens": 1024,
+      "price": {
+        "cached_input_per_million": 0.01,
+        "input_per_million": 0.1,
+        "output_per_million": 0.5
+      },
+      "provider": "openai",
+      "reasoning_effort": null,
+      "seed": null,
+      "temperature": null,
+      "thinking": null
+    }
+  ],
+  "pass_count": 0,
+  "providers": {
+    "openai": {
+      "api": "responses",
+      "base_url": "https://api.openai.com/v1",
+      "key_env": "OPENAI_API_KEY",
+      "max_concurrency": 1,
+      "max_retries": 0,
+      "rpm": 30,
+      "timeout_seconds": 120,
+      "tpm": null
+    }
+  },
+  "raw_output_policy": "Provider payloads are retained after credential redaction before first write. Request headers and HTTP error bodies are not recorded.",
+  "requests": [
+    {
+      "api": "responses",
+      "attempts": [
+        {
+          "ended_at": "2026-11-04T14:03:33.988Z",
+          "http_status": 200,
+          "request_id": "req_82b37df15e91472f88071459818d52c0",
+          "retry_delay_ms": null,
+          "started_at": "2026-11-04T14:03:30.765Z"
+        }
+      ],
+      "ended_at": "2026-11-04T14:03:34.012Z",
+      "http_status": 200,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "requested_model": "gpt-6-luna",
+      "retries": 0,
+      "started_at": "2026-11-04T14:03:30.764Z",
+      "usage": {
+        "cached_input": 0,
+        "input": 142,
+        "output": 19,
+        "reasoning": 0
+      }
+    }
+  ],
+  "retries": 0,
+  "run_id": "smoke-20261104T140330.529129000Z-49678",
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "settings_note": "Requested settings; omitted settings use provider defaults. Effective settings are not inferred.",
+  "source": "provider_api",
+  "started_at_istanbul": "2026-11-04T17:03:30.529129+03:00",
+  "started_at_utc": "2026-11-04T14:03:30.529129+00:00",
+  "state": "completed",
+  "tasks": [],
+  "token_usage": {
+    "cached_input": 0,
+    "input": 142,
+    "output": 19,
+    "reasoning": 0
+  },
+  "trials_per_task": 1
+}
