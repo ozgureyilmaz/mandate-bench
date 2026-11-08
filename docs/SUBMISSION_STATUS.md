@@ -28,3 +28,5 @@ Officially permitted video hosts include YouTube, Loom, Google Drive, Vimeo or s
 Review the final results and narrative, record the video, and add the same accessible video URL to README and the submission field. Resolve the internal evidence-coverage gate before invoking the real ZIP command. After the ZIP passes size, secret and archive checks, the owner uploads ZIP + video URL + description.
 
 The deadline is **Nov 9, 2026, 08:15 Istanbul / 05:15 GMT**. A second paid run, video publication, real ZIP, merge and final upload are outside the completed diagnostic work.
+
+The clean post-diagnostic `scripts/package.sh --check` reports three pending gates: the video TODO in README, the video URL and the committed nine-task/five-trial coverage requirement. No real ZIP was created.

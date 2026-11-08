@@ -66,15 +66,15 @@ The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine 
 
 Both file approvals and the signed chat reply were recorded before the approved batch. That batch is complete.
 
-The submission blurb and English video script are drafted using the archived Luna pilot and passing Muse smoke. Muse diagnostic results are now recorded in the selected four-task artifact set. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
+The submission blurb and English video script now use the archived Luna pilot and completed Muse diagnostic. Muse diagnostic results are now recorded in the selected four-task artifact set. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
 
-The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Owner review, scored evidence and the video remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The currently authorized four-task, three-trial diagnostic would not satisfy that internal gate.
+The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Final narrative review, the video and the packaging coverage decision remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The completed four-task, three-trial diagnostic does not satisfy that internal gate.
 
-A fresh packaging check will follow the diagnostic and README update. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. The final video and the internal nine-task/five-trial coverage gate remain open.
+The clean post-diagnostic packaging check reported three pending gates: the README video TODO, a video URL, and the committed nine-task/five-trial coverage requirement. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. The final video and the internal nine-task/five-trial coverage gate remain open.
 
 ## Muse diagnostic authorization · Nov 8
 
-Both file approvals and the owner's signed chat confirmation are present. Preflight passed for one model, four tasks and three trials. The unchanged config projects USD 3.58896 against USD 14.99606525 in remaining Muse capacity. Start one Muse-only batch with the existing guard, serial dispatch and zero retries. Stop new dispatch on the first provider error or budget refusal.
+At admission, both file approvals and signed chat confirmation were present. Preflight passed for one model, four tasks and three trials. The config projected USD 3.58896 against USD 14.99606525 in remaining capacity. The one approved batch then ran under the serial, zero-retry guard.
 
 ## Muse diagnostic v1 completed · Nov 8
 

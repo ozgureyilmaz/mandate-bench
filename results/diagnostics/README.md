@@ -9,3 +9,7 @@ These are byte-preserving copies of the local live smoke, initial API-error pilo
 - None of these directories has the reviewed all-nine-task/five-trial coverage required for the final project checklist. Final selected runs belong directly under `results/<run_id>/`, with their transcripts under `transcripts/<run_id>/`.
 
 The original source directories under ignored `runs/` are preserved as well. Report/audit commands operate on those original diagnostic directories with explicit `--allow-scratch`; this archive is not automatically promoted into headline reports.
+
+## Muse four-trap diagnostic · Nov 8
+
+The selected `run-20261108T072135.587310000Z-28902` directory contains 12 trials on t01/t02/t05/t06 v2. All three policy-2 metrics passed in all trials, with zero API errors. The archive is byte-identical to the completed scratch run, including all raw payloads and transcripts. This remains four-task diagnostic coverage. [Metadata](run-20261108T072135.587310000Z-28902/run_meta.json) · [Review](../../docs/MUSE_DIAGNOSTIC_V1.md)
