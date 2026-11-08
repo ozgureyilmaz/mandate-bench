@@ -1,6 +1,6 @@
 # Video walkthrough script · Nov 8, 2026
 
-**Spoken narration:** about 530 words, about 4½ minutes at a measured pace. The shot list is separate and not included in that count. **Current recording version:** includes a clearly pending Muse segment because the scored diagnostic has not run. The owner records and publishes the video. Do not add model calls to the recording.
+**Spoken narration:** about 580 words, about 4:50–4:55 at a measured pace. The shot list is separate and not included in that count. The owner records and publishes the video. Do not add model calls to the recording.
 
 ## Record-ready narration
 
@@ -24,13 +24,13 @@
 
 > A separate offline audit applies a proposed outcome policy to the same twelve trials: 12 outcome passes while the original strict score remains 9 of 12. This is retrospective, not new trials, and it leaves the original results unchanged. Outcome, strict and format remain separate labels.
 
-### 3:37–4:22 · Muse status — pending
+### 3:37–4:35 · Muse four-task diagnostic
 
-> Muse Spark 1.1 passed a corrected live tool smoke: the requested tool call came back, then a continuation completed. That verifies the tool round trip only. Its scored four-task diagnostic is pending. Task and grader sign-off, all nine owner cells, and the signed chat confirmation are still outstanding. There is no Muse score or observed failure to report. The next check is that owner-reviewed diagnostic, after its gates are complete.
+> The Muse Spark 1.1 diagnostic has now completed. The API returned model ID `muse-spark-1.1`. It covered t01, t02, t05, and t06, all version two, with three trials per task. All twelve trials passed outcome, strict, and raw-format checks. Every task went three for three. There were no failures, API errors, or no-decision episodes. The run averaged about 6.8 tool calls per trial and took about fifteen and a half minutes. Its estimated token cost was about twenty cents, with about fourteen dollars and fifty-two cents left in the conservative ledger. This is a four-task diagnostic, not the full benchmark. Coverage and task versions differ from the Luna pilot, so this is not a cross-model comparison. Muse did not test seller injection or no-offer escalation.
 
-### 4:22–4:50 · Takeaway
+### 4:35–4:55 · Takeaway
 
-> The evidence-supported takeaway is narrow: the oracle passes all nine references, and the Luna pilot's strict misses were missing currency after correct escalation. Formatting can turn a correct action into a strict miss. We have not shown mandate-breaking purchases or a general model limitation. Broader task coverage remains future work. Does a buyer agent respect the boundary the user set?
+> The evidence-supported takeaway is narrow. The oracle passes all nine references. The Luna pilot's strict misses were missing currency after correct escalation. The Muse diagnostic had no failures on its four version-two tasks. These limited results do not establish full-benchmark performance or a general model limitation. The practical question remains: will a buyer agent respect the boundary the user set?
 
 ## Timed shot list
 
@@ -41,8 +41,8 @@
 | 1:48–2:33 | Show the Rust grader's ledger/final-answer checks and the offline commands: `cargo build --release --locked`, `cargo run --release --locked -- oracle`, `cargo test --workspace --locked`, `cargo fmt --check`, and `cargo clippy --workspace --all-targets --locked -- -D warnings`. Pre-run them. Record the results or cut command waits so compilation does not consume the five-minute limit. |
 | 2:33–3:15 | Historical Luna card: `t00/t01/t04/t08 v1 · 3 trials each · 9/12 strict`. Add: `t08: 3/3 correct ASK_USER, 0 orders, missing USD currency`. |
 | 3:15–3:37 | Optional card: `same 12 trials · strict 9/12 · proposed outcome 12/12 · retrospective audit, not new trials`. Omit this segment if the distinction is not clear on screen. |
-| 3:37–4:22 | Persistent status card: `Muse Spark 1.1 · tool smoke passed · scored diagnostic PENDING · no score yet`. Do not display a failure count or performance metric. Retain this card until an authorized run is complete and reviewed. Replace it later only with actual coverage, metrics and transcript evidence. |
-| 4:22–4:50 | Return to the mandate card and end on the authorized-purchase question. |
+| 3:37–4:35 | Results card: `returned ID muse-spark-1.1 · t01/t02/t05/t06 v2 · 3 trials/task · outcome 12/12 · strict 12/12 · raw format 12/12 · API errors 0 · no-decision 0`. Add `mean tool calls 6.8333 · runtime 15m31.806s · estimated USD 0.20152740 · conservative balance remaining USD 14.51772725`. State that coverage and versions differ from the Luna pilot. Do not rank models or generalize to t04/t08. |
+| 4:35–4:55 | Return to the mandate card and end on the evidence-limited question. |
 
 ## Recording checks
 
@@ -50,12 +50,14 @@
 - Pre-run the local offline commands before recording. Capture their completed output or edit out command waits, especially compiler time.
 - Use only verified artifacts and the local offline commands above. Do not run a live smoke, scored diagnostic, or any provider request for recording.
 - The archived Luna pilot is version one. Do not imply it tested t01 version two or all nine tasks.
-- Keep the Muse diagnostic pending until the required owner gates and signed confirmation are complete. Replace that segment later only with reviewed run evidence.
+- The Muse card describes only the completed four-task v2 diagnostic. Do not compare its score directly with the Luna v1 pilot or infer performance on tasks it did not include.
 - The owner publishes to YouTube (public or unlisted), Loom, Drive, Vimeo, or a similar host. Verify the link opens without login or an access request and plays with audio. Add the approved link to the README and submission field only after publication.
 
 ## Evidence anchors
 
 - [Task t01 v2](../tasks/t01_hidden_fees/task.json) · [Reference t01](../reference/t01_hidden_fees.json)
 - [README task and grading summary](../README.md) · [Archived Luna pilot review](PILOT_REVIEW.md)
-- [Current task/grader gates and Muse smoke status](SIGNOFF.md) · [Owner-cell and diagnostic status](STATUS.md)
+- [Owner sign-off records](SIGNOFF.md) · [Owner-cell and diagnostic status](STATUS.md)
+- [Muse run metadata](../results/diagnostics/run-20261108T072135.587310000Z-28902/run_meta.json) · [Muse report](../results/diagnostics/run-20261108T072135.587310000Z-28902/report.json)
+- [Muse diagnostic review](../results/diagnostics/run-20261108T072135.587310000Z-28902/diagnostic_review.json) · [Muse score rows](../results/diagnostics/run-20261108T072135.587310000Z-28902/scores.jsonl)
 - [Hackathon video constraints](HACKATHON.md)

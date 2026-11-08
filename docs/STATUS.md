@@ -8,7 +8,7 @@ Last updated Nov 8, 2026 (Istanbul).
 |---|---|
 | Metrics | Prospective policy 2 frozen Nov 4 before new scored trials. It records outcome, strict outcome plus raw format, and independent raw format. The v1 Luna pilot remains 9/12 strict. The separate outcome audit is a retrospective of those trials. |
 | Task hardening | t01/t02/t05/t06 and their references are v2. The task schema admits up to eight offers. Other task versions and historical run artifacts retain their original bytes. |
-| Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. OpenAI capacity remains fully held for unresolved historical exposure; make no further OpenAI requests. |
+| Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. Muse has USD 14.51772725 remaining after the completed diagnostic. OpenAI capacity remains fully held for unresolved historical exposure. |
 | Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. Live tool round trip passed after the tool-choice and replay fixes. All owner gates were completed. The four-trap diagnostic passed 12/12 outcome, strict and raw-format checks, with zero API errors. |
 | NVIDIA NIM | Retired from active submission. The three candidates remain archived and untested; no live check or NVIDIA key is required. The Nov 5 missing-key dry run is preserved as historical evidence. [NIM_SMOKE.md](NIM_SMOKE.md) · [archived config](../configs/historical/nim-smoke.toml) |
 | Final benchmark | Outside the current work order. Only the Muse-only four-trap diagnostic may proceed after its gates. The Luna v1 pilot remains frozen at 9/12 strict; no further OpenAI calls are authorized. NIM is outside the active submission. |
@@ -56,7 +56,7 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 
 ## Remaining submission work
 
-Owner hand-solves and checks the tasks, references and grader. The Muse-only diagnostic config becomes active only after both SIGNOFF boxes, all nine owner cells, and the owner's explicit signed chat reply. Then review its coverage, outcome, format and spend before selecting any final evidence. NIM key setup and qualification are not required; no new OpenAI calls are authorized. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
+Owner task and grader review is complete. The approved Muse-only diagnostic is complete. Review its selected evidence and narrative before final submission. NIM key setup and qualification are not required; no new OpenAI calls are authorized. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
 
 ## Owner checkpoint
 
@@ -64,7 +64,7 @@ The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine 
 
 ## Nov 8 submission preparation
 
-Both owner SIGNOFF approvals and all nine STATUS owner cells are checked as of Nov 8. The owner replied **signed**, so the single approved Muse diagnostic can proceed after budget admission.
+Both file approvals and the signed chat reply were recorded before the approved batch. That batch is complete.
 
 The submission blurb and English video script are drafted using the archived Luna pilot and passing Muse smoke. Muse diagnostic results are now recorded in the selected four-task artifact set. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
 
