@@ -1,6 +1,6 @@
 # mandate-bench
 
-> **Submission draft · Nov 8, 2026.** Selected evidence covers two partial diagnostics with different task sets and versions. The video link is provided. The final packaging coverage policy remains open.
+> **Submission · Nov 8, 2026.** The owner approved packaging these two clearly labeled partial diagnostics. They use different task sets and versions and do not constitute a model ranking or a full nine-task benchmark.
 
 **mandate-bench** tests whether a language model, acting as a **buyer agent**, stays inside the **mandate** its user gave it (budget including all fees, delivery deadline, compatibility, return policy) when it picks among offers from several **scripted seller agents**. Each task has exactly one defensible outcome: either buy the right offer at the right quantity and total, or buy nothing and ask the user because no offer fits the mandate. Seller offers contain the traps a careful human buyer catches: hidden fees, expired offers, near-miss compatibility, prompt injection in seller text, pack-vs-unit pricing, ship date vs. delivery date, final-sale terms, and "nothing qualifies". A deterministic, code-based grader scores the end state (the order ledger) and a JSON final answer. No LLM judge is used.
 
@@ -14,7 +14,7 @@ All tasks are synthetic, priced in **USD**, with fictional sellers and addresses
 
 mandate-bench tests whether a buyer agent follows a purchase mandate across nine synthetic tasks. Scripted sellers expose budget, fee, expiry, compatibility, pack, delivery, return and authority traps. A deterministic Rust grader checks the order ledger and final JSON, including when to buy nothing and ask the user. A historical Luna v1 pilot passed 9 of 12 strict trials, with three missing-currency failures after correct escalation. A separate Muse diagnostic passed outcome, strict and raw-format checks in all 12 trials across four hardened tasks. The diagnostics use different task sets and versions.
 
-The submission-field version is drafted for owner review. [Short description draft](docs/SUBMISSION_BLURB.md)
+The submission-field text is available for the owner to paste. [Short description](docs/SUBMISSION_BLURB.md)
 
 ## Video walkthrough
 
@@ -22,7 +22,7 @@ The submission-field version is drafted for owner review. [Short description dra
 
 Use this same link in the submission's video field.
 
-The English recording script and shot list use the evidence currently available. [Video script](docs/VIDEO_SCRIPT.md)
+The recording script and shot list are retained with their evidence links. [Video script](docs/VIDEO_SCRIPT.md)
 
 ## Domain and expertise
 The domain is delegated purchasing under a user's mandate. Author Özgür Eryılmaz is an MIS undergraduate who builds agent infrastructure, including [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter). The project applies that experience to the boundary between a user's authorization and seller-supplied information. The owner signed all nine task reviews and the grader policy on Nov 8. [Review record](docs/SIGNOFF.md)
@@ -131,7 +131,7 @@ Muse used 308,802 input tokens, including 251,646 cached, and 21,726 output toke
 
 The Muse diagnostic excludes t04 seller injection and t08 no-valid-offer escalation. It provides no Muse evidence about injection compliance or currency after ASK_USER. The control t00 and dedicated compatibility and final-sale tasks were also outside its scope, although t01 includes return and compatibility constraints. Three trials per assessed task are a small diagnostic sample.
 
-The supported takeaway is that final-answer conformance can fail after an authorized action, as the Luna traces show. Muse passed the assessed structured traps. Broader mandate-adherence limitations would require further evidence. The current submission should state its partial coverage plainly.
+The supported takeaway is that final-answer conformance can fail after an authorized action, as the Luna traces show. Muse passed the assessed structured traps. Broader mandate-adherence limitations would require further evidence. This submission reports its partial coverage explicitly.
 
 ## Prior work and sources
 The author's pre-hackathon [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter) informed the agent-orchestration workflow; no code was copied from it. All task data is synthetic and was written for this project.
@@ -144,4 +144,4 @@ AI coding assistants implemented the Rust harness, task/reference drafts and tes
 ## Repository layout
 A Cargo workspace (`crates/`), task data (`tasks/`, `reference/`), JSON schemas (`schemas/`), run configs (`configs/`), and committed results (`results/`, `transcripts/`). Details in AGENTS.md.
 
-Maintainer packaging uses `scripts/package.sh --check` (Git, rg and jq required). It refuses unfinished README/video/review/result gates and creates no archive by default. After those gates pass, `scripts/package.sh --out /absolute/path/submission.zip` explicitly builds a Git archive with README at root, checks credential-shaped content in the tracked tree/history and enforces the size limit. The helper does not upload anything or verify video playback/audio.
+Maintainer packaging uses `scripts/package.sh --check` (Git, rg and jq required). It validates the disclosed diagnostic evidence, README video link, owner review and credential-safe manifest/history. Default invocation creates no archive. After those gates pass, `scripts/package.sh --out /absolute/path/submission.zip` explicitly builds a Git archive with README at root, checks credential-shaped content in the tracked tree/history and enforces the size limit. The helper does not upload anything or verify video playback/audio.

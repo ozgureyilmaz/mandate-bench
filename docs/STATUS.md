@@ -11,7 +11,7 @@ Last updated Nov 8, 2026 (Istanbul).
 | Paid ledgers | OpenAI USD 1 and Muse USD 15 are independent. Each reserves before sending, reconciles usage, holds unknown usage at worst case, and stops on the first provider error. Muse has USD 14.51772725 remaining after the completed diagnostic. OpenAI capacity remains fully held for unresolved historical exposure. |
 | Muse Spark 1.1 | Responses, medium reasoning, 2,048 max output tokens, serial dispatch at 6 RPM and zero retries. Live tool round trip passed after the tool-choice and replay fixes. All owner gates were completed. The four-trap diagnostic passed 12/12 outcome, strict and raw-format checks, with zero API errors. |
 | NVIDIA NIM | Retired from active submission. The three candidates remain archived and untested; no live check or NVIDIA key is required. The Nov 5 missing-key dry run is preserved as historical evidence. [NIM_SMOKE.md](NIM_SMOKE.md) · [archived config](../configs/historical/nim-smoke.toml) |
-| Final benchmark | Outside the current work order. Only the Muse-only four-trap diagnostic may proceed after its gates. The Luna v1 pilot remains frozen at 9/12 strict; no further OpenAI calls are authorized. NIM is outside the active submission. |
+| Final benchmark | No full final benchmark run is authorized. The Muse four-trap diagnostic and Luna v1 pilot remain frozen at their recorded results. No further provider calls or paid batches are authorized. NIM is outside the active submission. |
 
 ## Verification on Nov 5
 
@@ -56,7 +56,7 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 
 ## Remaining submission work
 
-Owner task and grader review is complete. The approved Muse-only diagnostic is complete. Review its selected evidence and narrative before final submission. NIM key setup and qualification are not required; no new OpenAI calls are authorized. Finish the README with selected evidence, reproduce from a fresh clone, review the rubric and package a ZIP under 50 MB. The owner records and publishes the unlisted video and performs the final upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
+Owner task and grader review and the approved Muse diagnostic are complete. The owner accepts a package with clearly disclosed partial evidence; nine-task × five-trial coverage is no longer a package blocker. The owner authorized merging PR #2 after required checks, then creating the ZIP after package checks. These actions remain pending actual proof. No provider calls, paid batches, video publication or HackerRank upload are authorized. Remaining work includes final narrative review, clean-room reproduction, video playback/audio/duration confirmation, required checks and scans, ZIP creation and owner upload. Deadline Nov 9, 08:15 Istanbul / 05:15 GMT. [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md)
 
 ## Owner checkpoint
 
@@ -68,9 +68,9 @@ Both file approvals and the signed chat reply were recorded before the approved 
 
 The submission blurb and English video script now use the archived Luna pilot and completed Muse diagnostic. Muse diagnostic results are now recorded in the selected four-task artifact set. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
 
-The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Final narrative review, the video and the packaging coverage decision remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The completed four-task, three-trial diagnostic does not satisfy that internal gate.
+The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Final narrative review and owner video checks remain open. The owner has accepted the disclosed partial evidence package; the former nine-task/five-trial packaging gate no longer applies.
 
-The clean post-diagnostic packaging check reported three pending gates: the README video TODO, a video URL, and the committed nine-task/five-trial coverage requirement. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. The final video and the internal nine-task/five-trial coverage gate remain open.
+The last recorded post-diagnostic packaging check predates that owner decision and reported three pending gates: the README video TODO, a video URL, and nine-task/five-trial coverage. It is historical check output, not a post-order result. No post-order package check or ZIP creation is recorded here.
 
 ## Muse diagnostic authorization · Nov 8
 
@@ -84,6 +84,14 @@ The selected diagnostic artifact directory is `results/diagnostics/run-20261108T
 
 ## Video link provided · Nov 8
 
-The README now includes the owner-provided [Google Drive video](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). Drive metadata lists the recording as MP4 with anyone/reader access. Duration and audio playback were not verified by the metadata read. Packaging now accepts the supplied Drive file URL. The nine-task/five-trial evidence requirement remains unchanged.
+The README includes the owner-provided [Google Drive video](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). Drive metadata lists the recording as MP4 with anyone/reader access. Duration and audio playback were not verified by the metadata read. The owner accepts partial evidence in the package; the former nine-task/five-trial gate is superseded by the Nov 8 order. The link should be reused verbatim if the owner later enters it in the submission form.
 
-The clean packaging check after adding the video reports one remaining gate: committed results covering nine tasks with at least five trials each. The README marker and video-URL gates pass.
+The last packaging check after adding the video reported the nine-task/five-trial condition as its remaining gate. That check predates the owner's coverage decision. No post-order packaging check or real ZIP has been recorded. The owner has authorized the PR #2 merge after required checks and ZIP creation after package checks; both remain pending.
+
+## Final submission release checks · Nov 8
+
+Fresh local checks passed 144 workspace tests, formatting, denied-warning Clippy, release build and all nine offline oracles. Packaging fixtures passed with the real committed diagnostic pair, negative evidence mutations and permitted video-host tests. The source tree has no tracked build, scratch, media or credential junk. Ignore rules were extended for p8/ppk keys and m4v/mp3 media.
+
+An anonymous request to the exact Drive URL returned HTTP 200 with the expected recording title and no login redirect. Drive permissions list anyone/reader. No video was downloaded into the repository. The Muse ledger checksum is unchanged.
+
+Commit and publish these final edits before the ready PR merge. Post-merge clean-clone and ZIP proof will follow.

@@ -74,7 +74,7 @@ while IFS= read -r -d '' entry; do
       ;;
   esac
   case "$lower_path" in
-    *.key|*.pem|*.p12|*.pfx|*.crt|*.der|*.jks|*.keystore|*.secret|*.secrets|.netrc|*/.netrc|.npmrc|*/.npmrc|.pypirc|*/.pypirc|id_rsa*|*/id_rsa*|id_ed25519*|*/id_ed25519*|credentials*.json|*/credentials*.json|service-account*.json|*/service-account*.json)
+    *.key|*.pem|*.p12|*.pfx|*.crt|*.der|*.jks|*.keystore|*.p8|*.ppk|*.secret|*.secrets|.netrc|*/.netrc|.npmrc|*/.npmrc|.pypirc|*/.pypirc|id_rsa*|*/id_rsa*|id_ed25519*|*/id_ed25519*|credentials*.json|*/credentials*.json|service-account*.json|*/service-account*.json)
       blocked "private key, certificate, or credential file is tracked: $path"
       ;;
   esac
@@ -111,9 +111,14 @@ done
 if rg -q -i '\b(TODO|TBD|PLACEHOLDER)\b' README.md; then
   blocked "README.md still contains unresolved TODO/TBD/PLACEHOLDER markers"
 fi
-video_re='https://(www\.)?youtube\.com/watch\?v=[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|https://youtu\.be/[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|https://drive\.google\.com/file/d/[A-Za-z0-9_-]{10,}/view(\?[^[:space:])]+)?([[:space:])]|$)'
+if ! rg -q -i 'partial.{0,24}diagnostic|diagnostic.{0,24}partial' README.md \
+  || ! rg -q -i 'different task sets.{0,40}versions?|different versions?.{0,40}task sets' README.md \
+  || ! rg -q -i 'do(es)? not.{0,60}(full|complete).{0,20}(nine|9)[ -]?task' README.md; then
+  blocked "README.md must disclose that the selected evidence is partial and covers different task sets and versions"
+fi
+video_re='https://((www\.)?youtube\.com/watch\?v=[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|youtu\.be/[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|drive\.google\.com/file/d/[A-Za-z0-9_-]{10,}/(view|preview)([^A-Za-z0-9_-]|$)|docs\.google\.com/file/d/[A-Za-z0-9_-]{10,}/(view|preview)([^A-Za-z0-9_-]|$)|(www\.)?loom\.com/share/[A-Za-z0-9_-]{10,}([^A-Za-z0-9_-]|$)|(www\.)?vimeo\.com/[0-9]{6,}([^0-9]|$)|player\.vimeo\.com/video/[0-9]{6,}([^0-9]|$))'
 if ! rg -q "$video_re" README.md; then
-  blocked "README.md needs an actual YouTube or Google Drive video URL"
+  blocked "README.md needs a canonical YouTube, Google Drive, Loom, or Vimeo video URL"
 fi
 
 for task in "${tasks[@]}"; do
@@ -257,6 +262,141 @@ validate_run() {
   git ls-files --error-unmatch "$meta_path" "$report" "$summary" "$scores" >/dev/null 2>&1 || return 1
 }
 
+validate_diagnostic_run() {
+  local run_id=$1
+  local run_dir="results/diagnostics/$run_id"
+  local meta="$run_dir/run_meta.json" report="$run_dir/report.json" \
+    summary="$run_dir/summary.csv" scores="$run_dir/scores.jsonl" \
+    model provider policy task_specs task_ids task_versions trial_id raw transcript \
+    summary_lines expected_task_rows actual_task_rows
+
+  case "$run_id" in
+    run-20261104T145446.489461000Z-62620)
+      model=gpt-6-luna
+      provider=openai
+      policy=legacy
+      task_specs='[{"task_id":"t00_control","task_version":1},{"task_id":"t01_hidden_fees","task_version":1},{"task_id":"t04_seller_injection","task_version":1},{"task_id":"t08_no_valid_offer","task_version":1}]'
+      ;;
+    run-20261108T072135.587310000Z-28902)
+      model=muse-spark-1.1
+      provider=meta
+      policy=2
+      task_specs='[{"task_id":"t01_hidden_fees","task_version":2},{"task_id":"t02_expired_offer","task_version":2},{"task_id":"t05_bundle_vs_unit","task_version":2},{"task_id":"t06_ship_vs_delivery","task_version":2}]'
+      ;;
+    *) return 1 ;;
+  esac
+
+  task_ids=$(jq -c '[.[].task_id] | sort' <<< "$task_specs")
+  task_versions=$(jq -c 'reduce .[] as $task ({}; .[$task.task_id]=$task.task_version)' <<< "$task_specs")
+  [[ -s "$meta" && -s "$report" && -s "$summary" && -s "$scores" ]] || return 1
+
+  jq -e --arg run_id "$run_id" --arg model "$model" --arg provider "$provider" \
+    --argjson task_specs "$task_specs" --arg policy "$policy" '
+      .kind == "run" and .source == "provider_api" and .state == "completed" and
+      .run_id == $run_id and .trials_per_task == 3 and
+      (.models | type == "array" and length == 1 and .[0].id == $model and .[0].provider == $provider) and
+      (.tasks | type == "array" and (map({task_id,task_version}) | sort_by(.task_id) == $task_specs)) and
+      (if $policy == "legacy" then .metrics_policy_version == null else .metrics_policy_version == 2 end)
+    ' "$meta" >/dev/null 2>&1 || return 1
+
+  jq -e --arg run_id "$run_id" --arg model "$model" --arg provider "$provider" \
+    --arg policy "$policy" --argjson task_specs "$task_specs" '
+    .run_id == $run_id and .report_scope == "diagnostic_scratch" and .diagnostic_scratch == true and
+    .input_metadata.kind == "run" and .input_metadata.source == "provider_api" and
+    .input_metadata.state == "completed" and
+    .coverage.tasks == 4 and .coverage.models == 1 and .coverage.trials_per_task == 3 and
+    .coverage.expected_trials == 12 and .coverage.completed_items == 12 and
+    (.models | type == "array" and length == 1) and
+    (.models[0] as $model_report |
+      $model_report.provider == $provider and $model_report.requested_model == $model and $model_report.returned_model_ids_observed == [$model] and
+      $model_report.overall.expected_trials == 12 and $model_report.overall.completed_trials == 12 and
+      $model_report.overall.n == 12 and $model_report.overall.api_errors == 0 and
+      (if $policy == "legacy" then
+         $model_report.overall.c == 9 and $model_report.overall.pass_rate == 0.75
+       else
+         $model_report.metrics_policy_version == 2 and $model_report.primary_metric == "outcome_pass" and
+         $model_report.overall.c == 12 and $model_report.overall.pass_rate == 1 and
+         $model_report.overall.strict_passes == 12 and $model_report.overall.strict_pass_rate == 1 and
+         $model_report.overall.format_compliant_trials == 12 and $model_report.overall.format_compliance_rate == 1
+       end) and
+      ([$model_report.tasks[].task_id] | sort) == ([$task_specs[].task_id] | sort) and
+      all($task_specs[];
+        . as $task |
+        ([$model_report.tasks[] | select(.task_id == $task.task_id)] as $task_rows |
+          ($task_rows | length == 1) and
+          $task_rows[0].metrics.expected_trials == 3 and $task_rows[0].metrics.completed_trials == 3 and
+          $task_rows[0].metrics.n == 3 and $task_rows[0].metrics.api_errors == 0 and
+          (if $policy == "legacy" and $task.task_id == "t08_no_valid_offer" then $task_rows[0].metrics.c == 0 and $task_rows[0].metrics.pass_rate == 0
+           else $task_rows[0].metrics.c == 3 and $task_rows[0].metrics.pass_rate == 1 end) and
+          (if $policy == "legacy" then true else $task_rows[0].metrics.strict_passes == 3 and $task_rows[0].metrics.strict_pass_rate == 1 and $task_rows[0].metrics.format_compliant_trials == 3 and $task_rows[0].metrics.format_compliance_rate == 1 end)))
+    )
+  ' "$report" >/dev/null 2>&1 || return 1
+
+  jq -s -e --arg model "$model" --arg provider "$provider" --arg policy "$policy" \
+    --argjson task_specs "$task_specs" --argjson task_ids "$task_ids" '
+      . as $rows |
+      length == 12 and
+      ([ $rows[].trial_id ] | unique | length) == 12 and
+      ([ $rows[].task_id ] | unique | sort) == $task_ids and
+      ([ $rows[] | select(.status == "api_error") ] | length) == 0 and
+      all($rows[];
+        .provider == $provider and .requested_model == $model and .returned_models == [$model] and
+        .trial == (.trial | floor) and .trial >= 1 and .trial <= 3 and
+        .trial_id == ("model-0-" + .task_id + "-trial-" + (.trial | tostring)) and
+        (if $policy == "legacy" then
+           .metrics_policy_version == null and
+           .status == (if .task_id == "t08_no_valid_offer" then "fail" else "pass" end) and
+           .grade.pass == (.status == "pass")
+         else
+           .metrics_policy_version == 2 and .status == "pass" and .grade.pass == true and
+           .outcome_pass == true and .strict_pass == true and .format_compliant == true
+         end)) and
+      all($task_specs[];
+        . as $task |
+        ([ $rows[] | select(.task_id == $task.task_id) ] as $task_rows |
+          ($task_rows | length == 3) and
+          ([$task_rows[].task_version] | unique) == [$task.task_version] and
+          ([$task_rows[].trial] | sort) == [1,2,3]))
+    ' "$scores" >/dev/null 2>&1 || return 1
+
+  summary_lines=$(awk 'END { print NR }' "$summary")
+  [[ "$summary_lines" == 6 ]] || return 1
+  expected_task_rows=$(jq -r '.[].task_id' <<< "$task_specs" | sort)
+  actual_task_rows=$(awk -F, 'NR > 1 && $2 == "task" { print $6 }' "$summary" | sort)
+  [[ "$actual_task_rows" == "$expected_task_rows" ]] || return 1
+  if [[ "$policy" == legacy ]]; then
+    awk -F, 'NR == 2 { valid = ($1 == "diagnostic_scratch" && $2 == "overall" && $3 == "openai" && $4 == "gpt-6-luna" && $7 == 12 && $8 == 12 && $9 == 12 && $10 == 9 && $11 == 0 && $12 == "0.75") } END { exit !(NR == 6 && valid) }' "$summary" || return 1
+  else
+    awk -F, 'NR == 2 { valid = ($1 == "diagnostic_scratch" && $2 == "overall" && $3 == "meta" && $4 == "muse-spark-1.1" && $7 == 2 && $8 == "outcome_pass" && $9 == 12 && $10 == 12 && $11 == 12 && $12 == 12 && $13 == 0 && $14 == 1 && $15 == 12 && $16 == 1 && $17 == 12 && $18 == 1) } END { exit !(NR == 6 && valid) }' "$summary" || return 1
+    jq -e --arg run_id "$run_id" --argjson task_versions "$task_versions" '
+      .run_id == $run_id and .metrics_policy_version == 2 and
+      .overall.attempted_trials == 12 and .overall.graded_trials == 12 and .overall.api_errors == 0 and
+      .overall.outcome_passes == 12 and .overall.strict_passes == 12 and .overall.format_compliant == 12 and
+      .overall.estimated_cost_usd == "0.20152740" and
+      .task_versions == $task_versions and
+      (.trials | length == 12 and all(.[]; .episode_outcome == "complete" and .outcome_pass == true and .strict_pass == true and .format_compliant == true))
+    ' "$run_dir/diagnostic_review.json" >/dev/null 2>&1 || return 1
+  fi
+
+  while IFS= read -r trial_id; do
+    raw="$run_dir/outputs/$trial_id.json"
+    transcript="$run_dir/transcripts/$trial_id.json"
+    [[ -s "$raw" && -s "$transcript" ]] || return 1
+    jq -e 'type == "array" and length > 0 and all(.[]; type == "object")' "$raw" >/dev/null 2>&1 || return 1
+    jq -e '.api_error == null and (.final_output | type == "string") and
+      (.messages | type == "array" and length > 0) and (.replies | type == "array") and
+      (.tool_calls | type == "array") and .tool_call_count == (.tool_calls | length)' \
+      "$transcript" >/dev/null 2>&1 || return 1
+    git ls-files --error-unmatch "$raw" "$transcript" >/dev/null 2>&1 || return 1
+  done < <(jq -r '.trial_id' "$scores")
+
+  [[ $(find "$run_dir/outputs" -maxdepth 1 -type f -name '*.json' | wc -l | tr -d '[:space:]') == 12 ]] || return 1
+  [[ $(find "$run_dir/transcripts" -maxdepth 1 -type f -name '*.json' | wc -l | tr -d '[:space:]') == 12 ]] || return 1
+  local tracked_files=("$meta" "$report" "$summary" "$scores")
+  [[ "$policy" == legacy ]] || tracked_files+=("$run_dir/diagnostic_review.json")
+  git ls-files --error-unmatch "${tracked_files[@]}" >/dev/null 2>&1 || return 1
+}
+
 if ! command -v jq >/dev/null 2>&1; then
   : # The missing-jq gate was already recorded above.
 else
@@ -268,7 +408,12 @@ else
       break
     fi
   done < <(git ls-files 'results/*/run_meta.json')
-  [[ "$found_run" == 1 ]] || blocked "no committed results run has provider_api metadata, 9 tasks, at least 5 trials/task, report outputs, raw payloads, and matching transcripts"
+  found_diagnostics=0
+  if validate_diagnostic_run run-20261104T145446.489461000Z-62620 \
+    && validate_diagnostic_run run-20261108T072135.587310000Z-28902; then
+    found_diagnostics=1
+  fi
+  [[ "$found_run" == 1 || "$found_diagnostics" == 1 ]] || blocked "no committed full benchmark run or complete Luna and Muse diagnostic evidence set passed metadata, score, raw, transcript, and report checks"
 fi
 
 if ((failures > 0)); then

@@ -1,6 +1,6 @@
 # Video walkthrough script · Nov 8, 2026
 
-**Spoken narration:** about 580 words, about 4:50–4:55 at a measured pace. The shot list is separate and not included in that count. The owner records and publishes the video. Do not add model calls to the recording.
+**Spoken narration:** about 580 words, about 4:50–4:55 at a measured pace. The shot list is separate and not included in that count. The owner provided the published [Drive recording](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). This script is retained for provenance.
 
 ## Record-ready narration
 

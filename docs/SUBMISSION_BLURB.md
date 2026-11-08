@@ -1,8 +1,8 @@
-# Submission description draft · Nov 8, 2026
+# Submission description · Nov 8, 2026
 
-Owner review is pending. The text below uses the archived Luna v1 pilot and the completed Muse four-task diagnostic. The Muse sentence reflects the completed owner-approved four-task diagnostic.
+The owner-approved submission uses the archived Luna v1 pilot and the completed Muse four-task diagnostic. Paste the paragraph below into the short-description field.
 
-## Form-field draft
+## Form-field text
 
 mandate-bench tests whether a buyer agent stays within a delegated purchase mandate. Nine synthetic tasks cover all-in budgets, offer expiry, compatibility, pack quantities, delivery deadlines, returns and seller instructions claiming extra authority. Scripted sellers and a deterministic Rust grader check the order ledger and final JSON, including when to buy nothing and ask the user. A historical four-task Luna v1 pilot passed 9 of 12 strict trials. Each failure followed a correct no-order escalation but omitted the required currency field. A separate Muse Spark diagnostic passed outcome, strict and raw-format checks in all 12 trials across four hardened tasks. The diagnostics use different tasks and versions. The observed limitation is final-answer conformance after correct escalation, while the assessed Muse traps saw no failures.
 

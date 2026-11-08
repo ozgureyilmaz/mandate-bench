@@ -38,6 +38,7 @@ IGNORE
   printf 'OPENAI_API_KEY=\n' > "$repo/.env.example"
   cat > "$repo/README.md" <<'README'
 # Fixture
+The selected evidence contains two partial diagnostics with different task sets and versions; it does not constitute a full nine-task benchmark.
 Video: https://youtu.be/abcdefghijk
 README
   {
@@ -121,6 +122,22 @@ expect_refusal_without_archive() {
   [[ ! -e "$output" ]] || { printf 'refused package command left an archive\n' >&2; return 1; }
 }
 
+make_diagnostic_repo() {
+  local repo=$1
+  make_valid_repo "$repo"
+  rm -rf "$repo/results/fixture-run" "$repo/transcripts/fixture-run"
+  mkdir -p "$repo/results/diagnostics"
+  cp -R "$script_dir/../results/diagnostics/run-20261104T145446.489461000Z-62620" "$repo/results/diagnostics/"
+  cp -R "$script_dir/../results/diagnostics/run-20261108T072135.587310000Z-28902" "$repo/results/diagnostics/"
+  commit_all "$repo" 'replace full fixture with committed partial diagnostic evidence'
+}
+
+amend_all() {
+  local repo=$1 message=$2
+  git -C "$repo" add -A
+  git -C "$repo" -c user.name='Fixture Author' -c user.email='fixture@example.invalid' commit --amend -qm "$message"
+}
+
 # Missing gates fail before any archive can be created.
 missing="$tmp/missing"
 git init -q "$missing"
@@ -162,15 +179,99 @@ if command -v unzip >/dev/null 2>&1; then
   done <<< "$listing"
 fi
 
-# A Drive file link is permitted, while a lookalike domain is refused.
-drive_video="$tmp/drive-video"
-make_valid_repo "$drive_video"
-printf '# Fixture\nVideo: [Watch](https://drive.google.com/file/d/ABCDEFGHIJ0123456789/view)\n' > "$drive_video/README.md"
-commit_all "$drive_video" 'use synthetic Drive video URL'
-(cd "$drive_video" && ./scripts/package.sh --check >/dev/null)
-printf '# Fixture\nVideo: https://drive.google.com.evil.invalid/file/d/ABCDEFGHIJ0123456789/view\n' > "$drive_video/README.md"
-commit_all "$drive_video" 'use synthetic lookalike video URL'
-expect_refusal_without_archive "$drive_video" "$tmp/lookalike-video.zip"
+# Both committed partial diagnostic sets pass using their real archived metadata, reports, raw outputs and nested transcripts.
+diagnostics="$tmp/diagnostics"
+make_diagnostic_repo "$diagnostics"
+(cd "$diagnostics" && ./scripts/package.sh --check >/dev/null)
+[[ ! -e "$diagnostics/package.zip" ]] || { printf 'diagnostic check-only mode created an archive\n' >&2; exit 1; }
+
+# Removing a raw payload from the committed diagnostic evidence fails closed.
+missing_raw="$tmp/missing-raw"
+make_diagnostic_repo "$missing_raw"
+rm "$missing_raw/results/diagnostics/run-20261108T072135.587310000Z-28902/outputs/model-0-t01_hidden_fees-trial-1.json"
+commit_all "$missing_raw" 'remove one diagnostic raw payload'
+expect_refusal_without_archive "$missing_raw" "$tmp/missing-raw.zip"
+
+# Score count must agree with the four-task, three-trial manifest and report.
+wrong_counts="$tmp/wrong-counts"
+make_diagnostic_repo "$wrong_counts"
+scores="$wrong_counts/results/diagnostics/run-20261108T072135.587310000Z-28902/scores.jsonl"
+sed '$d' "$scores" > "$tmp/wrong-count-scores"
+cp "$tmp/wrong-count-scores" "$scores"
+commit_all "$wrong_counts" 'remove one diagnostic score row'
+expect_refusal_without_archive "$wrong_counts" "$tmp/wrong-counts.zip"
+
+# Report totals are reconciled against score evidence rather than trusted independently.
+tampered_report="$tmp/tampered-report"
+make_diagnostic_repo "$tampered_report"
+report="$tampered_report/results/diagnostics/run-20261108T072135.587310000Z-28902/report.json"
+jq '.models[0].overall.c=11' "$report" > "$tmp/tampered-report-json"
+cp "$tmp/tampered-report-json" "$report"
+commit_all "$tampered_report" 'tamper diagnostic report total'
+expect_refusal_without_archive "$tampered_report" "$tmp/tampered-report.zip"
+
+# Provider errors cannot stand in for scored trials.
+all_api="$tmp/all-api"
+make_diagnostic_repo "$all_api"
+scores="$all_api/results/diagnostics/run-20261108T072135.587310000Z-28902/scores.jsonl"
+jq -c '.status="api_error" | .grade=null | .outcome_pass=null | .strict_pass=null | .format_compliant=null' \
+  "$scores" > "$tmp/all-api-scores"
+cp "$tmp/all-api-scores" "$scores"
+commit_all "$all_api" 'replace Muse scores with provider errors'
+expect_refusal_without_archive "$all_api" "$tmp/all-api.zip"
+
+# Canonical video URL forms from every supported host pass; host lookalikes fail.
+video_links=(
+  'https://www.youtube.com/watch?v=abcdefghijk'
+  'https://youtu.be/abcdefghijk'
+  'https://drive.google.com/file/d/ABCDEFGHIJ0123456789/view'
+  'https://drive.google.com/file/d/ABCDEFGHIJ0123456789/preview'
+  'https://docs.google.com/file/d/ABCDEFGHIJ0123456789/preview'
+  'https://www.loom.com/share/0123456789abcdef'
+  'https://vimeo.com/123456789'
+  'https://player.vimeo.com/video/123456789'
+)
+for video_link in "${video_links[@]}"; do
+  printf '# Fixture\nThe selected evidence contains partial diagnostics with different task sets and versions; it does not constitute a full nine-task benchmark.\nVideo: [Watch](%s)\n' \
+    "$video_link" > "$diagnostics/README.md"
+  amend_all "$diagnostics" 'use synthetic canonical video URL'
+  (cd "$diagnostics" && ./scripts/package.sh --check >/dev/null) || {
+    printf 'canonical video URL was rejected: %s\n' "$video_link" >&2
+    exit 1
+  }
+done
+
+lookalikes=(
+  'https://youtube.com.evil.invalid/watch?v=abcdefghijk'
+  'https://youtu.be.evil.invalid/abcdefghijk'
+  'https://drive.google.com.evil.invalid/file/d/ABCDEFGHIJ0123456789/view'
+  'https://docs.google.com.evil.invalid/file/d/ABCDEFGHIJ0123456789/preview'
+  'https://loom.com.evil.invalid/share/0123456789abcdef'
+  'https://vimeo.com.evil.invalid/123456789'
+)
+for index in "${!lookalikes[@]}"; do
+  video_link=${lookalikes[$index]}
+  printf '# Fixture\nThe selected evidence contains partial diagnostics with different task sets and versions; it does not constitute a full nine-task benchmark.\nVideo: %s\n' \
+    "$video_link" > "$diagnostics/README.md"
+  amend_all "$diagnostics" 'use synthetic lookalike video URL'
+  if output=$(cd "$diagnostics" && ./scripts/package.sh --check 2>&1); then
+    printf 'video host lookalike was accepted: %s\n' "$video_link" >&2
+    exit 1
+  fi
+  [[ "$output" == *'canonical YouTube, Google Drive, Loom, or Vimeo video URL'* ]] || {
+    printf 'lookalike URL failed for an unrelated package gate: %s\n' "$video_link" >&2
+    exit 1
+  }
+done
+
+# Partial diagnostics must be described as partial in the README.
+printf '# Fixture\nVideo: https://youtu.be/abcdefghijk\n' > "$diagnostics/README.md"
+amend_all "$diagnostics" 'omit partial evidence disclosure'
+if output=$(cd "$diagnostics" && ./scripts/package.sh --check 2>&1); then
+  printf 'missing partial-evidence disclosure was accepted\n' >&2
+  exit 1
+fi
+[[ "$output" == *'README.md must disclose'* ]] || { printf 'README disclosure failed for an unrelated gate\n' >&2; exit 1; }
 
 # Existing output paths are never overwritten.
 existing="$tmp/existing.zip"
@@ -239,6 +340,22 @@ if output=$(cd "$cert_repo" && ./scripts/package.sh --check 2>&1); then
   exit 1
 fi
 [[ "$output" == *'docs/private.pem'* ]] || { printf 'private-key filename was not reported\n' >&2; exit 1; }
+
+# Less-common private-key formats are blocked from the manifest too.
+key_extensions="$tmp/key-extensions"
+make_valid_repo "$key_extensions"
+printf 'synthetic key placeholder\n' > "$key_extensions/docs/private.p8"
+printf 'synthetic key placeholder\n' > "$key_extensions/docs/private.ppk"
+git -C "$key_extensions" add -f docs/private.p8 docs/private.ppk
+commit_all "$key_extensions" 'add synthetic private-key formats'
+if output=$(cd "$key_extensions" && ./scripts/package.sh --check 2>&1); then
+  printf 'private key extensions were not refused\n' >&2
+  exit 1
+fi
+[[ "$output" == *'docs/private.p8'* && "$output" == *'docs/private.ppk'* ]] || {
+  printf 'private key filename coverage was incomplete\n' >&2
+  exit 1
+}
 
 # A tracked key-like value blocks packaging and never appears in diagnostics.
 tree_secret_repo="$tmp/tree-secret"

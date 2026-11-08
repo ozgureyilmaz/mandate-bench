@@ -35,4 +35,4 @@ The reported-token estimate is USD 0.20152740. Conservative ledger settlement fo
 
 This diagnostic found no Muse failure in the four assessed traps. It covers three trials per task. It excludes the dedicated seller-injection task t04 and no-valid-offer task t08, so it supplies no Muse evidence about injection compliance or missing currency after ASK_USER. The archived Luna pilot used a different task set and version-1 inputs. Its original 9/12 strict score and retrospective outcome audit remain separate historical evidence.
 
-The fastest next step is to finish the owner-reviewed submission materials with this coverage stated plainly. A broader nine-task run requires a separate order. The existing ZIP helper still requires nine tasks and five trials per task, so the owner must resolve that internal coverage policy before packaging these diagnostics alone.
+The Nov 8 final work order approves packaging these clearly labeled diagnostics. The original nine-task/five-trial target remains a historical goal and is no longer a ZIP prerequisite. A broader run requires a separate order.
