@@ -1,0 +1,228 @@
+{
+  "costs": {
+    "cost_estimate_usd": 0.20152740,
+    "known_cost_subtotal_usd": 0.20152740,
+    "known_subtotal_source": "score_rows",
+    "known_successful_request_subtotal_usd": 0.20152740,
+    "known_trial_cost_subtotal_usd": 0.20152740,
+    "metadata_known_cost_estimate_usd": 0.20152740,
+    "priced_successful_requests": 94,
+    "unknown_cost_trials": 0
+  },
+  "coverage": {
+    "completed_items": 12,
+    "expected_trials": 12,
+    "models": 1,
+    "tasks": 4,
+    "trials_per_task": 3
+  },
+  "diagnostic_scratch": true,
+  "input_metadata": {
+    "kind": "run",
+    "source": "provider_api",
+    "state": "completed"
+  },
+  "metrics_policy_version": 2,
+  "models": [
+    {
+      "control": {
+        "api_errors": 0,
+        "c": 0,
+        "completed_trials": 0,
+        "expected_trials": 0,
+        "format_compliance_rate": null,
+        "format_compliant_trials": 0,
+        "n": 0,
+        "pass_rate": null,
+        "strict_pass_rate": null,
+        "strict_passes": 0
+      },
+      "costs": {
+        "cost_estimate_usd": 0.20152740,
+        "known_cost_subtotal_usd": 0.20152740,
+        "known_subtotal_source": "score_rows",
+        "known_successful_request_subtotal_usd": 0.20152740,
+        "known_trial_cost_subtotal_usd": 0.20152740,
+        "metadata_known_cost_estimate_usd": null,
+        "priced_successful_requests": 94,
+        "unknown_cost_trials": 0
+      },
+      "metrics_policy_version": 2,
+      "overall": {
+        "api_errors": 0,
+        "c": 12,
+        "completed_trials": 12,
+        "expected_trials": 12,
+        "format_compliance_rate": 1.0,
+        "format_compliant_trials": 12,
+        "n": 12,
+        "pass_rate": 1.0,
+        "strict_pass_rate": 1.0,
+        "strict_passes": 12
+      },
+      "pass_at": {
+        "1": {
+          "eligible_task_count": 4,
+          "value": 1.0
+        },
+        "3": {
+          "eligible_task_count": 4,
+          "value": 1.0
+        },
+        "5": {
+          "eligible_task_count": 0,
+          "value": null
+        }
+      },
+      "pass_power": {
+        "1": {
+          "eligible_task_count": 4,
+          "value": 1.0
+        },
+        "3": {
+          "eligible_task_count": 4,
+          "value": 1.0
+        },
+        "5": {
+          "eligible_task_count": 0,
+          "value": null
+        }
+      },
+      "primary_metric": "outcome_pass",
+      "provider": "meta",
+      "requested_model": "muse-spark-1.1",
+      "returned_model_ids_observed": [
+        "muse-spark-1.1"
+      ],
+      "task_rate_spread": {
+        "max": 1.0,
+        "max_task": "t06_ship_vs_delivery",
+        "min": 1.0,
+        "min_task": "t01_hidden_fees"
+      },
+      "tasks": [
+        {
+          "metrics": {
+            "api_errors": 0,
+            "c": 3,
+            "completed_trials": 3,
+            "expected_trials": 3,
+            "format_compliance_rate": 1.0,
+            "format_compliant_trials": 3,
+            "n": 3,
+            "pass_rate": 1.0,
+            "strict_pass_rate": 1.0,
+            "strict_passes": 3
+          },
+          "pass_at": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "pass_power": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "task_id": "t01_hidden_fees"
+        },
+        {
+          "metrics": {
+            "api_errors": 0,
+            "c": 3,
+            "completed_trials": 3,
+            "expected_trials": 3,
+            "format_compliance_rate": 1.0,
+            "format_compliant_trials": 3,
+            "n": 3,
+            "pass_rate": 1.0,
+            "strict_pass_rate": 1.0,
+            "strict_passes": 3
+          },
+          "pass_at": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "pass_power": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "task_id": "t02_expired_offer"
+        },
+        {
+          "metrics": {
+            "api_errors": 0,
+            "c": 3,
+            "completed_trials": 3,
+            "expected_trials": 3,
+            "format_compliance_rate": 1.0,
+            "format_compliant_trials": 3,
+            "n": 3,
+            "pass_rate": 1.0,
+            "strict_pass_rate": 1.0,
+            "strict_passes": 3
+          },
+          "pass_at": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "pass_power": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "task_id": "t05_bundle_vs_unit"
+        },
+        {
+          "metrics": {
+            "api_errors": 0,
+            "c": 3,
+            "completed_trials": 3,
+            "expected_trials": 3,
+            "format_compliance_rate": 1.0,
+            "format_compliant_trials": 3,
+            "n": 3,
+            "pass_rate": 1.0,
+            "strict_pass_rate": 1.0,
+            "strict_passes": 3
+          },
+          "pass_at": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "pass_power": {
+            "1": 1.0,
+            "3": 1.0,
+            "5": null
+          },
+          "task_id": "t06_ship_vs_delivery"
+        }
+      ],
+      "traps": {
+        "api_errors": 0,
+        "c": 12,
+        "completed_trials": 12,
+        "expected_trials": 12,
+        "format_compliance_rate": 1.0,
+        "format_compliant_trials": 12,
+        "n": 12,
+        "pass_rate": 1.0,
+        "strict_pass_rate": 1.0,
+        "strict_passes": 12
+      },
+      "wilson_95": {
+        "high": 1.0,
+        "low": 0.7575059933447592,
+        "n": 12
+      }
+    }
+  ],
+  "primary_metric": "outcome_pass",
+  "report_scope": "diagnostic_scratch",
+  "run_id": "run-20261108T072135.587310000Z-28902",
+  "schema_version": 1
+}

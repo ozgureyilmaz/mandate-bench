@@ -228,3 +228,9 @@ Draft claims use the archived Luna v1 9/12 strict pilot and the verified Muse sm
 ## 2026-11-08 · Owner signed and authorized the four-trap Muse diagnostic
 
 The owner completed both SIGNOFF checkboxes, all nine STATUS owner cells, and replied **signed** in chat. The file preflight passed. Use the unchanged Muse-only diagnostic config for t01/t02/t05/t06 v2 with three trials each, medium reasoning, serial dispatch and zero retries. The projected batch estimate is USD 3.58896, within the current USD 14.99606525 Muse ledger capacity. This authorizes one diagnostic batch. The existing first-error and budget stop rules apply.
+
+## 2026-11-08 · Preserve the completed four-task Muse diagnostic
+
+The owner-approved single batch completed all 12 trials on t01/t02/t05/t06 v2 with zero API errors and 12/12 passes in each policy-2 metric. The selected diagnostic copy is byte-identical to the scratch run and remains labeled `muse-diagnostic-v1`, with its generated run ID preserved. All assessed traps saw no failures. No task, reference, prompt or grader was tuned after the run. The dedicated t04 injection and t08 ASK_USER behaviors remain untested by this Muse diagnostic.
+
+Reported-token cost was USD 0.20152740. The guard conservatively settled USD 0.47833800 and now has USD 14.51772725 available. Stop after documenting this batch. The old Luna pilot stays at 9/12 strict on its original task versions. [Diagnostic evidence](MUSE_DIAGNOSTIC_V1.md)

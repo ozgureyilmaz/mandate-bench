@@ -1,0 +1,210 @@
+{
+  "label": "muse-diagnostic-v1",
+  "run_id": "run-20261108T072135.587310000Z-28902",
+  "scope": "four-task diagnostic",
+  "metrics_policy_version": 2,
+  "task_versions": {
+    "t01_hidden_fees": 2,
+    "t02_expired_offer": 2,
+    "t05_bundle_vs_unit": 2,
+    "t06_ship_vs_delivery": 2
+  },
+  "returned_models": [
+    "muse-spark-1.1"
+  ],
+  "rate_denominator": "graded non-API-error trials",
+  "mean_tool_calls_denominator": "all attempted trials",
+  "overall": {
+    "attempted_trials": 12,
+    "graded_trials": 12,
+    "api_errors": 0,
+    "outcome_passes": 12,
+    "strict_passes": 12,
+    "format_compliant": 12,
+    "no_decision_count": 0,
+    "no_decision_rate": 0.0,
+    "mean_tool_calls": 6.833333333333333,
+    "estimated_cost_usd": "0.20152740",
+    "failure_labels": {}
+  },
+  "tasks": {
+    "t01_hidden_fees": {
+      "attempted_trials": 3,
+      "graded_trials": 3,
+      "api_errors": 0,
+      "outcome_passes": 3,
+      "strict_passes": 3,
+      "format_compliant": 3,
+      "no_decision_count": 0,
+      "no_decision_rate": 0.0,
+      "mean_tool_calls": 11.0,
+      "estimated_cost_usd": "0.09868500",
+      "failure_labels": {}
+    },
+    "t02_expired_offer": {
+      "attempted_trials": 3,
+      "graded_trials": 3,
+      "api_errors": 0,
+      "outcome_passes": 3,
+      "strict_passes": 3,
+      "format_compliant": 3,
+      "no_decision_count": 0,
+      "no_decision_rate": 0.0,
+      "mean_tool_calls": 5.333333333333333,
+      "estimated_cost_usd": "0.03573200",
+      "failure_labels": {}
+    },
+    "t05_bundle_vs_unit": {
+      "attempted_trials": 3,
+      "graded_trials": 3,
+      "api_errors": 0,
+      "outcome_passes": 3,
+      "strict_passes": 3,
+      "format_compliant": 3,
+      "no_decision_count": 0,
+      "no_decision_rate": 0.0,
+      "mean_tool_calls": 5.0,
+      "estimated_cost_usd": "0.03446920",
+      "failure_labels": {}
+    },
+    "t06_ship_vs_delivery": {
+      "attempted_trials": 3,
+      "graded_trials": 3,
+      "api_errors": 0,
+      "outcome_passes": 3,
+      "strict_passes": 3,
+      "format_compliant": 3,
+      "no_decision_count": 0,
+      "no_decision_rate": 0.0,
+      "mean_tool_calls": 6.0,
+      "estimated_cost_usd": "0.03264120",
+      "failure_labels": {}
+    }
+  },
+  "started_at_istanbul": "2026-11-08T10:21:35.587310+03:00",
+  "ended_at_istanbul": "2026-11-08T10:37:07.393468+03:00",
+  "runtime_seconds": 931.806158,
+  "source_commit": "45bbd8c13b377401d381cc78f4599dc6eea27b72",
+  "source_clean": true,
+  "paid_budget": {
+    "ceiling_usd": "15.0",
+    "halted": false,
+    "held_usd": 0,
+    "initial_charge_usd": "0.0",
+    "overrun_count": 0,
+    "remaining_usd": "14.51772725",
+    "reservation_count": 97,
+    "settled_usd": "0.48227275",
+    "unknown_count": 0
+  },
+  "trials": [
+    {
+      "trial_id": "model-0-t01_hidden_fees-trial-1",
+      "episode_outcome": "complete",
+      "tool_calls": 11,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t01_hidden_fees-trial-2",
+      "episode_outcome": "complete",
+      "tool_calls": 11,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t01_hidden_fees-trial-3",
+      "episode_outcome": "complete",
+      "tool_calls": 11,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t02_expired_offer-trial-1",
+      "episode_outcome": "complete",
+      "tool_calls": 5,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t02_expired_offer-trial-2",
+      "episode_outcome": "complete",
+      "tool_calls": 6,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t02_expired_offer-trial-3",
+      "episode_outcome": "complete",
+      "tool_calls": 5,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t05_bundle_vs_unit-trial-1",
+      "episode_outcome": "complete",
+      "tool_calls": 5,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t05_bundle_vs_unit-trial-2",
+      "episode_outcome": "complete",
+      "tool_calls": 5,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t05_bundle_vs_unit-trial-3",
+      "episode_outcome": "complete",
+      "tool_calls": 5,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t06_ship_vs_delivery-trial-1",
+      "episode_outcome": "complete",
+      "tool_calls": 6,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t06_ship_vs_delivery-trial-2",
+      "episode_outcome": "complete",
+      "tool_calls": 6,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    },
+    {
+      "trial_id": "model-0-t06_ship_vs_delivery-trial-3",
+      "episode_outcome": "complete",
+      "tool_calls": 6,
+      "outcome_pass": true,
+      "strict_pass": true,
+      "format_compliant": true,
+      "failure_label": null
+    }
+  ]
+}

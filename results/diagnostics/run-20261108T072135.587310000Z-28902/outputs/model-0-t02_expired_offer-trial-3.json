@@ -1,0 +1,1051 @@
+[
+  {
+    "background": false,
+    "completed_at": 1794122987.0,
+    "created_at": 1794122987.0,
+    "error": null,
+    "id": "resp_6af024eba65171e471494dc6",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "encrypted_content": "Q-PaDgH5_e3s9mXEwEiYEeXOPew-5HVVtDd2EXvMW-LaIgGJ_B3F6YtO9RTjQcgTeUgwDz9O5AxHB7KCsYMD5C5HIjKKQy5MblLkn1FKHHRVNC88K9Tfo6g9T-yWZbsLJXZQvIp3AO6sRR6CFhPqA0_8fgAY5dPUfVQw3Vo6_Eeav0nXB0bT9X1VA_dhkutikea1OpoP1YYQTSb3z0G4XTDYAPJHqOBjbvfEvZAPlOhuL3p7uYFE7F6LkDEHeqK-VeShAXetBvRhx7fiR8jVBCfQz9qZhb0FlMdHOr958z7A6HtbLXqy30MMECejmAuiMEcOn6QrPEkOMQ-efQQGC1x9eLJ1QOTvKn99umj5vAQ4OFoAucHnOPQOfVFbiuPHXnepuV39BD63nMhrZnvVt1cIQtex-a7C0xZHtuanXsupdThdzwcS87E8ncSR16dbiS-lJpPzS-smUyWdsSIqHok3XyyGTUqUIZmWEq-NWmQglbbblUCMWmrAgnCeoAgJbLe525kkJ0TdShTMbMb2HokTFh-JF8Gu7TkEZiJusXWDahsh2GO09bygb30hI5yKwsa82q90nVYm9N5IszmtZEEQWH6wn7Tqs6tN0svFTtbxUNOMLSBsPbmmBoBBWOah42u1P510PYC11r1BHhRXiWxwAX06NmEqyK1Yd_oLZEZ4wZeVmPJJRI1NZlUnZYUNVmCL9afEBt7iAfdFJM7yghS1mw9Y_8WhE4zTGPzEROY-cah4ATXzeYrxu_l1bvpLmgLbPrqdLKdjFiwZAmdQ-FLWQ8IBetpZjPdcL0xhZ6MWWb4ZdR278xeD1M-5DQzK_a7yWiDCSC1i5WtYc6q9KxTm48mHqATzziz5qgScG9QmtkdYOlxHiqmHe62w_O_vSGV94FaXCPkZNygVLcP0uu4YesCNJC7Oj1xvugOkPcZfcPeFTRqFVICjq6F0EIs6pZoAdD7JE821qVh62Vk4iBaGbnxibt4SfhTOupHg31Or35dZLEsuhwrPUJ1CZPyfDsVTUfdDW9Cy8m_ZRstr9IgRg6Pw6A75reF7N9ChTUXVDOjZRHUPB5QQH4WeXvRv-NcRopOjrl6y3nVr-fp7YoOvp7_2vqunrvLWfMUibmoT6AEtN2IZZfr9kgUJd32ygOBiYzqRy02eE0-pQhMN-ZaVXN48AhQz8TPZrZ8LGf-kHFNiUGzVi_iFEE7NriLRhhIXkhH2YGdxiT7C9iBX0quM5r8kTfXCGSHMTn311HEcTKRX5t64NCSoR8J9TsEk7cjnaUr9aD8WFbaQi4Hm1L43Jca9oHdQA3nlCXvPPIsloGrN0eBpQigOqZqpc0-A6m17DCQ-VVceNp2WnqoZXgIQvMCLEQSnW5LOnQHUwiQrMxjvuz-gsY6E_mDc6PlOB1bCvCK45CwDlkA-mQ",
+        "id": "rs_6af024eba65171e471494dc6:rs_fa71c6ae-9d0c-410a-aec1-2cda07c75a79",
+        "status": "completed",
+        "summary": [],
+        "type": "reasoning"
+      },
+      {
+        "content": [
+          {
+            "annotations": [],
+            "logprobs": [],
+            "text": "Got it — you need a 65W charger compatible with your MacBook Air 13 (M3), delivered by Nov 10 with at least a 14-day return window. I'll search all offers and pick the lowest all-in total that meets every constraint.",
+            "type": "output_text"
+          }
+        ],
+        "id": "rs_f5665968-f4d9-4e62-8021-86f02e3e012a",
+        "phase": "commentary",
+        "role": "assistant",
+        "status": "completed",
+        "type": "message"
+      },
+      {
+        "arguments": "{\"query\":\"65W USB-C charger MacBook Air 13 M3\"}",
+        "call_id": "call_bb7c98c1-897d-49ef-8d87-360886d211e1",
+        "id": "fc_bb7c98c1-897d-49ef-8d87-360886d211e1",
+        "name": "request_quotes",
+        "status": "completed",
+        "type": "function_call"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 1773,
+      "input_tokens_details": {
+        "cached_tokens": 1649
+      },
+      "output_tokens": 224,
+      "output_tokens_details": {
+        "reasoning_tokens": 100
+      },
+      "total_tokens": 1997
+    }
+  },
+  {
+    "background": false,
+    "completed_at": 1794122996.0,
+    "created_at": 1794122996.0,
+    "error": null,
+    "id": "resp_6af024f4fdd5ac87a8794e89",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "encrypted_content": "Q-PaDgHTFcBzoaS8mwj9VKDznyrDE0Kpv6ooHBLz1qQ4EhLn02ekoE4SoM78EUUU8oP8vRb0EaRbs8filhN0Dxc_EQYk2Xnkz3YSsuJeXpOq_lSa9dXxhn4haPBq_ccx9qW0OQiKtFPE1XlJLqidglqCKGkAvxZ9cW69RBKCjNb0HDOu2B-0KADA182RszApuLZMage84ppRY_zLn7uvXM_I-PpjrFcxAGG7d_Tpvca1cufiK7qSNPbtWLzuLN6ZOi7ZYWkI83oA9fpOn5rygXlC1f_AjbOS_RKIUTQ8HFzI2dV_giOIV7X1BaR0fyoq3YmSKtDh7cjUMobHdg79dT4T01nf2o6JNxxMdktI_mn7mRy5b3aZ6zq8UhjoRFiw2EMjyvVPPL3ikQkGKcOimu4C0k_jMAfVGIWSjBArEkaf4CP-NzGqi2QuycKK9lw4qa_gvWmiW3UlNlwVjpzYQj6xvkVUqeNpQV8prYjcRMN1hiPrEWgNALW0m5o6VQzMn7ZiuZDaIPzunwWSDKH4B7C4yY9KhYu0ikBrzwBP8BH9e9BcAtgbuvJE4rvpx5kAlksFSKZCg_Va2spRt_lh2k0NNo8-mbPtjqfgsV3kLYSqJlQ2D1Ul-oXliG12eYXxstbLe6Mup9Ts0VnD6i_H_Lyn36OGkY8v2gYEG21lPed437-jlDzpLz0n_AvsP-lmmsFQWsLCRdRSe1hnvasEBAJYiVXRl9wEK39xH1rQ870Bg7RQM4bsP2gwpAJh1jR8HOiPiQxTkoSpnMJ9u95Ot_fD4jSIbNn_8VNQ6TknAUFVX0H7Rh44q9_RhoD0VEGuzTg2XMQ6wQXZi2hIXFIuFJX89FjCHLBg0eYBLF8YMgq0T_Ux8EEMpFnL4yE0Lvlz7hkaRg8WsIetnljHUoC7wtFiaZXk885KYgbi68uMybptIiNzJJhrCFWIDFkNumEjlCpVL5Mj6x2Pey0PSROt2o2qlXIudrOocM9Mik65EET4n6cA4JI2sg6F70qrLUhnwEbm8k_3MUGpUglEjEy9SztKuQb12WOV4II7n2ilhhc2bpdtlobDYVVNAVhqzaPLCDcZ1DWjXRfo9HTiwD69w4oVIDjJBfN0HPuR_BN_BU-R6A4JLyUgGi8qa_C74n7iuFj4CgQ-NiXPAUo_D3fbamdKI5MRVSpXgCljvmJRmNjXLQCr2ecPISb85Q0I4Tapn6U0DaTwZPpZydyIUMy7Rp4-Uc8a4sI0_xGf82UvE4z7R3Z54uiL5XGno3Vv0KVU98KIAigTuTeImnf2xijc2JnR0bno8EqZtVMN52c_Q0R-4_vrxa0Lxs7TDKvtIPjp2zeKT57MsaT60kecQ6Zf1G0SRYHc6laJ8mmBG4LZXs4zhjRIuWkVkjuBH-g79zfQX2Ft6-8Kj2YjECN2Sw",
+        "id": "rs_6af024f4fdd5ac87a8794e89:rs_1e5ca472-40a6-48bc-83a3-c3ae7c088840",
+        "status": "completed",
+        "summary": [],
+        "type": "reasoning"
+      },
+      {
+        "arguments": "{\"offer_id\":\"A\"}",
+        "call_id": "call_8ebb5e75-a964-4856-9ef5-ea0e690d142e",
+        "id": "fc_8ebb5e75-a964-4856-9ef5-ea0e690d142e",
+        "name": "get_offer",
+        "status": "completed",
+        "type": "function_call"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 2140,
+      "input_tokens_details": {
+        "cached_tokens": 1777
+      },
+      "output_tokens": 61,
+      "output_tokens_details": {
+        "reasoning_tokens": 10
+      },
+      "total_tokens": 2201
+    }
+  },
+  {
+    "background": false,
+    "completed_at": 1794123007.0,
+    "created_at": 1794123007.0,
+    "error": null,
+    "id": "resp_6af024ff66bec67002894105",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "encrypted_content": "Q-PaDgGKB6CCdRcedIfcez0ahZbWFAoB1cMLS4AixQ-NFV2HgeS4X-0DVTMeeCPCwYuLUDAPfkTma3Q_-vIxM5V72WQ4Qhf23j3D5LpO1jo8EQcipXF86AEBKrHiqiewWYjOOe-BFssDba-xFQHQtx1d8oLiH7B0O6QYt-Ubn0kurbeWjZYx0LhNSe_56dOJKXYc4ItfBdU7Yo4QC4ezUY6irxLkwitWP3xJzE-gkMpx-pchF8geoWlG8piULcvjE8BRiGVwmgLOiMK9FTkxbLnZxiIs1IRkOgUmksi7KhRj6ZqY78xRAc_cYMEyhJ6NTmR4BVJ6rlHUxI0pPmuxYLYC4BIq5zdHrchjC8mfLMsiV9VxzoJJ1X4-VCEnArVeMFd1RItDppwRAL6B0ZXLhQ5NKj5AhW8R-gOQNz8nD6GK1AIG5L5NV6AurIurkHUcJH7UOALwHsHu4_IM48S4FpUTe9reC-a0m5K6JSK6YKPiNQHR3ltnDJT8xnq6BUOvZAvKc-zLFq3Zg8tcM2cp1Or4gXMRwptmTCRtKf9tL6cIi-OyK-o2PDAzOMAWHa5wXPPHwltqvbvnaqk6wx9EwLgigO3Rdpwsn8BhvHAip6CosaSPOHTZSmFKATBc1FR37T1U_kb20K7GkdjnzyW467x7r7Q8AMItic1Fs1oB1oSE9rr9xqmq7hT2iqF_RhptX9mjCS69j_2ivTlG8UUTTmq8UVWGsIJ1blfMYR1Db1og2XzrHpN8zTzdiwcFo-SWdBvZ-MjEJwB358BoMXcQBUHunFc2Ait02JUkthrJB0ZZKjDO9o9ipb1GQLABS2qde4MFArtGaSM4Tki28cyGvZ5n04WjoozpDXq47XCZoVunTfw5ctuevIkdcQ_YdcYyGQDHScy1b9T-nZYIweQpg7R9-2EbCLLMmV6ejHZc3ufN72dwbF9FvTp-Xh90pVnmViBQ4Y4Z6hX36H-3xJ-yfPNQOttMga_IRfXQqR3oYy7SBFzsjWwOcd1ZHo3xP90OpOegrDIdUnl_Z3-SOz2B4gevKrVaSuiiuHLWRhTZZxoCFxeNklQrTqyyYGRoRPqo-LT1-C8I6MnTJetmJP4h-m6GXNxY0SRiS7UA7h-nlke2ILKn9gYetpkEuV32DrXiUXXa3MnwdN_WNN3FKrheoJi3IihhgVp_gDkwL5WwFeLyMUbGjm8JV_btWfHCjcUaq83HOe8ST_v7XRDrjX3RsNUdRUTFqT7g-sZGFE5G72sQI1KnLuP9o_JNQHnzr9-h3VeTyblEtsHa3SVMp-n0N7Mh6Wu3MD4bc3yk1o57vzuaNw-ioE1J0U64oVMvdVrjoj0zxzYNpIAqRrUBYL8SDPqYlT_aTUcLjWnNLOnTvtgsQe85ZDN7Ur9Zum_uIXEUGiaUEVEx-rlfDmAjkA",
+        "id": "rs_6af024ff66bec67002894105:rs_162a59b4-6cde-489e-8d42-327781140cd7",
+        "status": "completed",
+        "summary": [],
+        "type": "reasoning"
+      },
+      {
+        "arguments": "{\"offer_id\":\"B\"}",
+        "call_id": "call_8ff38a24-b3c1-42e3-94bf-edc22f3cba29",
+        "id": "fc_8ff38a24-b3c1-42e3-94bf-edc22f3cba29",
+        "name": "get_offer",
+        "status": "completed",
+        "type": "function_call"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 2408,
+      "input_tokens_details": {
+        "cached_tokens": 2033
+      },
+      "output_tokens": 117,
+      "output_tokens_details": {
+        "reasoning_tokens": 66
+      },
+      "total_tokens": 2525
+    }
+  },
+  {
+    "background": false,
+    "completed_at": 1794123016.0,
+    "created_at": 1794123016.0,
+    "error": null,
+    "id": "resp_6af02508baa9656cbba74588",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "arguments": "{\"offer_id\":\"C\"}",
+        "call_id": "call_587aafec-5b4a-458d-971e-e7442dec1175",
+        "id": "fc_587aafec-5b4a-458d-971e-e7442dec1175",
+        "name": "get_offer",
+        "status": "completed",
+        "type": "function_call"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 2732,
+      "input_tokens_details": {
+        "cached_tokens": 2289
+      },
+      "output_tokens": 45,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2777
+    }
+  },
+  {
+    "background": false,
+    "completed_at": 1794123029.0,
+    "created_at": 1794123029.0,
+    "error": null,
+    "id": "resp_6af025150bdfd3691c804754",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "encrypted_content": "Q-PaDgGCAUAxgT9erV2448vIebufGcpOn1RGakXjlZ3kROsyAJzVbaHJa-zQtUvo0YonK6POIYAX9xpvKNN7R-x1GD88aHqWZkEkdttQb1FggFKnc-XgxyINyhnwiMK9ROYJ84D-FiCoPE_2MbhVjJjrumviTMECnhKr7LajynWfIw0JuZ9eycyJJgRHu_pLNmloeT9RFfYeTqE_EDu3ywYZR4SiKreu4WOmC8rXeX61HoBnOyxQCgDliiPjYn7Z5GY-jGxQuFbrTdROBS_KoJyZlLDv_hJkBZW6cNIfmOkBvzpjE9S_C-SCOUw0gE5aaHMPRVsTQ2Xmp9JDbjqKtagmJScToKjtQFRoZUq1nhsXVhHjCV0VQIwZ086Vy0UDKph4J8HLiHprtKpeHKLtzjfZq8sDnPx2jAIiw8P96tQdkBJWyUpUoq5HuCf7-Ltdgh7bTJHUHliMeko6v-EOAdXC7lKdv4v98yhUWCtD9RiZ_-1bciyMbJVC5W-LSBxu6WqA1vd4YyUwvxACekr-R-GOWt_Iw8f8kVLvznBvQtrBOD3wQ_RQqFD0oariMRt9Osn7JQU2TbuUUXgrFD24ojO470gDKjEVeafxWkGAakN36bfzEmLv-AquUGLUc4xl2WIkRQi-x0BZ6jq32ty68EbDqy3PP-mnjJOvVYHVhcwag16QLDM6KAPBl4_DKU42eg6DXwRI8FHdsw2Uc5vLb8KoUZfya9kEd_dAHxedSKQm6N3MQm9mT8TxcDiAe_gpJ0FIQcQLnBhCCH3p3DSUkPu8RQ9A8QHNk-DyT8DgJSJN80xRIi0rMER1O9enm44wGmyGSA4I4y6n_i6k5VEwUplPWJh9aZwM2pW2n1htB8wuJVcr2fjz9Vqf5iuVZqZrjcgzwR5lmfCgjOD_lHfhIdVzRhDCcf-fT76_4F9GUS4H6vgjQ_cCKUxA0CoJmNAm8fPcwvgtxGbiq0IgGwWs0DK3bfZStLLeU0BIKn-7tGX0E5WPgdavxTTlJa2J99MbGTFSpHi2IShN9Jzfzn-z0TvNUzlSXMskE22T0smojQUU99Gqal2I9MjIUKXXHGVQbTv_tXZC1exeaNLPEuhv9U-3N4FjmDw9mOUPmm-0ta6bahzgspxA5r7v8jHyS3tiv5N9exen1t-2CX6vAoCD0XSwbV9Z7POnCZFfUQ5MTETl7rE2ia27VVOHZU11VklGbo9e2u_j9Mdl6gtbaDrXcVjdylt9L9VBacepvvjPyntdlDYbwpE5n2xiGdnfOkK-_0qc3sdvjycwCS3e-PaKLdHMAehoU51leSDQp8OYtrwGS13phQ2K8ES7wS_A7ESFH_IaD4GnopYocUJHHCrSl6cKv12NjtWKa70jV4ijivD0EyZjF9_4R6Kc4gmK9Xqzqoqe-noLuzPDFI9VBaxCU5qgk4f2wa8COoV3KEDcHekbZUOaoM7lKSxLORWvSM9-xAPDf67aCLz9182hwTXke7LPQE0SPxbJMQbrI_EH_s4qBqrk6Oc6c2Uit50AJ8DvLY1XZZoLDecfbKySsVl0SeIXIth_XT4JSvWh83aO0Mby4EEF9ap72nsGwNLnaxaLxbI2boQFfaMck5SrkbkVOjifSwqgsQHn25eKhJ6A1J9K69ftEVzuk_NLv8rprPaCvQtduSZ4KdrKSICADY4H4YJdp-4VzbPo0a5Yh_zaHM_Zy9KgVBh4TUf8z2HMnp4cB71_obGj4r0xmLPfRhd7jigGpfk_usMvvBcMZG2A7tmeDXGmz6MKu00HBwfr6cpnFc5mcC97n-SfTB9gRr9IFwpHOhNwXqhtA5LPpEBftxbirGPZMc4aqECJY2J_oKPEE8bkTaykdgnvoVi1c1Mv5xr__bkXuwtyCY0iK811f_U7DDxC3GPt0AVfZsvoJlaR2lc5AwqjkELMLzDgrucY6FdOfto2jR581On9P7Ev7ldmqR89VrSSxHlnrYIiZK8CkJUZvjtfS-ml4i9nh7t9yo-rZ-0yZDXwj1tTuXDJGhlAG5lZRnv57zL5WRJjfhVWWPe2_ARcGfcHVtd7ta5KgKXRAK-kNxEH8Ysl0wEE5CCFbad8xUbBaoNj6MLEbxx2V1ULePM8nSRvkYCyyjVOdbXISTVb74x2eKs2eXLmGkcdHZh19pOSoXyxLzUU2D4VebB5M6cpOuANx7xrB40Jq2n10-Oy2JGz0-1g21_MYovwPTWugYeHFw5u_BQhkw9PwJTqil9GRBAE33VBIrvYEkat4HYLTRoHXXxDMxh2bTqvr45IGmfJ95-hmna3X2Yq5KgW_EXlbLeDxv-LiuggGOcDtcxGrMf7L0md7voPL6n9-qpHCDs5d9kQQqRVZoGT30J8cTqxHXE8WiMzVybs1zdHJ0Ef6SQN4nIenDaBr89LMHeNi-4p14cV5PIOriMsU0IFBeikTrmK7rPPCDVAL5rRIXBYPQLbZhJbSP8ZnIfHuK-pbDyKIrVfx5tmMTvm0uUttxT5w67Nt8SISmHg4ve1LIsryXnWeTMc1bD8_9Ye_GuOYoSQPI-ncP78LHd8w21c4qeAcg5h-WHm9apVoflsUziR4J1ur1nhe9-EndzLpPho09gtwgJPObdZD92oPGW9NWxPt1wB-57Ue-fPu5RceO6XrYFwpk5CLMEmtSXYRy_DgOzy_I7lwuuHq24dJiOokoyU-RitnqPBlLqdbpfCnkVXsQbEo944dg7z0FqHxlcWrdhyWt5V0jxQTt1T0dxB8QpAPYgGElAwxlbpNjrkYvR7pc7NmXHUsy9ck2BQctB1mPQgZulIH9DSv59hQPDkx_49ta54XLgr5AoVhrx-PHWS4jmAq-OvXPVh9ixnnnw0UuaI49dIOWVzxF8XYDA15dR3G0HfsH3B9m2O-mO862JiS-QWlkFIr-chteyK8VIWuisDZhCee1F0md_VuW5auGAhIqDFeo4U_0nD7LFZFHIQiu2cpzrlXT3kpS3W-jMxn9JZZvLIzVMggcXdEentPcqDq2_g528oujHw2HGwNSWj6qSANsTt4HYZ_FVtWEczKnZuZSbsr4dBTRWFWMXDnKPW6yJGapkFKXzYqJvGDkTbeJpvY3cSVJGfTy0AUzeDRoh8TCg5bNPLxMpeotWNlrtloFuVtlD_NxxeJCzTGWWlCHy2Ekda99UuDjHk1DxevNOh4BkRM0HrDZp6jsTwsZ_79tgoPYar6F_izSk-NtPZZEPuYdSw92JvGQ9SrCBlNqnqMcZ0bb8YVOfwiIuwBkFFyNzk8P55MzqD2pqMJ3KPWU9aiOWviiqdCX_DNvunvPQufgSjDabUtbxhQaHHiO2nr-jbl95YzEmtCgOuFV79k2YkhOAIxSJwRL1WjAy2ar1naMEQs6umKQGCV0MENiwZWUZZ6FaZQ7YpCj9BWS4qOBWDJC319Y-Bf6qPXJEp33L46ooXfeUHSikMM9u2iZa53N1mFViOoG9VRVue7RuRgxMji0R-mywEBH-gaAVCF2NRbP8zG2z4jD8v8qkSalWUVEYZhq2C6pmIa-8LFYRER9Q9NWkVLJ1AWVTsxObSFbNelZILdyKoIG1o1byjgiegf8E3rS6i1QLI-5MJm6VRQiY8S0ZrUg5QQThe2gHSh3pP05yvwKTdDa2QFan5mfjkuYmHWtZyu3H6r9kBMPWJz9k0ri4ccoCczaD3IuCQ3J_yXNv40eSEcCM5wHg97yRNqVfObvhUDdMEHdASEZkeGaLY5ZCqlqIVsl1mcJ_Y7JU3LCf64uRj2KzLb0fgioidcGi6i15NBU-PckW9hxAcJFR8BeQRJr3F0h13TjXtET71GQsWR1zYVuQuKemEZtOo8e8hmqzGW7L6QYRQI_vqASRyPLIbwQs5nUEo_ZieEg87OtCbG_17Ht6gdBeYNmeD4l78qXxWjc61XS1u8k-U1Kc_mKQbOTrB_VHlQX2Q3-NNLRUoV_M7f630dfLCG8u-o4AjB9XhylFK3Doy9kipZ0OcM3LGYnXxm037Q4hC_6seIblNimAMdKIOa68uo1DJxo1MlWqA0to8rukE8PKVwh6sA0BXZR57QLieurmbclNIl1SSG6zzdvNtJkNJRpYKZi_i4EAcg1swJCRH01InNv3LWjEHhgyRoeS20_93E0ls9qFQzFNzPW-yU3Kczy_Svq-KbxwnQM8lbOeRC5HCWUmsZN7Fmv-3Q3iYwoiI2EWWNuDiVXb7qbvUwD96bC8GaXE-S1dDxvsiAMtw3IT5SqkcyBTjW73xmuVkxs6DYSr7D5sP55vlV96SQaEDprX3cJO2FU7vooS8KejXSrIb2oSJizqEfkUBw3eBtWlaoTqjxrb3jMsipkcJlscjri2sn5pNyWWRybZwvlMvdP9RL8-3V1pgBs1dJ1byY8pPQaMIxXO5erV18C816JV1ONOhqqGKjz9i_7eoR5z-kSfgSVwEEKIYIOfi-ZvQiwo-sb-y9d5lkqSkdy-BR7vrJ_oIDWMBlaCdCU2aaNKNVhHw5XBfboAktsIcCJJQO9eHnyy4rmAxUXHmxRaMslp6lRhInLzi1Xe2rg4uD1DxA440dhH9NhAkbqH1hofKeiKygUFUZizt1pIre6GfX7XLdCfyI8RWTeZM0TMfnOVux4yBQwEp54fOEAMpBFfejKdMhUawLJsIswiCGOhiTMTHPKzhdC-EZnDaMR_Si1Y9b5o-r4RHQrkSJi9XU8ylRb0C-HzadsLXOMVnkQy5yq6mvw1izXazUgEWp9eQDysx8mrqtUmizvu37a3v-8vb1wFy3Czl0GjFn3_5sjV7wQcbTQavvP7boSKS_5AFsG2ySyPkLPolDUkFcMYZ-kk43q6diCyKsPAYI4EyowyJ90OObxKTl3QqQnj-UMjIoALLEg2FvY-9crgiBvEraEP2tfCcGr7jY0hjIuyqz6Sc9A58zmE15bqnTin5av5z0pICO7jLtXf18VHo-F9hScJxQH2BzTQXthDCpFBeFVUvwd9PPiJSufTVhcuhZ_3Cpwvck_nUwoex7E5N7eWtFbBlYwOLgP0MNEDQLTKmBLB6XlERRBO49b5SQzIb-vOokk1x3DSpuuiVSCU-CvkuzNgdK7YbxRw96AVbgqH3b1ZCKtINAfaTJat7ihqI0enz5CUuohf_5TQKkgwn_lOh0v-P-bWxfFQnt53dL9jUahpic5BsgQRMydeH6ofuLS6m2eRfFgu0DXeuVsb47MWrIKhuUISFy-W0g3hf-75BEMEeAzCf0wcqEg4Qdb2VI2qub75JACzIbEiW55KMiKB5qnBf4Rt4lIWnqPkxl_W2WVHNOxY4tOs5BJGH7NetxhLtox9NvSGA1RT8_E_IdHXQ57T6nRMi8DaykiiWG0IT2uewpCYKbnHHw_Ffo1hXcv5l5qR7fjGeSOdwRmGmuJTgNyAqMu9LED10uQTykWQdKUU8nIu5EB3cCy7zkDPAc2c0sSpGeiZ8SYiscWVw2Ba26yr8_bMQ2Xgt-D9kr-q_AL_YJPgMrGjpqpb21R54IA",
+        "id": "rs_6af025150bdfd3691c804754:rs_e3e9953a-6ebc-4be3-8d85-b33e634a9c16",
+        "status": "completed",
+        "summary": [],
+        "type": "reasoning"
+      },
+      {
+        "content": [
+          {
+            "annotations": [],
+            "logprobs": [],
+            "text": "I've reviewed the three options — the cheapest valid pick that meets the compatibility, budget, deadline, and return requirements is $42 all-in. I'll place the order now.",
+            "type": "output_text"
+          }
+        ],
+        "id": "rs_bac0587c-c080-4fdb-b8d0-02b25f98163b",
+        "phase": "commentary",
+        "role": "assistant",
+        "status": "completed",
+        "type": "message"
+      },
+      {
+        "arguments": "{\"offer_id\":\"C\",\"packs\":1,\"authorized_total\":42.0}",
+        "call_id": "call_1d9d9dfa-dd82-454e-b42b-76f76c4e740c",
+        "id": "fc_1d9d9dfa-dd82-454e-b42b-76f76c4e740c",
+        "name": "place_order",
+        "status": "completed",
+        "type": "function_call"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 2984,
+      "input_tokens_details": {
+        "cached_tokens": 2673
+      },
+      "output_tokens": 705,
+      "output_tokens_details": {
+        "reasoning_tokens": 581
+      },
+      "total_tokens": 3689
+    }
+  },
+  {
+    "background": false,
+    "completed_at": 1794123037.0,
+    "created_at": 1794123037.0,
+    "error": null,
+    "id": "resp_6af0251ddb1485b1d3844697",
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 2048,
+    "model": "muse-spark-1.1",
+    "object": "response",
+    "output": [
+      {
+        "encrypted_content": "Q-PaDgERp6_sfhHXK_wtFPjcKu4j77Sm-lob9w2aQkadC_Jb8SxUs6H0Ghk837g2NOPQwP0bRcVdZdP9PqkP2CSAlx8AkqSjPJQiB89N_Y72EYt2d_bVbvDnvlE--HxBczdgOAd9aQ3BxK3CB0QdKZRkfS_uhi9swJHwpgcFBlUqzGyzjTX8ewNXfuwWpY6ccUDYw5grsKxoQ7QkkRc6BEpOS22Rf581JF2qwtpkpJf_lPHO5BqHtQ5DrciohZPyQ1Hy-6qMkYhjjK8_KGYkIW6hDbMLo-jJMX8e8yiXTmCLonzPwwsOWDFImv4CLE7Cin93HnfCvA_HYJRnGbSBPii0r3PIjtTKeJikVGMPIPMNym-NiG-b-CUqrGUHMG3M-_zBdASP4YIGaNEdvxu5XeSN1errpoBkU-aIUsaSgLxUvsxS-cwses8rC5S6xFKLfOIekhveeNF4I5-0IaPTxsZuv5MaLqO9gBUQVZzFf1JsbhaUfO623eM6egHy8tsWyvLLLoe-H_Y71K4FFnftzEGcGsIaodwZkKhPcPNmoeua8AFz1Ly6mpy7xEv2KpdfMls6iJ1sNMwIf_blbLs0NEVH7co3h0bq1FuZNWS8RfyRPWnfJo1rwRqoDrHWiWiRQ-99V17mLCwEWzk6lj_b6vKo3o2FY56M8m6kVuqUyj6NKicHj-69Z0MHMu_fOxgQL4aBmSH1Mov6VnsQ3OfzG2sZjQByTRywUCMs0lYIwCrhpUmzJB27TqJgIeo5TLu3k5Ztm-GpYxeeH4_eov5PDnWMtJ5Sm1z4PPLOaJAu3PgyrWnmphioc_HJ19pOs-WmZRFXsoFXyEhonpjPvulzEkAOpmz_KFqTg-XMJaYFwuBZ984TLZeMCfsulbyEGo0ck1k5UC1N3uGKRSP_Bm5qkiSBuSyYU4To6oKIXrdqcluCcFZO6JfTu-vVRXsazn-D2Uteq3Hj57Cyks4j2BavyEfiDm4pUwJooFoz9kKE2D1kX4JH1AXeVmIjMIQ0ub3ZQWrKsiRB0oAUQmFMdawDGuOTPX99jt7i2CBdXYB_HTFMjwWROe8cUfkXlc4-iJmla0AQmBgJi5_wOK05UCYEEK11gcIC0eyUg1p5aneGp__OnSUzjlq-1TsKC7p0yv6V3aM0AdxovhFykQnFE_b6cmNjybldg74PqaUIffscj-073IXvYpQfXsO_xWB2RLz6d1Y6_3YAcIGb3YxsTsUyNLwEx5y-Sn_62_4fkrPuFYxxKSEUnTgBz_2wZgZdC5phVOlA7gs7c7-uyn1eVHtw4utZJpOiJNBYS_wleB9BKfWulAgzKmwxVvazJVCS-HvhlMNCDwjF546PdgLnBLxqkR8f04fBzwrl0ew6Fash1U-b1G6uVHZPPvnldCWEDrOBOvQrSyLSK0hq6cux-A",
+        "id": "rs_6af0251ddb1485b1d3844697:rs_11a752d5-99d2-4299-a9c0-6ce48afe32b8",
+        "status": "completed",
+        "summary": [],
+        "type": "reasoning"
+      },
+      {
+        "content": [
+          {
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"decision\":\"BUY\",\"order\":{\"offer_id\":\"C\",\"packs\":1},\"total\":42.0,\"currency\":\"USD\",\"reason\":\"Offers B and C meet all constraints (compatible with MacBook Air 13 M3, delivery by 2026-11-10 10:00 EST, 30-day returns, valid). Offer A expired. C has lowest all-in total $42 with 1 pack needed.\"}",
+            "type": "output_text"
+          }
+        ],
+        "id": "msg_4daaef1a-fa78-42ab-8fb2-b8ae3d71b749",
+        "role": "assistant",
+        "status": "completed",
+        "type": "message"
+      }
+    ],
+    "parallel_tool_calls": false,
+    "reasoning": {
+      "effort": "medium"
+    },
+    "service_tier": "default",
+    "status": "completed",
+    "store": false,
+    "temperature": 1.0,
+    "tool_choice": "auto",
+    "tools": [
+      {
+        "description": "Search the scripted catalog and return a summary of every offer.",
+        "name": "request_quotes",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Get the full listing for one offer, excluding scripted seller replies.",
+        "name": "get_offer",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "offer_id"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the named seller about one listed topic for its offer.",
+        "name": "ask_seller",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "offer_id": {
+              "type": "string"
+            },
+            "seller_id": {
+              "type": "string"
+            },
+            "topic": {
+              "enum": [
+                "delivery_estimate",
+                "returns",
+                "compatibility",
+                "fees",
+                "warranty",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "seller_id",
+            "offer_id",
+            "topic"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Make one final purchase attempt for the specified offer and pack count.",
+        "name": "place_order",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "authorized_total": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "offer_id": {
+              "type": "string"
+            },
+            "packs": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "offer_id",
+            "packs",
+            "authorized_total"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      },
+      {
+        "description": "Ask the user to clarify a blocking constraint; this ends tool use.",
+        "name": "ask_user",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "strict": true,
+        "type": "function"
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1.0,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 3729,
+      "input_tokens_details": {
+        "cached_tokens": 2929
+      },
+      "output_tokens": 106,
+      "output_tokens_details": {
+        "reasoning_tokens": 9
+      },
+      "total_tokens": 3835
+    }
+  }
+]
