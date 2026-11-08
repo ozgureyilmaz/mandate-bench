@@ -43,15 +43,15 @@ Owner must solve each task from `task.json` alone; automated checks are not huma
 
 | Task | Built | Oracle 1.0 | Mutants fail | ozgur sign-off |
 |---|---|---|---|---|
-| t00_control | ☑ | ☑ | ☑ | ☐ |
-| t01_hidden_fees | ☑ | ☑ | ☑ | ☐ |
-| t02_expired_offer | ☑ | ☑ | ☑ | ☐ |
-| t03_compatibility | ☑ | ☑ | ☑ | ☐ |
-| t04_seller_injection | ☑ | ☑ | ☑ | ☐ |
-| t05_bundle_vs_unit | ☑ | ☑ | ☑ | ☐ |
-| t06_ship_vs_delivery | ☑ | ☑ | ☑ | ☐ |
-| t07_final_sale | ☑ | ☑ | ☑ | ☐ |
-| t08_no_valid_offer | ☑ | ☑ | ☑ | ☐ |
+| t00_control | ☑ | ☑ | ☑ | ✅ |
+| t01_hidden_fees | ☑ | ☑ | ☑ | ✅ |
+| t02_expired_offer | ☑ | ☑ | ☑ | ✅ |
+| t03_compatibility | ☑ | ☑ | ☑ | ✅ |
+| t04_seller_injection | ☑ | ☑ | ☑ | ✅ |
+| t05_bundle_vs_unit | ☑ | ☑ | ☑ | ✅ |
+| t06_ship_vs_delivery | ☑ | ☑ | ☑ | ✅ |
+| t07_final_sale | ☑ | ☑ | ☑ | ✅ |
+| t08_no_valid_offer | ☑ | ☑ | ☑ | ✅ |
 
 ## Remaining submission work
 
@@ -59,14 +59,18 @@ Owner hand-solves and checks the tasks, references and grader. The Muse-only dia
 
 ## Owner checkpoint
 
-The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine committed tasks, references and grader rules. The answers match and the packet is ready for owner review. CLI preflight checks both SIGNOFF boxes and all nine STATUS owner cells. The agent must separately receive the owner's explicit signed chat reply before diagnostic dispatch. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)
+The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine committed tasks, references and grader rules on Nov 8. Decisions, totals and traps match every reference file; the release oracle scores 1.0 on all nine tasks. Both SIGNOFF boxes and all nine owner cells below are checked, so Muse scored-run CLI preflight passes the file gates. The owner replied **signed**, completing the diagnostic approval gate. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. [SIGNOFF.md](SIGNOFF.md)
 
 ## Nov 8 submission preparation
 
-Both owner SIGNOFF approvals and all nine STATUS owner cells remain unchecked. No explicit signed approval has been received. The Muse diagnostic stays at that gate.
+Both owner SIGNOFF approvals and all nine STATUS owner cells are checked as of Nov 8. The owner replied **signed**, so the single approved Muse diagnostic can proceed after budget admission.
 
 The submission blurb and English video script are drafted using the archived Luna pilot and passing Muse smoke. Muse task scores remain pending. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
 
 The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Owner review, scored evidence and the video remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The currently authorized four-task, three-trial diagnostic would not satisfy that internal gate.
 
-Read-only packaging preflight on the clean Nov 8 source reported 12 pending gates: README TODOs, an actual video URL, nine unchecked owner cells and a qualifying committed nine-task/five-trial result set. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. No archive was created. No provider requests were made during this drafting checkpoint, and the Muse ledger checksum is unchanged.
+A fresh packaging check will follow the diagnostic and README update. The current helper accepts YouTube URLs. Other officially permitted hosts require a validator update. The final video and the internal nine-task/five-trial coverage gate remain open.
+
+## Muse diagnostic authorization · Nov 8
+
+Both file approvals and the owner's signed chat confirmation are present. Preflight passed for one model, four tasks and three trials. The unchanged config projects USD 3.58896 against USD 14.99606525 in remaining Muse capacity. Start one Muse-only batch with the existing guard, serial dispatch and zero retries. Stop new dispatch on the first provider error or budget refusal.

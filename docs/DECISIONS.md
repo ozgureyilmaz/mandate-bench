@@ -224,3 +224,7 @@ The already verified Muse path is sufficient for this review slice. The record o
 The Nov 8 work order authorizes an English submission-field draft, a video script and non-score README/readiness updates while owner approval is pending. The two SIGNOFF boxes and all nine STATUS owner cells were still empty on inspection. The Muse diagnostic remains gated on those file approvals and an explicit signed reply.
 
 Draft claims use the archived Luna v1 9/12 strict pilot and the verified Muse smoke. The README video section now lists the permitted host options from the owner's Nov 6 reminder. Scored Muse metrics remain pending. The internal package helper still requires nine tasks and at least five trials each, which exceeds the four-task, three-trial diagnostic authorized by this order. Record that gate explicitly and preserve it pending an owner decision.
+
+## 2026-11-08 · Owner signed and authorized the four-trap Muse diagnostic
+
+The owner completed both SIGNOFF checkboxes, all nine STATUS owner cells, and replied **signed** in chat. The file preflight passed. Use the unchanged Muse-only diagnostic config for t01/t02/t05/t06 v2 with three trials each, medium reasoning, serial dispatch and zero retries. The projected batch estimate is USD 3.58896, within the current USD 14.99606525 Muse ledger capacity. This authorizes one diagnostic batch. The existing first-error and budget stop rules apply.

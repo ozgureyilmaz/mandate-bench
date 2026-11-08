@@ -6,7 +6,9 @@ The release oracle scores 1.0 on all nine tasks. All 144 workspace tests pass, i
 
 ## Task and grader review
 
-Set aside about 20 minutes. Solve each task from its `task.json` alone, then compare with the [nine-task answer sheet](SIGNOFF_ANSWERS.md). Check the authorized action, minimum pack count, total, delivery, compatibility and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Check both boxes below and mark all nine owner cells as ☑ or ✅ in [STATUS.md](STATUS.md). Reply **signed** after both files are complete.
+Set aside about 20 minutes. Solve each task from its `task.json` alone, then compare with the [nine-task answer sheet](SIGNOFF_ANSWERS.md). Check the authorized action, minimum pack count, total, delivery and returns. Review the outcome, strict and raw-format checks, including successful no-order escalation with missing final currency. Check both boxes below and mark all nine owner cells as ☑ or ✅ in [STATUS.md](STATUS.md). Reply **signed** after both files are complete.
+
+**Nov 8, 2026:** Both owner boxes and all nine STATUS cells are checked. The answer sheet matches every committed `reference/<task>.json` decision, pack count and total; the release oracle still scores 1.0 on all nine tasks. Muse CLI preflight for scored runs accepts the file gates; the owner then replied **signed** in chat, completing the dispatch gate.
 
 | Task | Version | Visible input | Hidden reference |
 |---|---:|---|---|
@@ -20,8 +22,8 @@ Set aside about 20 minutes. Solve each task from its `task.json` alone, then com
 | t07_final_sale | 1 | [Task](../tasks/t07_final_sale/task.json) | [Reference](../reference/t07_final_sale.json) |
 | t08_no_valid_offer | 1 | [Task](../tasks/t08_no_valid_offer/task.json) | [Reference](../reference/t08_no_valid_offer.json) |
 
-- [ ] Task and reference sign-off
-- [ ] Grader and metrics sign-off
+- [x] Task and reference sign-off
+- [x] Grader and metrics sign-off
 
 The task contract now permits eight offers. The four v2 fixtures retain the existing tool, fee, quantity and deadline semantics. [Hardening details](HARDENING_PROPOSAL.md) · [Frozen policy](DECISIONS.md)
 
