@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated Nov 5, 2026 (Istanbul).
+Last updated Nov 8, 2026 (Istanbul).
 
 [M1 PR #1](https://github.com/ozgureyilmaz/mandate-bench/pull/1) merged at `3982bc4`. The current review branch is `feat/m4-hardening`. [PR #2](https://github.com/ozgureyilmaz/mandate-bench/pull/2).
 
@@ -60,3 +60,11 @@ Owner hand-solves and checks the tasks, references and grader. The Muse-only dia
 ## Owner checkpoint
 
 The [nine-task answer sheet](SIGNOFF_ANSWERS.md) was rechecked against all nine committed tasks, references and grader rules. The answers match and the packet is ready for owner review. CLI preflight checks both SIGNOFF boxes and all nine STATUS owner cells. The agent must separately receive the owner's explicit signed chat reply before diagnostic dispatch. The corrected Muse round trip used two successful requests with a combined reported-token estimate of USD 0.00368615. The ledger settled USD 0.00393475 at conservative rates. The audit released the original USD 1.319424 reservation as `unbillable_validation_error` under the owner’s project policy. Remaining ledger capacity is USD 14.99606525. Raw smoke evidence stays under ignored `runs/`. Scored work awaits owner review. [SIGNOFF.md](SIGNOFF.md)
+
+## Nov 8 submission preparation
+
+Both owner SIGNOFF approvals and all nine STATUS owner cells remain unchecked. No explicit signed approval has been received. The Muse diagnostic stays at that gate.
+
+The submission blurb and English video script are drafted using the archived Luna pilot and passing Muse smoke. Muse task scores remain pending. README accepts YouTube, Loom, Google Drive, Vimeo or a similar host, with a login-free link and working audio. [Submission blurb](SUBMISSION_BLURB.md) · [Video script](VIDEO_SCRIPT.md)
+
+The deadline is Nov 9 at 08:15 Istanbul / 05:15 GMT. Owner review, scored evidence and the video remain open. The packaging check also requires a committed nine-task run with at least five trials per task. The currently authorized four-task, three-trial diagnostic would not satisfy that internal gate.

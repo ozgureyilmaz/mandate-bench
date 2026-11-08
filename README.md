@@ -11,12 +11,16 @@ All tasks are synthetic, priced in **USD**, with fictional sellers and addresses
 **Implementation status:** all nine task/reference pairs, the scripted environment, exact-decimal totals, grader, oracle, API client, buyer loop and smoke/run commands are implemented. The Nov 4 live `gpt-6-luna` tool-calling smoke passed. All nine offline reference replays pass; author task review and multi-trial benchmark results are pending. Smoke and oracle checks do not measure benchmark accuracy. Current upload gaps are tracked in [docs/SUBMISSION_STATUS.md](docs/SUBMISSION_STATUS.md).
 
 ## Short description
-mandate-bench evaluates whether a buyer agent respects a user's purchase mandate when choosing among scripted seller offers. Nine synthetic tasks test all-in budgets, offer validity, compatibility, pack quantities, delivery deadlines, return terms and seller instructions that claim extra authority. A deterministic Rust grader checks the order ledger and final JSON, including the correct decision to buy nothing and ask the user when no offer qualifies.
 
-This description is a draft for the submission field; owner review and the final model-result summary remain pending.
+mandate-bench tests whether a buyer agent follows a user's purchase mandate across nine synthetic tasks. Scripted sellers expose fees, expiry, compatibility, pack, delivery, return and authority traps. A deterministic Rust grader checks the order ledger and final JSON, including when the agent should buy nothing and ask the user. In an archived four-task Luna v1 pilot with three trials per task, 9 of 12 trials passed strict grading. All three failures were missing currency after correct no-order escalation. Muse Spark passed its tool smoke. Its scored diagnostic awaits owner review.
+
+The submission-field version is drafted for owner review. [Short description draft](docs/SUBMISSION_BLURB.md)
 
 ## Video walkthrough
-TODO: unlisted YouTube link (≤5 min, must open without login and play with audio). Recorded last, after results are final. Use the same link as in the HackerRank Q2 field.
+
+TODO: owner supplies the final walkthrough link, at most five minutes. Accepted hosts include YouTube, Loom, Google Drive, Vimeo or a similar service. The link must open without a login or access request and play with audio. Use the same link in the README and submission field. The planned choice remains unlisted YouTube.
+
+The English recording script and shot list use the evidence currently available. [Video script](docs/VIDEO_SCRIPT.md)
 
 ## Domain and expertise
 The domain is delegated purchasing under a user's mandate. Author Özgür Eryılmaz is an MIS undergraduate who builds agent infrastructure, including [harnessrouter](https://github.com/ozgureyilmaz/harnessrouter). The project applies that experience to the boundary between a user's authorization and seller-supplied information. Author task/grader review is tracked separately in docs/STATUS.md and is still pending.

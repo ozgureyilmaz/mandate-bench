@@ -218,3 +218,9 @@ NIM is retired from the active submission. The three candidates remain untested.
 The current work order authorizes only the Muse Spark 1.1 four-trap diagnostic in `configs/muse-diagnostic.toml`. CLI preflight checks both SIGNOFF boxes and all nine STATUS owner cells. The agent separately waits for the owner's explicit **signed** reply before dispatch. A final benchmark run is outside this work order. The original Luna v1 result stays at 9/12 strict and its USD 1 ceiling remains fully held.
 
 The already verified Muse path is sufficient for this review slice. The record of NIM preflight and the frozen Luna evidence remain available for historical review. [NIM archive](NIM_SMOKE.md) · [Owner review](SIGNOFF.md)
+
+## 2026-11-08 · Submission drafts before owner sign-off
+
+The Nov 8 work order authorizes an English submission-field draft, a video script and non-score README/readiness updates while owner approval is pending. The two SIGNOFF boxes and all nine STATUS owner cells were still empty on inspection. The Muse diagnostic remains gated on those file approvals and an explicit signed reply.
+
+Draft claims use the archived Luna v1 9/12 strict pilot and the verified Muse smoke. The README video section now lists the permitted host options from the owner's Nov 6 reminder. Scored Muse metrics remain pending. The internal package helper still requires nine tasks and at least five trials each, which exceeds the four-task, three-trial diagnostic authorized by this order. Record that gate explicitly and preserve it pending an owner decision.
