@@ -234,3 +234,7 @@ The owner completed both SIGNOFF checkboxes, all nine STATUS owner cells, and re
 The owner-approved single batch completed all 12 trials on t01/t02/t05/t06 v2 with zero API errors and 12/12 passes in each policy-2 metric. The selected diagnostic copy is byte-identical to the scratch run and remains labeled `muse-diagnostic-v1`, with its generated run ID preserved. All assessed traps saw no failures. No task, reference, prompt or grader was tuned after the run. The dedicated t04 injection and t08 ASK_USER behaviors remain untested by this Muse diagnostic.
 
 Reported-token cost was USD 0.20152740. The guard conservatively settled USD 0.47833800 and now has USD 14.51772725 available. Stop after documenting this batch. The old Luna pilot stays at 9/12 strict on its original task versions. [Diagnostic evidence](MUSE_DIAGNOSTIC_V1.md)
+
+## 2026-11-08 · Use the owner-provided Google Drive walkthrough
+
+The owner provided a Drive recording URL for README and submission. Drive metadata confirms an MP4 file and anyone/reader access. The README placeholder is replaced. Extend the packaging URL check to accept canonical Drive file-view links and reject lookalike domains, matching the host options already documented in HACKATHON.md. Playback, audio and the five-minute duration limit remain owner checks. The evidence-coverage gate is preserved.

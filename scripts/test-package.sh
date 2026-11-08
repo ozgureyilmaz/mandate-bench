@@ -162,6 +162,16 @@ if command -v unzip >/dev/null 2>&1; then
   done <<< "$listing"
 fi
 
+# A Drive file link is permitted, while a lookalike domain is refused.
+drive_video="$tmp/drive-video"
+make_valid_repo "$drive_video"
+printf '# Fixture\nVideo: [Watch](https://drive.google.com/file/d/ABCDEFGHIJ0123456789/view)\n' > "$drive_video/README.md"
+commit_all "$drive_video" 'use synthetic Drive video URL'
+(cd "$drive_video" && ./scripts/package.sh --check >/dev/null)
+printf '# Fixture\nVideo: https://drive.google.com.evil.invalid/file/d/ABCDEFGHIJ0123456789/view\n' > "$drive_video/README.md"
+commit_all "$drive_video" 'use synthetic lookalike video URL'
+expect_refusal_without_archive "$drive_video" "$tmp/lookalike-video.zip"
+
 # Existing output paths are never overwritten.
 existing="$tmp/existing.zip"
 printf 'preserve me\n' > "$existing"

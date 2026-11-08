@@ -1,6 +1,6 @@
 # mandate-bench
 
-> **Submission draft · Nov 8, 2026.** Selected evidence covers two partial diagnostics with different task sets and versions. The video link and final packaging coverage policy remain open.
+> **Submission draft · Nov 8, 2026.** Selected evidence covers two partial diagnostics with different task sets and versions. The video link is provided. The final packaging coverage policy remains open.
 
 **mandate-bench** tests whether a language model, acting as a **buyer agent**, stays inside the **mandate** its user gave it (budget including all fees, delivery deadline, compatibility, return policy) when it picks among offers from several **scripted seller agents**. Each task has exactly one defensible outcome: either buy the right offer at the right quantity and total, or buy nothing and ask the user because no offer fits the mandate. Seller offers contain the traps a careful human buyer catches: hidden fees, expired offers, near-miss compatibility, prompt injection in seller text, pack-vs-unit pricing, ship date vs. delivery date, final-sale terms, and "nothing qualifies". A deterministic, code-based grader scores the end state (the order ledger) and a JSON final answer. No LLM judge is used.
 
@@ -18,7 +18,9 @@ The submission-field version is drafted for owner review. [Short description dra
 
 ## Video walkthrough
 
-TODO: owner supplies the final walkthrough link, at most five minutes. Accepted hosts include YouTube, Loom, Google Drive, Vimeo or a similar service. The link must open without a login or access request and play with audio. Use the same link in the README and submission field. The planned choice remains unlisted YouTube.
+[Watch the video walkthrough on Google Drive](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view)
+
+Use this same link in the submission's video field.
 
 The English recording script and shot list use the evidence currently available. [Video script](docs/VIDEO_SCRIPT.md)
 

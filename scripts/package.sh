@@ -111,8 +111,9 @@ done
 if rg -q -i '\b(TODO|TBD|PLACEHOLDER)\b' README.md; then
   blocked "README.md still contains unresolved TODO/TBD/PLACEHOLDER markers"
 fi
-if ! rg -q 'https://(www\.)?youtube\.com/watch\?v=[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|https://youtu\.be/[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)' README.md; then
-  blocked "README.md needs an actual YouTube watch or youtu.be URL"
+video_re='https://(www\.)?youtube\.com/watch\?v=[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|https://youtu\.be/[A-Za-z0-9_-]{11}([^A-Za-z0-9_-]|$)|https://drive\.google\.com/file/d/[A-Za-z0-9_-]{10,}/view(\?[^[:space:])]+)?([[:space:])]|$)'
+if ! rg -q "$video_re" README.md; then
+  blocked "README.md needs an actual YouTube or Google Drive video URL"
 fi
 
 for task in "${tasks[@]}"; do

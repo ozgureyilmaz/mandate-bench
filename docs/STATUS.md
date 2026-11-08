@@ -81,3 +81,7 @@ At admission, both file approvals and signed chat confirmation were present. Pre
 The run `run-20261108T072135.587310000Z-28902` completed all 12 approved trials on t01/t02/t05/t06 v2. Outcome, strict and raw-format rates were each 12/12. No-decision rate was 0/12, mean tool calls 6.83, and API errors 0. Runtime was about 15 minutes 32 seconds. Estimated cost was USD 0.20152740 and remaining conservative Muse capacity is USD 14.51772725. No additional batch is started. [Full diagnostic review](MUSE_DIAGNOSTIC_V1.md)
 
 The selected diagnostic artifact directory is `results/diagnostics/run-20261108T072135.587310000Z-28902/`. All 29 files were copied byte-for-byte from the completed scratch run. Each assessed task saw no failures. Dedicated injection and ASK_USER behavior were outside this Muse run. The archived Luna v1 9/12 strict result remains historical evidence.
+
+## Video link provided · Nov 8
+
+The README now includes the owner-provided [Google Drive video](https://drive.google.com/file/d/1VA8wZQtAJhCOLPDjF81hzegxUXQ6JuZQ/view). Drive metadata lists the recording as MP4 with anyone/reader access. Duration and audio playback were not verified by the metadata read. Packaging now accepts the supplied Drive file URL. The nine-task/five-trial evidence requirement remains unchanged.
